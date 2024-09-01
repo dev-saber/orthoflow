@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import Login from "./pages/Login";
 import Unauthorized from "./pages/Unauthorized";
 import NotFound from "./pages/NotFound";
+import Register from "./pages/Register";
 
 const AppLayout = () => {
   return (
@@ -21,7 +22,11 @@ export default function App() {
       element: <Login />,
     },
     {
-      path: "/Unauthorized",
+      path: "/register",
+      element: <Register />,
+    },
+    {
+      path: "/unauthorized",
       element: <Unauthorized />,
     },
     {
