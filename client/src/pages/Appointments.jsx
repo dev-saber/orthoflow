@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import ViewToggle from "../components/atoms/ViewToggle";
 import Button from "../components/atoms/Button";
+import Input from "../components/atoms/Input";
+import {Search} from 'lucide-react';
+import SearchBox from "../components/atoms/SearchBox";
 
 function Appointments() {
   const periods = ["day", "month", "year"];
@@ -12,7 +15,7 @@ function Appointments() {
         onClick={() => console.log("New Appointment")}
       />
       <div className="flex items-center justify-between w-[95%]">
-        <input className="border" type="text" placeholder="Search" />
+        <SearchBox />
         <ViewToggle activeView={view} onViewChange={setView} views={periods} />
       </div>
     </div>
