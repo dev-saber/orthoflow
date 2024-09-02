@@ -1,12 +1,17 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
+import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 import Title from "../components/atoms/Title";
 import InputWithErrorMessage from "../components/molecules/InputWithErrorMessage";
 import Button from "../components/atoms/Button";
+import { register } from "../data/auth/authThunk";
 
 function Register() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const registerInfo = useFormik({
     initialValues: {
       first_name: "",
@@ -26,12 +31,15 @@ function Register() {
       start_time: Yup.string().required("Required"),
       end_time: Yup.string().required("Required"),
     }),
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values) => {
+      let response = await dispatch(register(values));
+      if (response?.error?.code === "ERR_BAD_REQUEST") {
+        console.log("invalid credentials");
+      }else{
+        navigate("/login");
+      }
     },
   });
-
-  const navigate = useNavigate();
 
   return (
     <div className="flex flex-col items-center h-screen justify-around">

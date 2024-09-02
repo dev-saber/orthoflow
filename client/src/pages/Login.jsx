@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../data/auth/authThunk";
 import * as Yup from "yup";
 import InputWithErrorMessage from "../components/molecules/InputWithErrorMessage";
 import Button from "../components/atoms/Button";
@@ -16,12 +18,23 @@ function Login() {
       email: Yup.string().email("Invalid email address").required("Required"),
       password: Yup.string().required("Required"),
     }),
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values) => {
+      let response = await dispatch(login(values))
+      if (response?.error?.code =="ERR_BAD_REQUEST") {
+        console.log("invalid credentials");
+      }
     },
   });
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const token = useSelector((state) => state.auth.token);
+  useEffect(() => {
+    if (token) {
+      navigate("/dashboard");
+    }
+  }, [token]);
 
   return (
     <div className="flex flex-col items-center h-screen justify-around">
