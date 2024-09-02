@@ -98,7 +98,7 @@ function Register() {
             message={registerInfo.errors.confirm_password}
           />
 
-          <div className="flex">
+          <div className="flex gap-2">
             <InputWithErrorMessage
               label="Start Time"
               type="time"
