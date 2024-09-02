@@ -19,8 +19,8 @@ function Login() {
       password: Yup.string().required("Required"),
     }),
     onSubmit: async (values) => {
-      let response = await dispatch(login(values))
-      if (response?.error?.code =="ERR_BAD_REQUEST") {
+      let response = await dispatch(login(values));
+      if (response?.error?.code == "ERR_BAD_REQUEST") {
         console.log("invalid credentials");
       }
     },
@@ -31,10 +31,11 @@ function Login() {
 
   const token = useSelector((state) => state.auth.token);
   useEffect(() => {
+    console.log("effect");
     if (token) {
-      navigate("/dashboard");
+      navigate("/appointments");
     }
-  }, [token]);
+  }, [token, navigate]);
 
   return (
     <div className="flex flex-col items-center h-screen justify-around">
