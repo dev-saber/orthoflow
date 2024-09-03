@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Button from "../components/atoms/Button";
 import SearchBox from "../components/atoms/SearchBox";
 import CalendarView from "../components/molecules/CalendarView";
-import ModalContainer from "../components/modals/ModalContainer";
+import AddAppointment from "../components/modals/addAppointment";
 
 function Appointments() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -17,9 +17,7 @@ function Appointments() {
         </div>
         <CalendarView />
       </div>
-      <ModalContainer isOpen={isModalOpen} onClose={closeModal}>
-        test
-      </ModalContainer>
+      <AddAppointment isOpen={isModalOpen} onClose={closeModal}/>
     </>
   );
 }
