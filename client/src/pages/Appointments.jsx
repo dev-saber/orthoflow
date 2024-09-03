@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import ViewToggle from "../components/atoms/ViewToggle";
 import Button from "../components/atoms/Button";
-import Input from "../components/atoms/Input";
-import {Search} from 'lucide-react';
 import SearchBox from "../components/atoms/SearchBox";
 
 function Appointments() {
-  const periods = ["day", "month", "year"];
+  const periods = ["day", "month"];
   const [view, setView] = useState(periods[0]);
   return (
     <div className="flex flex-col items-start justify-around w-full gap-4">

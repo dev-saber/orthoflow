@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { useDispatch } from "react-redux";
 import * as Yup from "yup";
+import { register } from "../data/auth/authThunk";
 import Title from "../components/atoms/Title";
 import InputWithErrorMessage from "../components/molecules/InputWithErrorMessage";
 import Button from "../components/atoms/Button";
-import { register } from "../data/auth/authThunk";
 
 function Register() {
   const dispatch = useDispatch();
@@ -35,7 +35,7 @@ function Register() {
       let response = await dispatch(register(values));
       if (response?.error?.code === "ERR_BAD_REQUEST") {
         console.log("invalid credentials");
-      }else{
+      } else {
         navigate("/login");
       }
     },
@@ -48,75 +48,75 @@ function Register() {
         onSubmit={registerInfo.handleSubmit}
         className="flex flex-col items-center gap-12"
       >
-        <div className="flex gap-16">
-          <InputWithErrorMessage
-            label="First Name"
-            type="text"
-            name="first_name"
-            value={registerInfo.values.first_name}
-            onChange={registerInfo.handleChange}
-            errorCondition={registerInfo.errors.first_name}
-            message={registerInfo.errors.first_name}
-          />
-          <InputWithErrorMessage
-            label="Last Name"
-            type="text"
-            name="last_name"
-            value={registerInfo.values.last_name}
-            onChange={registerInfo.handleChange}
-            errorCondition={registerInfo.errors.last_name}
-            message={registerInfo.errors.last_name}
-          />
-          <InputWithErrorMessage
-            label="Email"
-            type="email"
-            name="email"
-            value={registerInfo.values.email}
-            onChange={registerInfo.handleChange}
-            errorCondition={registerInfo.errors.email}
-            message={registerInfo.errors.email}
-          />
-        </div>
-
-        <div className="flex gap-16">
-          <InputWithErrorMessage
-            label="Password"
-            type="password"
-            name="password"
-            value={registerInfo.values.password}
-            onChange={registerInfo.handleChange}
-            errorCondition={registerInfo.errors.password}
-            message={registerInfo.errors.password}
-          />
-          <InputWithErrorMessage
-            label="Confirm Password"
-            type="password"
-            name="confirm_password"
-            value={registerInfo.values.confirm_password}
-            onChange={registerInfo.handleChange}
-            errorCondition={registerInfo.errors.confirm_password}
-            message={registerInfo.errors.confirm_password}
-          />
-
-          <div className="flex gap-2">
+        <div className="flex flex-wrap gap-16 justify-center">
+          <div className="flex gap-16">
             <InputWithErrorMessage
-              label="Start Time"
-              type="time"
-              name="start_time"
-              value={registerInfo.values.start_time}
+              label="First Name"
+              type="text"
+              name="first_name"
+              value={registerInfo.values.first_name}
               onChange={registerInfo.handleChange}
-              errorCondition={registerInfo.errors.start_time}
-              message={registerInfo.errors.start_time}
+              errorCondition={registerInfo.errors.first_name}
+              message={registerInfo.errors.first_name}
             />
             <InputWithErrorMessage
-              label="End Time"
-              type="time"
-              name="end_time"
-              value={registerInfo.values.end_time}
+              label="Last Name"
+              type="text"
+              name="last_name"
+              value={registerInfo.values.last_name}
               onChange={registerInfo.handleChange}
-              errorCondition={registerInfo.errors.end_time}
-              message={registerInfo.errors.end_time}
+              errorCondition={registerInfo.errors.last_name}
+              message={registerInfo.errors.last_name}
             />
+            <InputWithErrorMessage
+              label="Email"
+              type="email"
+              name="email"
+              value={registerInfo.values.email}
+              onChange={registerInfo.handleChange}
+              errorCondition={registerInfo.errors.email}
+              message={registerInfo.errors.email}
+            />
+          </div>
+          <div className="flex gap-16">
+            <InputWithErrorMessage
+              label="Password"
+              type="password"
+              name="password"
+              value={registerInfo.values.password}
+              onChange={registerInfo.handleChange}
+              errorCondition={registerInfo.errors.password}
+              message={registerInfo.errors.password}
+            />
+            <InputWithErrorMessage
+              label="Confirm Password"
+              type="password"
+              name="confirm_password"
+              value={registerInfo.values.confirm_password}
+              onChange={registerInfo.handleChange}
+              errorCondition={registerInfo.errors.confirm_password}
+              message={registerInfo.errors.confirm_password}
+            />
+            <div className="flex gap-1">
+              <InputWithErrorMessage
+                label="Start Time"
+                type="time"
+                name="start_time"
+                value={registerInfo.values.start_time}
+                onChange={registerInfo.handleChange}
+                errorCondition={registerInfo.errors.start_time}
+                message={registerInfo.errors.start_time}
+              />
+              <InputWithErrorMessage
+                label="End Time"
+                type="time"
+                name="end_time"
+                value={registerInfo.values.end_time}
+                onChange={registerInfo.handleChange}
+                errorCondition={registerInfo.errors.end_time}
+                message={registerInfo.errors.end_time}
+              />
+            </div>
           </div>
         </div>
 
