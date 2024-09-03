@@ -14,7 +14,18 @@ return new class extends Migration
         Schema::create('purchase_histories', function (Blueprint $table) {
             $table->id();
             $table->foreignId('dentist_id')->constrained('users')->onDelete('cascade');
-            $table->string('item');
+            $table->enum('item', [
+                'Dental Mirror',
+                'Dental Explorer',
+                'Cotton Roll',
+                'Syringe',
+                'Dental Scaler',
+                'Forceps',
+                'Surgical Mask',
+                'Gloves',
+                'Dental Cement',
+                'Dental Floss'
+            ]);
             $table->integer('quantity');
             $table->date('purchase_date');
             $table->decimal('purchase_price', 10, 2);
