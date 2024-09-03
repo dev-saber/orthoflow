@@ -1,21 +1,20 @@
-import React, { useState } from "react";
-import ViewToggle from "../components/atoms/ViewToggle";
+import React from "react";
 import Button from "../components/atoms/Button";
 import SearchBox from "../components/atoms/SearchBox";
+import CalendarView from "../components/molecules/CalendarView";
 
 function Appointments() {
-  const periods = ["day", "month"];
-  const [view, setView] = useState(periods[0]);
+
   return (
     <div className="flex flex-col items-start justify-around w-full gap-4">
+      <div className="flex items-center justify-between w-full">
+        <SearchBox />
       <Button
         label="New Appointment"
         onClick={() => console.log("New Appointment")}
       />
-      <div className="flex items-center justify-between w-[95%]">
-        <SearchBox />
-        <ViewToggle activeView={view} onViewChange={setView} views={periods} />
       </div>
+      <CalendarView  />
     </div>
   );
 }
