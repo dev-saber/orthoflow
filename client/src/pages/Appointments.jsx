@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import Button from "../components/atoms/Button";
 import SearchBox from "../components/atoms/SearchBox";
 import CalendarView from "../components/molecules/CalendarView";
@@ -11,7 +11,7 @@ function Appointments() {
   useEffect(() => {
     dispatch(getAppointments());
   }, []);
-  const appointments = useSelector(state => state.appointments.appointments);
+  
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);

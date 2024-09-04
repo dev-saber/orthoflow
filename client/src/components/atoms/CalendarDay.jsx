@@ -1,7 +1,7 @@
 import React from "react";
 import AppointmentSnippet from "./AppointmentSnippet";
 
-const CalendarDay = ({ dayNumber, isToday }) => {
+const CalendarDay = ({ dayNumber, isToday, appointments }) => {
   return (
     <div className="min-h-40 border border-gray-200 p-1">
       <div
@@ -12,7 +12,11 @@ const CalendarDay = ({ dayNumber, isToday }) => {
         {dayNumber}
       </div>
       <div className="flex flex-col items-center gap-2">
-        <AppointmentSnippet />
+        {appointments.map((appointment, index) => (
+          new Date(appointment.date).getDate() === dayNumber && (
+            <AppointmentSnippet key={index} appointment={appointment} />
+          )
+        ))}
       </div>
     </div>
   );

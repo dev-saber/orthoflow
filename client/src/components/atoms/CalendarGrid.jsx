@@ -1,8 +1,20 @@
 import React from "react";
 import CalendarDay from "./CalendarDay";
+import { useSelector } from "react-redux";
 
 const CalendarGrid = ({ currentDate, today, getDaysInMonth }) => {
   const daysInMonth = getDaysInMonth(currentDate);
+  const appointments = useSelector(state => state.appointments.appointments);
+
+  const appointmentsInMonth = appointments.filter(appointment => {
+    const appointmentDate = new Date(appointment.date);
+    return (
+      appointmentDate.getMonth() === currentDate.getMonth() &&
+      appointmentDate.getFullYear() === currentDate.getFullYear()
+    );
+  });
+  console.log(appointmentsInMonth);
+
   return (
     <div className="grid grid-cols-7 gap-1">
       {[...Array(daysInMonth)].map((_, index) => {
@@ -12,7 +24,7 @@ const CalendarGrid = ({ currentDate, today, getDaysInMonth }) => {
           currentDate.getMonth() === today.getMonth() &&
           currentDate.getFullYear() === today.getFullYear();
         return (
-          <CalendarDay key={index} dayNumber={dayNumber} isToday={isToday} />
+          <CalendarDay key={index} dayNumber={dayNumber} isToday={isToday} appointments={appointmentsInMonth} />
         );
       })}
     </div>
