@@ -31,9 +31,9 @@ class DatabaseSeeder extends Seeder
 
         User::factory(10)->create();
         Patient::factory(50)->create();
-        Appointment::factory(100)->create();
+        Appointment::factory(300)->create();
         MedicalHistory::factory(100)->create();
-        Bill::factory(100)->create();
+        Bill::factory(300)->create();
         Stock::factory(10)->create();
         PurchaseHistory::factory(100)->create();
     }
