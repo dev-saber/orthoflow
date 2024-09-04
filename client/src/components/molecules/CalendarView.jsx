@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import CalendarNavigation from "../atoms/CalendarNavigation";
 import CalendarGrid from "../atoms/CalendarGrid";
 
-const CalendarView = () => {
+const CalendarView = ({show}) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const today = new Date();
 
@@ -31,6 +31,7 @@ const CalendarView = () => {
         currentDate={currentDate}
         today={today}
         getDaysInMonth={getDaysInMonth}
+        show={show}
       />
     </div>
   );

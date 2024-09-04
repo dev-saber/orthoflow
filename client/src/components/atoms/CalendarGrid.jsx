@@ -2,7 +2,7 @@ import React from "react";
 import CalendarDay from "./CalendarDay";
 import { useSelector } from "react-redux";
 
-const CalendarGrid = ({ currentDate, today, getDaysInMonth }) => {
+const CalendarGrid = ({ currentDate, today, getDaysInMonth, show }) => {
   const daysInMonth = getDaysInMonth(currentDate);
   const appointments = useSelector(state => state.appointments.appointments);
 
@@ -24,7 +24,7 @@ const CalendarGrid = ({ currentDate, today, getDaysInMonth }) => {
           currentDate.getMonth() === today.getMonth() &&
           currentDate.getFullYear() === today.getFullYear();
         return (
-          <CalendarDay key={index} dayNumber={dayNumber} isToday={isToday} appointments={appointmentsInMonth} />
+          <CalendarDay key={index} dayNumber={dayNumber} isToday={isToday} appointments={appointmentsInMonth} show={show} />
         );
       })}
     </div>

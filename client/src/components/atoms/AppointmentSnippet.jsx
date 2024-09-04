@@ -8,7 +8,7 @@ function formatTime(time) {
   return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 }
 
-function AppointmentSnippet({ appointment }) {
+function AppointmentSnippet({ appointment, show }) {
   const startTime = formatTime(appointment.start_time);
   const endTime = formatTime(appointment.end_time);
 
@@ -16,6 +16,7 @@ function AppointmentSnippet({ appointment }) {
     <motion.div
       className="text-sm bg-blue text-white w-11/12 rounded cursor-pointer flex justify-around items-center"
       whileTap={{ scale: 0.95 }}
+      onClick={() => show(appointment)}
     >
       <span>
         {startTime}-{endTime}
