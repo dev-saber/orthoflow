@@ -21,7 +21,7 @@ function AppointmentSnippet({ appointment, show }) {
       <span>
         {startTime}-{endTime}
       </span>
-      <span>
+      <span className="whitespace-nowrap overflow-hidden text-ellipsis">
         {appointment.patient.first_name.charAt(0)}.{" "}
         {appointment.patient.last_name}
       </span>

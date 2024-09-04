@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import CalendarNavigation from "../atoms/CalendarNavigation";
 import CalendarGrid from "../atoms/CalendarGrid";
 
-const CalendarView = ({show}) => {
+const CalendarView = ({ show }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const today = new Date();
 

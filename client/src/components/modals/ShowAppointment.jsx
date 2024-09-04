@@ -2,7 +2,7 @@ import React from "react";
 import ModalContainer from "./ModalContainer";
 import Button from "../atoms/Button";
 
-function ShowAppointment({ isOpen, onClose, data }) {
+function ShowAppointment({ isOpen, onClose, data, edit }) {
   return (
     <ModalContainer isOpen={isOpen} onClose={onClose}>
       <div className="p-6">
@@ -25,7 +25,7 @@ function ShowAppointment({ isOpen, onClose, data }) {
               <span className="font-semibold">Status:</span>
               <span>{data.status}</span>
             </div>
-            <Button label="Edit" />
+            <Button label="Edit" onClick={edit} />
           </div>
           <div className="flex flex-col items-center gap-4">
             <h2 className="text-2xl font-semibold">Patient Information</h2>

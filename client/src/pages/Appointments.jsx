@@ -6,12 +6,15 @@ import SearchBox from "../components/atoms/SearchBox";
 import CalendarView from "../components/molecules/CalendarView";
 import AddAppointment from "../components/modals/addAppointment";
 import ShowAppointment from "../components/modals/showAppointment";
+import EditAppointment from "../components/modals/EditAppointment";
 
 function Appointments() {
+  const [triggerEffect, setTriggerEffect] = useState(false); // triggrer useEffect to fetch appointments after changes
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getAppointments());
-  }, []);
+  }, [triggerEffect]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentModal, setCurrentModal] = useState(null);
@@ -32,11 +35,29 @@ function Appointments() {
     openModal("show");
   };
 
-  const modals = {
-    add: <AddAppointment isOpen={isModalOpen} onClose={closeModal} />,
-    show: <ShowAppointment isOpen={isModalOpen} onClose={closeModal} data={appointmentToShow} />,
+  const editAppointment = () => {
+    openModal("edit");
   };
 
+  const modals = {
+    add: <AddAppointment isOpen={isModalOpen} onClose={closeModal} />,
+    show: (
+      <ShowAppointment
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        data={appointmentToShow}
+        edit={editAppointment}
+      />
+    ),
+    edit: (
+      <EditAppointment
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        data={appointmentToShow}
+        triggerEffect={() => setTriggerEffect(!triggerEffect)}
+      />
+    ),
+  };
 
   return (
     <>

@@ -4,16 +4,15 @@ import { useSelector } from "react-redux";
 
 const CalendarGrid = ({ currentDate, today, getDaysInMonth, show }) => {
   const daysInMonth = getDaysInMonth(currentDate);
-  const appointments = useSelector(state => state.appointments.appointments);
+  const appointments = useSelector((state) => state.appointments.appointments);
 
-  const appointmentsInMonth = appointments.filter(appointment => {
+  const appointmentsInMonth = appointments.filter((appointment) => {
     const appointmentDate = new Date(appointment.date);
     return (
       appointmentDate.getMonth() === currentDate.getMonth() &&
       appointmentDate.getFullYear() === currentDate.getFullYear()
     );
   });
-  console.log(appointmentsInMonth);
 
   return (
     <div className="grid grid-cols-7 gap-1">
@@ -24,7 +23,13 @@ const CalendarGrid = ({ currentDate, today, getDaysInMonth, show }) => {
           currentDate.getMonth() === today.getMonth() &&
           currentDate.getFullYear() === today.getFullYear();
         return (
-          <CalendarDay key={index} dayNumber={dayNumber} isToday={isToday} appointments={appointmentsInMonth} show={show} />
+          <CalendarDay
+            key={index}
+            dayNumber={dayNumber}
+            isToday={isToday}
+            appointments={appointmentsInMonth}
+            show={show}
+          />
         );
       })}
     </div>
