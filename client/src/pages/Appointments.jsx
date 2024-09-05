@@ -11,6 +11,7 @@ import AddAppointment from "../components/modals/AddAppointment";
 import ShowAppointment from "../components/modals/ShowAppointment";
 import EditAppointment from "../components/modals/EditAppointment";
 import DeleteModal from "../components/modals/DeleteModal";
+import { setPatientSearch } from "../data/appointments/appointmentsSlice";
 
 function Appointments() {
   const [triggerEffect, setTriggerEffect] = useState(false); // triggrer useEffect to fetch appointments after changes
@@ -86,7 +87,7 @@ function Appointments() {
     <>
       <div className="flex flex-col items-start justify-around w-full gap-4">
         <div className="flex items-center justify-between w-full">
-          <SearchBox />
+          <SearchBox action={setPatientSearch} />
           <Button label="New Appointment" onClick={() => openModal("add")} />
         </div>
         <CalendarView show={showAppointment} />

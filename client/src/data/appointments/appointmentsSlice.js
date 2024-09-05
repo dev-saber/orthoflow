@@ -3,6 +3,8 @@ import * as operations from "./appointmentsThunk";
 
 const initialState = {
   appointments: [],
+  patientSearch: "",
+  originalAppointments: [], // used for filtering purposes
 };
 
 const appointmentsSlice = createSlice({
@@ -41,6 +43,37 @@ const appointmentsSlice = createSlice({
       console.log(action.error.message);
     });
   },
+  reducers: {
+    setPatientSearch: (state, action) => {
+      state.patientSearch = action.payload.toLowerCase();
+      console.log(state.patientSearch);
+
+      const originalAppointments = state.originalAppointments.length
+        ? state.originalAppointments
+        : state.appointments;
+
+      if (state.patientSearch) {
+        state.appointments = originalAppointments.filter((appointment) => {
+          return (
+            appointment.patient &&
+            (appointment.patient.first_name
+              .toLowerCase()
+              .includes(state.patientSearch) ||
+              appointment.patient.last_name
+                .toLowerCase()
+                .includes(state.patientSearch))
+          );
+        });
+      } else {
+        state.appointments = originalAppointments; // reset to original list
+      }
+
+      if (!state.originalAppointments.length) {
+        state.originalAppointments = originalAppointments;
+      }
+    },
+  },
 });
 
+export const { setPatientSearch } = appointmentsSlice.actions;
 export default appointmentsSlice.reducer;

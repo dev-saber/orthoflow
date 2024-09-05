@@ -24,7 +24,7 @@ class AppointmentFactory extends Factory
         return [
             'patient_id' => fake()->randomElement($patients),
             'dentist_id' => fake()->randomElement($dentists),
-            'date' => fake()->dateTimeBetween('2024-08-01', '2024-10-31')->format('Y-m-d'),
+            'date' => fake()->dateTimeBetween('2024-09-01', '2024-10-31')->format('Y-m-d'),
             'start_time' => fake()->time(),
             'end_time' => fake()->time(),
             'status' => fake()->randomElement(['pending', 'confirmed', 'canceled']),
