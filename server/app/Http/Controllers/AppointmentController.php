@@ -39,7 +39,7 @@ class AppointmentController extends Controller
             ], 201);
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Failed to create appointment'
+                'message' => "Failed to create appointment: $e"
             ], 500);
         }
     }
