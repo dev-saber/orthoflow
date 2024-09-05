@@ -46,7 +46,6 @@ const appointmentsSlice = createSlice({
   reducers: {
     setPatientSearch: (state, action) => {
       state.patientSearch = action.payload.toLowerCase();
-      console.log(state.patientSearch);
 
       const originalAppointments = state.originalAppointments.length
         ? state.originalAppointments

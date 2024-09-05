@@ -87,7 +87,7 @@ function Appointments() {
     <>
       <div className="flex flex-col items-start justify-around w-full gap-4">
         <div className="flex items-center justify-between w-full">
-          <SearchBox action={setPatientSearch} />
+          <SearchBox placeholder="patient name" action={setPatientSearch} />
           <Button label="New Appointment" onClick={() => openModal("add")} />
         </div>
         <CalendarView show={showAppointment} />

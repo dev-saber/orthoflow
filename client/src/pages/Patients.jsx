@@ -3,6 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { Edit2, Trash2 } from "lucide-react";
 import { getPatients } from "../data/patients/patientsThunk";
 import Table from "../components/atoms/Table";
+import SearchBox from "../components/atoms/SearchBox";
+import Button from "../components/atoms/Button";
+import { search } from "../data/patients/patientsSlice";
 
 function Patients() {
   const dispatch = useDispatch();
@@ -34,7 +37,10 @@ function Patients() {
   );
 
   const tableBody = patients.map((patient, index) => (
-    <tr key={index} className="bg-white text-black hover:bg-gray-50">
+    <tr
+      key={index}
+      className="bg-white text-black border-b-[1px] hover:bg-gray-50"
+    >
       <td className="px-6 py-4 whitespace-nowrap">{patient.first_name}</td>
       <td className="px-6 py-4 whitespace-nowrap">{patient.last_name}</td>
       <td className="px-6 py-4 whitespace-nowrap">{patient.date_of_birth}</td>
@@ -50,9 +56,14 @@ function Patients() {
     </tr>
   ));
   return (
-    <div>
-      Patients
-      <Table header={tableHeader} body={tableBody} />
+    <div className="flex flex-col items-start justify-around w-full gap-12">
+      <div className="flex items-center justify-between w-full">
+        <SearchBox placeholder="name" action={search} />
+        <Button label="Add a Patient" />
+      </div>
+      <div className="w-11/12 mx-auto ">
+        <Table header={tableHeader} body={tableBody} />
+      </div>
     </div>
   );
 }

@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { Search } from "lucide-react";
 
-const SearchBox = ({ action }) => {
+const SearchBox = ({ placeholder, action }) => {
   const [inputValue, setInputValue] = useState("");
   const inputRef = useRef(null);
   const dispatch = useDispatch();
@@ -24,7 +24,7 @@ const SearchBox = ({ action }) => {
             ref={inputRef}
             className="py-3 pl-10 pr-20 h-9 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue"
             type="text"
-            placeholder="Type a name"
+            placeholder={placeholder}
             value={inputValue}
             onChange={handleInputChange}
           />

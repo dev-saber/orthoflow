@@ -3,6 +3,8 @@ import * as operations from "./patientsThunk";
 
 const initialState = {
   patients: [],
+  search: "",
+  fullData: [], // used for filtering purposes
 };
 
 const patientsSlice = createSlice({
@@ -17,6 +19,31 @@ const patientsSlice = createSlice({
       console.log(action.error.message);
     });
   },
+
+  reducers: {
+    search: (state, action) => {
+      state.search = action.payload.toLowerCase();
+
+      const fullData = state.fullData.length ? state.fullData : state.patients;
+
+      if (state.search) {
+        state.patients = fullData.filter((patient) => {
+          return (
+            patient &&
+            (patient.first_name.toLowerCase().startsWith(state.search) ||
+              patient.last_name.toLowerCase().startsWith(state.search))
+          );
+        });
+      } else {
+        state.patients = fullData;
+      }
+
+      if (!state.fullData.length) {
+        state.fullData = fullData;
+      }
+    },
+  },
 });
 
+export const { search } = patientsSlice.actions;
 export default patientsSlice.reducer;
