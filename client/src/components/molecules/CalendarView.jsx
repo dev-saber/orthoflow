@@ -1,15 +1,18 @@
 import React, { useState } from "react";
 import CalendarNavigation from "../atoms/CalendarNavigation";
 import CalendarGrid from "../atoms/CalendarGrid";
+import { AnimatePresence } from "framer-motion";
 
 const CalendarView = ({ show }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [direction, setDirection] = useState(0);
   const today = new Date();
 
   const changeDate = (amount) => {
     const newDate = new Date(currentDate);
     newDate.setMonth(newDate.getMonth() + amount);
     setCurrentDate(newDate);
+    setDirection(amount);
   };
 
   const getDaysInMonth = (date) => {
@@ -18,6 +21,7 @@ const CalendarView = ({ show }) => {
 
   const goToToday = () => {
     setCurrentDate(new Date());
+    setDirection(0);
   };
 
   return (
@@ -27,12 +31,16 @@ const CalendarView = ({ show }) => {
         changeDate={changeDate}
         goToToday={goToToday}
       />
-      <CalendarGrid
-        currentDate={currentDate}
-        today={today}
-        getDaysInMonth={getDaysInMonth}
-        show={show}
-      />
+
+      <AnimatePresence initial={false} custom={direction}>
+        <CalendarGrid
+          currentDate={currentDate}
+          today={today}
+          getDaysInMonth={getDaysInMonth}
+          show={show}
+          direction={direction}
+        />
+      </AnimatePresence>
     </div>
   );
 };

@@ -1,8 +1,15 @@
 import React from "react";
 import CalendarDay from "./CalendarDay";
 import { useSelector } from "react-redux";
+import { motion } from "framer-motion";
 
-const CalendarGrid = ({ currentDate, today, getDaysInMonth, show }) => {
+const CalendarGrid = ({
+  currentDate,
+  today,
+  getDaysInMonth,
+  show,
+  direction,
+}) => {
   const appointments = useSelector((state) => state.appointments.appointments);
 
   const getFirstDayOfMonth = (date) => {
@@ -56,8 +63,35 @@ const CalendarGrid = ({ currentDate, today, getDaysInMonth, show }) => {
     week.some((day) => day.isCurrentMonth)
   );
 
+  const variants = {
+    enter: (direction) => ({
+      x: direction > 0 ? 1000 : -1000,
+      opacity: 0,
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+    },
+    exit: (direction) => ({
+      x: direction < 0 ? 1000 : -1000,
+      opacity: 0,
+    }),
+  };
+
   return (
-    <div className="grid gap-1">
+    <motion.div
+      key={currentDate.toISOString()}
+      custom={direction}
+      variants={variants}
+      initial="enter"
+      animate="center"
+      exit="exit"
+      transition={{
+        x: { type: "spring", stiffness: 300, damping: 30 },
+        opacity: { duration: 0.2 },
+      }}
+      className="grid gap-1"
+    >
       {filteredWeeks.map((week, weekIndex) => (
         <div key={weekIndex} className="grid grid-cols-7 gap-1">
           {week.map((day, dayIndex) => {
@@ -80,7 +114,7 @@ const CalendarGrid = ({ currentDate, today, getDaysInMonth, show }) => {
           })}
         </div>
       ))}
-    </div>
+    </motion.div>
   );
 };
 
