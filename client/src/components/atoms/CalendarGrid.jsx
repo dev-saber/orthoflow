@@ -18,7 +18,7 @@ const CalendarGrid = ({ currentDate, today, getDaysInMonth, show }) => {
 
   const days = [];
 
-  // fill the first week
+  // adding days from previous month to fill the first week line
   for (let i = firstDayOfMonth - 1; i >= 0; i--) {
     const date = new Date(
       currentDate.getFullYear(),
@@ -28,14 +28,14 @@ const CalendarGrid = ({ currentDate, today, getDaysInMonth, show }) => {
     days.push({ number: daysInPrevMonth - i, isCurrentMonth: false, date });
   }
 
-  // add days from current month for the rest of the month
+  // adding days from current month
   for (let i = 1; i <= daysInMonth; i++) {
     const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), i);
     days.push({ number: i, isCurrentMonth: true, date });
   }
 
-  // fill the last week
-  const remainingDays = 42 - days.length; // 6-week month days count
+  // adding days from next month to fill the last week line
+  const remainingDays = 42 - days.length; // 6 rows * 7 days = 42
   for (let i = 1; i <= remainingDays; i++) {
     const date = new Date(
       currentDate.getFullYear(),
@@ -45,21 +45,13 @@ const CalendarGrid = ({ currentDate, today, getDaysInMonth, show }) => {
     days.push({ number: i, isCurrentMonth: false, date });
   }
 
-  const appointmentsInMonth = appointments.filter((appointment) => {
-    const appointmentDate = new Date(appointment.date);
-    return (
-      appointmentDate.getMonth() == currentDate.getMonth() &&
-      appointmentDate.getFullYear() == currentDate.getFullYear()
-    );
-  });
-
-  // group days into weeks
+  // split days into weeks for the month grid
   const weeks = [];
   for (let i = 0; i < days.length; i += 7) {
     weeks.push(days.slice(i, i + 7));
   }
 
-  // filter out weeks that don't contain any days from the current month
+  // filter weeks to only show weeks with at least one day from the current month
   const filteredWeeks = weeks.filter((week) =>
     week.some((day) => day.isCurrentMonth)
   );
@@ -68,17 +60,24 @@ const CalendarGrid = ({ currentDate, today, getDaysInMonth, show }) => {
     <div className="grid gap-1">
       {filteredWeeks.map((week, weekIndex) => (
         <div key={weekIndex} className="grid grid-cols-7 gap-1">
-          {week.map((day, dayIndex) => (
-            <CalendarDay
-              key={dayIndex}
-              dayNumber={day.number}
-              isToday={day.date.toDateString() == today.toDateString()}
-              isCurrentMonth={day.isCurrentMonth}
-              appointments={appointmentsInMonth}
-              show={show}
-              date={day.date}
-            />
-          ))}
+          {week.map((day, dayIndex) => {
+            const dayAppointments = appointments.filter((appointment) => {
+              const appointmentDate = new Date(appointment.date);
+              return appointmentDate.toDateString() == day.date.toDateString();
+            });
+
+            return (
+              <CalendarDay
+                key={dayIndex}
+                dayNumber={day.number}
+                isToday={day.date.toDateString() == today.toDateString()}
+                isCurrentMonth={day.isCurrentMonth}
+                appointments={dayAppointments}
+                show={show}
+                date={day.date}
+              />
+            );
+          })}
         </div>
       ))}
     </div>

@@ -52,17 +52,15 @@ const CalendarDay = ({
           {dayNumber}
         </div>
       </div>
+
       <div className="flex flex-col items-center gap-2">
-        {appointments.map(
-          (appointment, index) =>
-            new Date(appointment.date).getDate() == dayNumber && (
-              <AppointmentSnippet
-                key={index}
-                appointment={appointment}
-                show={show}
-              />
-            )
-        )}
+        {appointments.map((appointment, index) => (
+          <AppointmentSnippet
+            key={index}
+            appointment={appointment}
+            show={show}
+          />
+        ))}
       </div>
     </div>
   );
