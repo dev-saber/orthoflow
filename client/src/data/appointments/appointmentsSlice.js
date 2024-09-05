@@ -58,10 +58,10 @@ const appointmentsSlice = createSlice({
             appointment.patient &&
             (appointment.patient.first_name
               .toLowerCase()
-              .includes(state.patientSearch) ||
+              .startsWith(state.patientSearch) ||
               appointment.patient.last_name
                 .toLowerCase()
-                .includes(state.patientSearch))
+                .startsWith(state.patientSearch))
           );
         });
       } else {
