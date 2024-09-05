@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { getAppointments } from "../data/appointments/appointmentsThunk";
+import {
+  deleteAppointment,
+  getAppointments,
+} from "../data/appointments/appointmentsThunk";
 import Button from "../components/atoms/Button";
 import SearchBox from "../components/atoms/SearchBox";
 import CalendarView from "../components/molecules/CalendarView";
-import AddAppointment from "../components/modals/addAppointment";
-import ShowAppointment from "../components/modals/showAppointment";
+import AddAppointment from "../components/modals/AddAppointment";
+import ShowAppointment from "../components/modals/ShowAppointment";
 import EditAppointment from "../components/modals/EditAppointment";
+import DeleteModal from "../components/modals/DeleteModal";
 
 function Appointments() {
   const [triggerEffect, setTriggerEffect] = useState(false); // triggrer useEffect to fetch appointments after changes
@@ -35,8 +39,16 @@ function Appointments() {
     openModal("show");
   };
 
-  const editAppointment = () => {
+  const editAppointmentModal = () => {
     openModal("edit");
+  };
+
+  const deleteAppointmentModal = () => {
+    openModal("delete");
+  };
+
+  const fetchDataAgain = () => {
+    setTriggerEffect(!triggerEffect);
   };
 
   const modals = {
@@ -46,7 +58,8 @@ function Appointments() {
         isOpen={isModalOpen}
         onClose={closeModal}
         data={appointmentToShow}
-        edit={editAppointment}
+        edit={editAppointmentModal}
+        deleteModal={deleteAppointmentModal}
       />
     ),
     edit: (
@@ -54,7 +67,17 @@ function Appointments() {
         isOpen={isModalOpen}
         onClose={closeModal}
         data={appointmentToShow}
-        triggerEffect={() => setTriggerEffect(!triggerEffect)}
+        triggerEffect={fetchDataAgain}
+      />
+    ),
+    delete: (
+      <DeleteModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        type="appointment"
+        action={() => dispatch(deleteAppointment(appointmentToShow.id))}
+        id={appointmentToShow.id}
+        triggerEffect={fetchDataAgain}
       />
     ),
   };

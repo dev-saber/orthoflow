@@ -17,7 +17,7 @@ const updateAppointment = createAsyncThunk("/appointments/update", async (data) 
 });
 
 const deleteAppointment = createAsyncThunk("/appointments/delete", async (id) => {
-  await api.delete(`/appointments/${id}`);
+  const response = await api.delete(`/appointments/${id}`);
   return response.data;
 });
 

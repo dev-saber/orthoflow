@@ -1,8 +1,9 @@
 import React from "react";
 import ModalContainer from "./ModalContainer";
 import Button from "../atoms/Button";
+import { Trash2 } from "lucide-react";
 
-function ShowAppointment({ isOpen, onClose, data, edit }) {
+function ShowAppointment({ isOpen, onClose, data, edit, deleteModal }) {
   return (
     <ModalContainer isOpen={isOpen} onClose={onClose}>
       <div className="p-6">
@@ -25,7 +26,14 @@ function ShowAppointment({ isOpen, onClose, data, edit }) {
               <span className="font-semibold">Status:</span>
               <span>{data.status}</span>
             </div>
-            <Button label="Edit" onClick={edit} />
+            <div className="flex gap-4">
+              <Button label="Edit" onClick={edit} />
+              <Button
+                className="px-4 py-2 bg-red-600 text-center"
+                label={<Trash2 />}
+                onClick={deleteModal}
+              />
+            </div>
           </div>
           <div className="flex flex-col items-center gap-4">
             <h2 className="text-2xl font-semibold">Patient Information</h2>

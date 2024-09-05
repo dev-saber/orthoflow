@@ -26,10 +26,7 @@ const appointmentsSlice = createSlice({
     });
 
     builder.addCase(operations.updateAppointment.fulfilled, (state, action) => {
-      const index = state.appointments.findIndex(
-        (appointment) => appointment.id === action.payload.id
-      );
-      state.appointments[index] = action.payload;
+      console.log(action.payload);
     });
 
     builder.addCase(operations.updateAppointment.rejected, (state, action) => {
@@ -37,9 +34,7 @@ const appointmentsSlice = createSlice({
     });
 
     builder.addCase(operations.deleteAppointment.fulfilled, (state, action) => {
-      state.appointments = state.appointments.filter(
-        (appointment) => appointment.id !== action.payload.id
-      );
+      console.log(action.payload);
     });
 
     builder.addCase(operations.deleteAppointment.rejected, (state, action) => {

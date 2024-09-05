@@ -100,6 +100,9 @@ class AppointmentController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Appointment::findOrFail($id)->delete();
+        return response()->json([
+            'message' => 'Appointment deleted successfully',
+        ], 200);
     }
 }
