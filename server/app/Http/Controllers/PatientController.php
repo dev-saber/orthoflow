@@ -22,7 +22,23 @@ class PatientController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            Patient::create([
+                'dentist_id' => $request->user()->id,
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'phone' => $request->phone,
+                'date_of_birth' => $request->date_of_birth,
+            ]);
+    
+            return response()->json([
+                'message' => 'Patient created successfully',
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => "$e"
+            ], 500);
+        }
     }
 
     /**

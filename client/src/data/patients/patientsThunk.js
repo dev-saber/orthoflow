@@ -6,4 +6,9 @@ const getPatients = createAsyncThunk("/patients", async () => {
   return response.data;
 });
 
-export { getPatients };
+const addPatient = createAsyncThunk("/patients/create", async (patient) => {
+  const response = await api.post("/patients", patient);
+  return response.data;
+});
+
+export { getPatients, addPatient };

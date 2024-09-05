@@ -18,6 +18,14 @@ const patientsSlice = createSlice({
     builder.addCase(operations.getPatients.rejected, (state, action) => {
       console.log(action.error.message);
     });
+
+    builder.addCase(operations.addPatient.fulfilled, (state, action) => {
+      state.patients.push(action.payload.patient);
+    });
+
+    builder.addCase(operations.addPatient.rejected, (state, action) => {
+      console.log(action.error.message);
+    });
   },
 
   reducers: {
