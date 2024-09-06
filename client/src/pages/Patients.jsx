@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Edit2, Trash2 } from "lucide-react";
 import { deletePatient, getPatients } from "../data/patients/patientsThunk";
+import { Edit2, Trash2 } from "lucide-react";
 import Table from "../components/atoms/Table";
 import SearchBox from "../components/atoms/SearchBox";
 import Button from "../components/atoms/Button";
@@ -14,6 +14,8 @@ function Patients() {
   const [triggerEffect, setTriggerEffect] = useState(false);
 
   const dispatch = useDispatch();
+  const searchValue = useSelector((state) => state.patients.search);
+
   useEffect(() => {
     dispatch(getPatients());
   }, [triggerEffect]);
@@ -69,7 +71,12 @@ function Patients() {
   );
 
   const tableBody = patients
-    .filter((patient) => patient != undefined)
+    .filter((patient) => patient != undefined) // used to remove undefined values (unknown bug source tbh)
+    .filter((patient) =>
+      `${patient.first_name} ${patient.last_name}`
+        .toLowerCase()
+        .includes(searchValue.toLowerCase())
+    )
     .map((patient, index) => (
       <tr
         key={index}
@@ -134,7 +141,7 @@ function Patients() {
     <>
       <div className="flex flex-col items-start justify-around w-full gap-12">
         <div className="flex items-center justify-between w-full">
-          <SearchBox placeholder="name" action={search} />
+          <SearchBox placeholder="name" action={search} value={searchValue} />
           <Button label="Add a Patient" onClick={() => openModal("add")} />
         </div>
         <div className="w-11/12 mx-auto">

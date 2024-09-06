@@ -2,8 +2,8 @@ import React, { useState, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { Search } from "lucide-react";
 
-const SearchBox = ({ placeholder, action }) => {
-  const [inputValue, setInputValue] = useState("");
+const SearchBox = ({ placeholder, action, value }) => {
+  const [inputValue, setInputValue] = useState(value || "");
   const inputRef = useRef(null);
   const dispatch = useDispatch();
 

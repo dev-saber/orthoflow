@@ -4,6 +4,9 @@ import {
   deleteAppointment,
   getAppointments,
 } from "../data/appointments/appointmentsThunk";
+import { setPatientSearch } from "../data/appointments/appointmentsSlice";
+import { useNavigate } from "react-router-dom";
+import { search } from "../data/patients/patientsSlice";
 import Button from "../components/atoms/Button";
 import SearchBox from "../components/atoms/SearchBox";
 import CalendarView from "../components/molecules/CalendarView";
@@ -11,7 +14,6 @@ import AddAppointment from "../components/modals/AddAppointment";
 import ShowAppointment from "../components/modals/ShowAppointment";
 import EditAppointment from "../components/modals/EditAppointment";
 import DeleteModal from "../components/modals/DeleteModal";
-import { setPatientSearch } from "../data/appointments/appointmentsSlice";
 
 function Appointments() {
   const [triggerEffect, setTriggerEffect] = useState(false); // triggrer useEffect to fetch appointments after changes
@@ -52,6 +54,13 @@ function Appointments() {
     setTriggerEffect(!triggerEffect);
   };
 
+  const navigate = useNavigate();
+
+  const patientNavigation = (name) => {
+    dispatch(search(name));
+    navigate("/patients");
+  };
+
   const modals = {
     add: <AddAppointment isOpen={isModalOpen} onClose={closeModal} />,
     show: (
@@ -61,6 +70,7 @@ function Appointments() {
         data={appointmentToShow}
         edit={editAppointmentModal}
         deleteModal={deleteAppointmentModal}
+        patientNavigation={patientNavigation}
       />
     ),
     edit: (

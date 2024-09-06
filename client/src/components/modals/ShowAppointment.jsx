@@ -3,7 +3,14 @@ import ModalContainer from "./ModalContainer";
 import Button from "../atoms/Button";
 import { Trash2 } from "lucide-react";
 
-function ShowAppointment({ isOpen, onClose, data, edit, deleteModal }) {
+function ShowAppointment({
+  isOpen,
+  onClose,
+  data,
+  edit,
+  deleteModal,
+  patientNavigation,
+}) {
   return (
     <ModalContainer isOpen={isOpen} onClose={onClose}>
       <div className="p-6">
@@ -48,7 +55,14 @@ function ShowAppointment({ isOpen, onClose, data, edit, deleteModal }) {
                 <span className="font-semibold">Phone:</span>
                 <span>{data.patient.phone}</span>
               </div>
-              <Button label="Patient details" />
+              <Button
+                label="Patient details"
+                onClick={() =>
+                  patientNavigation(
+                    `${data.patient.first_name} ${data.patient.last_name}`
+                  )
+                }
+              />
             </div>
           </div>
         </div>
