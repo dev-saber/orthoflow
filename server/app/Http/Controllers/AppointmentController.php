@@ -15,7 +15,7 @@ class AppointmentController extends Controller
     public function index(Request $request)
     {
         return response()->json([
-            'appointments' => Appointment::where('dentist_id', $request->user()->id)->with('patient')->orderBy('date', 'asc')->get()
+            'appointments' => Appointment::where('dentist_id', $request->user()->id)->with('patient')->orderBy('date', 'asc')->orderBy('start_time', 'asc')->get(),
         ], 200);
     }
 

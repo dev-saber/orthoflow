@@ -14,7 +14,9 @@ function AppointmentSnippet({ appointment, show, isLoading }) {
 
   return (
     <motion.div
-      className="text-sm bg-blue text-white w-11/12 rounded cursor-pointer flex justify-around items-center"
+      className={`text-sm text-white w-11/12 rounded cursor-pointer flex justify-around items-center ${
+        appointment.status == "canceled" ? "bg-red-700" : "bg-blue"
+      }`}
       whileTap={{ scale: 0.95 }}
       onClick={() => show(appointment)}
       initial={{ width: 0 }}

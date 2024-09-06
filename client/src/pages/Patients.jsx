@@ -89,7 +89,7 @@ function Patients() {
       <td className="px-6 py-4 whitespace-nowrap">{patient.last_name}</td>
       <td className="px-6 py-4 whitespace-nowrap">{patient.date_of_birth}</td>
       <td className="px-6 py-4 whitespace-nowrap">{patient.phone}</td>
-      <td className="px-6 py-4 whitespace-nowrap flex gap-2">
+      <td className="p-6 whitespace-nowrap flex gap-2">
         <span
           className="text-blue cursor-pointer"
           onClick={() => {
