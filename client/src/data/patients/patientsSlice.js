@@ -26,6 +26,22 @@ const patientsSlice = createSlice({
     builder.addCase(operations.addPatient.rejected, (state, action) => {
       console.log(action.error.message);
     });
+
+    builder.addCase(operations.updatePatient.fulfilled, (state, action) => {
+      console.log(action.payload);
+    });
+
+    builder.addCase(operations.updatePatient.rejected, (state, action) => {
+      console.log(action.error.message);
+    });
+
+    builder.addCase(operations.deletePatient.fulfilled, (state, action) => {
+      console.log(action.payload);
+    });
+
+    builder.addCase(operations.deletePatient.rejected, (state, action) => {
+      console.log(action.error.message);
+    });
   },
 
   reducers: {

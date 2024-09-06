@@ -11,4 +11,14 @@ const addPatient = createAsyncThunk("/patients/create", async (patient) => {
   return response.data;
 });
 
-export { getPatients, addPatient };
+const updatePatient = createAsyncThunk("/patients/update", async (patient) => {
+  const response = await api.patch(`/patients/${patient.id}`, patient);
+  return response.data;
+});
+
+const deletePatient = createAsyncThunk("/patients/delete", async (id) => {
+  const response = await api.delete(`/patients/${id}`);
+  return response.data;
+});
+
+export { getPatients, addPatient, updatePatient, deletePatient };

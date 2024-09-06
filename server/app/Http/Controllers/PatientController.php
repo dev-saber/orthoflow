@@ -30,7 +30,7 @@ class PatientController extends Controller
                 'phone' => $request->phone,
                 'date_of_birth' => $request->date_of_birth,
             ]);
-    
+
             return response()->json([
                 'message' => 'Patient created successfully',
             ], 201);
@@ -42,27 +42,28 @@ class PatientController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
     {
-        //
+        try {
+            $patient = Patient::findOrFail($id);
+
+            $patient->update([
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'phone' => $request->phone,
+                'date_of_birth' => $request->date_of_birth,
+            ]);
+
+            return response()->json([
+                'message' => 'Patient updated successfully',
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => "$e"
+            ], 500);
+        }
     }
 
     /**
@@ -70,6 +71,11 @@ class PatientController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $patient = Patient::findOrFail($id);
+        $patient->delete();
+
+        return response()->json([
+            'message' => 'Patient deleted successfully',
+        ], 200);
     }
 }
