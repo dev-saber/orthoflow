@@ -52,7 +52,11 @@ function EditAppointment({ isOpen, onClose, data, triggerEffect }) {
             selectedDate.setHours(hours, minutes);
             return selectedDate >= now;
           }
-        ),
+        )
+        .test("is-greater", "Invalid time", function (value) {
+          const { start_time } = this.parent;
+          return start_time && value ? start_time < value : true;
+        }),
       status: Yup.string().required("Required"),
     }),
     onSubmit: async (values) => {

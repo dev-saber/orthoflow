@@ -50,7 +50,7 @@ function Login() {
           name="email"
           value={credentials.values.email}
           onChange={credentials.handleChange}
-          errorCondition={credentials.errors.email}
+          errorCondition={credentials.touched.email && credentials.errors.email}
           message={credentials.errors.email}
         />
 
@@ -60,7 +60,9 @@ function Login() {
           name="password"
           value={credentials.values.password}
           onChange={credentials.handleChange}
-          errorCondition={credentials.errors.password}
+          errorCondition={
+            credentials.touched.password && credentials.errors.password
+          }
           message={credentials.errors.password}
         />
         <div className="flex flex-col items-center gap-4">

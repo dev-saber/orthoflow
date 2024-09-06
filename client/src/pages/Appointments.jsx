@@ -23,7 +23,7 @@ function Appointments() {
   const appointments = useSelector((state) => state.appointments.appointments);
 
   useEffect(() => {
-    setIsLoading(true); // loading spinner only on first render
+    !appointments.length && setIsLoading(true); // loading spinner only on first render
   }, []);
 
   useEffect(() => {

@@ -21,13 +21,15 @@ function AddPatient({ isOpen, onClose, triggerEffect }) {
     validationSchema: Yup.object({
       first_name: Yup.string().required("required"),
       last_name: Yup.string().required("required"),
-      date_of_birth: Yup.string().required("required"),
+      date_of_birth: Yup.date()
+        .max(new Date(), "Invalid date")
+        .required("required"),
       phone: Yup.string()
         .matches(/^[0-9]+$/, "Phone number must be digits only")
         .required("required"),
     }),
     onSubmit: async (values) => {
-      await dispatch(addPatient({...values}));
+      await dispatch(addPatient({ ...values }));
       await triggerEffect();
       onClose();
     },
@@ -51,7 +53,9 @@ function AddPatient({ isOpen, onClose, triggerEffect }) {
             name="first_name"
             value={patientInfo.values.first_name}
             onChange={patientInfo.handleChange}
-            errorCondition={patientInfo.errors.first_name}
+            errorCondition={
+              patientInfo.touched.first_name && patientInfo.errors.first_name
+            }
             message={patientInfo.errors.first_name}
           />
           <InputWithErrorMessage
@@ -60,7 +64,9 @@ function AddPatient({ isOpen, onClose, triggerEffect }) {
             type="text"
             value={patientInfo.values.last_name}
             onChange={patientInfo.handleChange}
-            errorCondition={patientInfo.errors.last_name}
+            errorCondition={
+              patientInfo.touched.last_name && patientInfo.errors.last_name
+            }
             message={patientInfo.errors.last_name}
           />
           <InputWithErrorMessage
@@ -69,7 +75,10 @@ function AddPatient({ isOpen, onClose, triggerEffect }) {
             name="date_of_birth"
             value={patientInfo.values.date_of_birth}
             onChange={patientInfo.handleChange}
-            errorCondition={patientInfo.errors.date_of_birth}
+            errorCondition={
+              patientInfo.touched.date_of_birth &&
+              patientInfo.errors.date_of_birth
+            }
             message={patientInfo.errors.date_of_birth}
           />
           <InputWithErrorMessage
@@ -78,7 +87,9 @@ function AddPatient({ isOpen, onClose, triggerEffect }) {
             name="phone"
             value={patientInfo.values.phone}
             onChange={patientInfo.handleChange}
-            errorCondition={patientInfo.errors.phone}
+            errorCondition={
+              patientInfo.touched.phone && patientInfo.errors.phone
+            }
             message={patientInfo.errors.phone}
           />
         </div>

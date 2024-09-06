@@ -55,7 +55,9 @@ function Register() {
             name="first_name"
             value={registerInfo.values.first_name}
             onChange={registerInfo.handleChange}
-            errorCondition={registerInfo.errors.first_name}
+            errorCondition={
+              registerInfo.touched.first_name && registerInfo.errors.first_name
+            }
             message={registerInfo.errors.first_name}
           />
           <InputWithErrorMessage
@@ -64,7 +66,9 @@ function Register() {
             name="last_name"
             value={registerInfo.values.last_name}
             onChange={registerInfo.handleChange}
-            errorCondition={registerInfo.errors.last_name}
+            errorCondition={
+              registerInfo.touched.last_name && registerInfo.errors.last_name
+            }
             message={registerInfo.errors.last_name}
           />
           <InputWithErrorMessage
@@ -73,7 +77,9 @@ function Register() {
             name="email"
             value={registerInfo.values.email}
             onChange={registerInfo.handleChange}
-            errorCondition={registerInfo.errors.email}
+            errorCondition={
+              registerInfo.touched.email && registerInfo.errors.email
+            }
             message={registerInfo.errors.email}
           />
           <InputWithErrorMessage
@@ -82,7 +88,9 @@ function Register() {
             name="password"
             value={registerInfo.values.password}
             onChange={registerInfo.handleChange}
-            errorCondition={registerInfo.errors.password}
+            errorCondition={
+              registerInfo.touched.password && registerInfo.errors.password
+            }
             message={registerInfo.errors.password}
           />
         </div>
@@ -93,7 +101,10 @@ function Register() {
             name="confirm_password"
             value={registerInfo.values.confirm_password}
             onChange={registerInfo.handleChange}
-            errorCondition={registerInfo.errors.confirm_password}
+            errorCondition={
+              registerInfo.touched.confirm_password &&
+              registerInfo.errors.confirm_password
+            }
             message={registerInfo.errors.confirm_password}
           />
         </div>
@@ -104,7 +115,9 @@ function Register() {
             name="start_time"
             value={registerInfo.values.start_time}
             onChange={registerInfo.handleChange}
-            errorCondition={registerInfo.errors.start_time}
+            errorCondition={
+              registerInfo.touched.start_time && registerInfo.errors.start_time
+            }
             message={registerInfo.errors.start_time}
           />
           <InputWithErrorMessage
@@ -113,7 +126,9 @@ function Register() {
             name="end_time"
             value={registerInfo.values.end_time}
             onChange={registerInfo.handleChange}
-            errorCondition={registerInfo.errors.end_time}
+            errorCondition={
+              registerInfo.touched.end_time && registerInfo.errors.end_time
+            }
             message={registerInfo.errors.end_time}
           />
         </div>

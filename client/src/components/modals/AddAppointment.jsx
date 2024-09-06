@@ -78,8 +78,9 @@ function AddAppointment({ isOpen, onClose, triggerEffect }) {
           type="date"
           value={appointmentInfo.values.date}
           onChange={appointmentInfo.handleChange}
-          onBlur={appointmentInfo.handleBlur}
-          errorCondition={appointmentInfo.errors.date}
+          errorCondition={
+            appointmentInfo.touched.date && appointmentInfo.errors.date
+          }
           message={appointmentInfo.errors.date}
         />
         <InputWithErrorMessage
@@ -88,8 +89,10 @@ function AddAppointment({ isOpen, onClose, triggerEffect }) {
           type="time"
           value={appointmentInfo.values.start_time}
           onChange={appointmentInfo.handleChange}
-          onBlur={appointmentInfo.handleBlur}
-          errorCondition={appointmentInfo.errors.start_time}
+          errorCondition={
+            appointmentInfo.touched.start_time &&
+            appointmentInfo.errors.start_time
+          }
           message={appointmentInfo.errors.start_time}
         />
         <InputWithErrorMessage
@@ -98,8 +101,9 @@ function AddAppointment({ isOpen, onClose, triggerEffect }) {
           type="time"
           value={appointmentInfo.values.end_time}
           onChange={appointmentInfo.handleChange}
-          onBlur={appointmentInfo.handleBlur}
-          errorCondition={appointmentInfo.errors.end_time}
+          errorCondition={
+            appointmentInfo.touched.end_time && appointmentInfo.errors.end_time
+          }
           message={appointmentInfo.errors.end_time}
         />
         <div className="relative">
@@ -112,8 +116,10 @@ function AddAppointment({ isOpen, onClose, triggerEffect }) {
               setSearchValue(e.target.value);
               setIsSelected(false);
             }}
-            onBlur={appointmentInfo.handleBlur}
-            errorCondition={appointmentInfo.errors.patient_id}
+            errorCondition={
+              appointmentInfo.touched.patient_id &&
+              appointmentInfo.errors.patient_id
+            }
             message={appointmentInfo.errors.patient_id}
             onFocus={() => setShowFilteredPatients(true)}
           />
