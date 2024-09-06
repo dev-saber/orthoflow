@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   deleteAppointment,
   getAppointments,
@@ -16,11 +16,17 @@ import EditAppointment from "../components/modals/EditAppointment";
 import DeleteModal from "../components/modals/DeleteModal";
 
 function Appointments() {
-  const [triggerEffect, setTriggerEffect] = useState(false); // triggrer useEffect to fetch appointments after changes
+  const [triggerEffect, setTriggerEffect] = useState(false); // trigger useEffect to fetch appointments after changes
+  const [isLoading, setIsLoading] = useState(false);
 
   const dispatch = useDispatch();
+  const appointments = useSelector((state) => state.appointments.appointments);
+
   useEffect(() => {
-    dispatch(getAppointments());
+    if (appointments.length == 0) {
+      setIsLoading(true);
+      dispatch(getAppointments()).then(() => setIsLoading(false));
+    }
   }, [triggerEffect]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -100,7 +106,7 @@ function Appointments() {
           <SearchBox placeholder="patient name" action={setPatientSearch} />
           <Button label="New Appointment" onClick={() => openModal("add")} />
         </div>
-        <CalendarView show={showAppointment} />
+        <CalendarView show={showAppointment} isLoading={isLoading} />
       </div>
       {modals[currentModal]}
     </>

@@ -9,6 +9,7 @@ const CalendarGrid = ({
   getDaysInMonth,
   show,
   direction,
+  isLoading,
 }) => {
   const appointments = useSelector((state) => state.appointments.appointments);
 
@@ -109,6 +110,7 @@ const CalendarGrid = ({
                 appointments={dayAppointments}
                 show={show}
                 date={day.date}
+                isLoading={isLoading}
               />
             );
           })}

@@ -8,6 +8,7 @@ const CalendarDay = ({
   appointments,
   show,
   date,
+  isLoading
 }) => {
   const monthNames = [
     "Jan",
@@ -59,6 +60,7 @@ const CalendarDay = ({
             key={index}
             appointment={appointment}
             show={show}
+            isLoading={isLoading}
           />
         ))}
       </div>

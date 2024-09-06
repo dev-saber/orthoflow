@@ -3,7 +3,7 @@ import CalendarNavigation from "../atoms/CalendarNavigation";
 import CalendarGrid from "../atoms/CalendarGrid";
 import { AnimatePresence } from "framer-motion";
 
-const CalendarView = ({ show }) => {
+const CalendarView = ({ show, isLoading }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [direction, setDirection] = useState(0);
   const today = new Date();
@@ -39,6 +39,7 @@ const CalendarView = ({ show }) => {
           getDaysInMonth={getDaysInMonth}
           show={show}
           direction={direction}
+          isLoading={isLoading}
         />
       </AnimatePresence>
     </div>

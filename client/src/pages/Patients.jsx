@@ -1,30 +1,32 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deletePatient, getPatients } from "../data/patients/patientsThunk";
+import { search } from "../data/patients/patientsSlice";
 import { Edit2, Trash2 } from "lucide-react";
 import Table from "../components/atoms/Table";
 import SearchBox from "../components/atoms/SearchBox";
 import Button from "../components/atoms/Button";
-import { search } from "../data/patients/patientsSlice";
 import AddPatient from "../components/modals/AddPatient";
 import EditPatient from "../components/modals/EditPatient";
 import DeleteModal from "../components/modals/DeleteModal";
+import LoadingSpinner from "../components/atoms/LoadingSpinner";
 
 function Patients() {
   const [triggerEffect, setTriggerEffect] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const dispatch = useDispatch();
   const searchValue = useSelector((state) => state.patients.search);
+  const patients = useSelector((state) => state.patients.patients);
 
   useEffect(() => {
-    dispatch(getPatients());
+    !patients.length && setIsLoading(true);
+    dispatch(getPatients()).then(() => setIsLoading(false));
   }, [triggerEffect]);
 
   const fetchDataAgain = () => {
     setTriggerEffect(!triggerEffect);
   };
-
-  const patients = useSelector((state) => state.patients.patients);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentModal, setCurrentModal] = useState(null);
@@ -70,44 +72,45 @@ function Patients() {
     </tr>
   );
 
-  const tableBody = patients
+  const filteredPatients = patients
     .filter((patient) => patient != undefined) // used to remove undefined values (unknown bug source tbh)
     .filter((patient) =>
       `${patient.first_name} ${patient.last_name}`
         .toLowerCase()
         .includes(searchValue.toLowerCase())
-    )
-    .map((patient, index) => (
-      <tr
-        key={index}
-        className="bg-white text-black border-b-[1px] hover:bg-gray-50"
-      >
-        <td className="px-6 py-4 whitespace-nowrap">{patient.first_name}</td>
-        <td className="px-6 py-4 whitespace-nowrap">{patient.last_name}</td>
-        <td className="px-6 py-4 whitespace-nowrap">{patient.date_of_birth}</td>
-        <td className="px-6 py-4 whitespace-nowrap">{patient.phone}</td>
-        <td className="px-4 py-4 whitespace-nowrap flex gap-2">
-          <span
-            className="text-blue cursor-pointer"
-            onClick={() => {
-              setTargetedPatient(patient);
-              editModal();
-            }}
-          >
-            <Edit2 size={20} />
-          </span>
-          <span
-            className="text-red-700 cursor-pointer"
-            onClick={() => {
-              setTargetedPatient(patient);
-              deleteModal();
-            }}
-          >
-            <Trash2 size={20} />
-          </span>
-        </td>
-      </tr>
-    ));
+    );
+
+  const tableBody = filteredPatients.map((patient, index) => (
+    <tr
+      key={index}
+      className="bg-white text-black border-b-[1px] hover:bg-gray-50"
+    >
+      <td className="px-6 py-4 whitespace-nowrap">{patient.first_name}</td>
+      <td className="px-6 py-4 whitespace-nowrap">{patient.last_name}</td>
+      <td className="px-6 py-4 whitespace-nowrap">{patient.date_of_birth}</td>
+      <td className="px-6 py-4 whitespace-nowrap">{patient.phone}</td>
+      <td className="px-4 py-4 whitespace-nowrap flex gap-2">
+        <span
+          className="text-blue cursor-pointer"
+          onClick={() => {
+            setTargetedPatient(patient);
+            editModal();
+          }}
+        >
+          <Edit2 size={20} />
+        </span>
+        <span
+          className="text-red-700 cursor-pointer"
+          onClick={() => {
+            setTargetedPatient(patient);
+            deleteModal();
+          }}
+        >
+          <Trash2 size={20} />
+        </span>
+      </td>
+    </tr>
+  ));
 
   const modals = {
     add: (
@@ -145,7 +148,17 @@ function Patients() {
           <Button label="Add a Patient" onClick={() => openModal("add")} />
         </div>
         <div className="w-11/12 mx-auto">
-          <Table header={tableHeader} body={tableBody} />
+          {isLoading ? (
+            <div className="flex justify-center items-center h-96">
+              <LoadingSpinner />
+            </div>
+          ) : filteredPatients.length === 0 ? (
+            <div className="flex justify-center items-center h-64">
+              <p>No results found</p>
+            </div>
+          ) : (
+            <Table header={tableHeader} body={tableBody} />
+          )}
         </div>
       </div>
       {modals[currentModal]}
