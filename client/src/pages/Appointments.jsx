@@ -23,10 +23,11 @@ function Appointments() {
   const appointments = useSelector((state) => state.appointments.appointments);
 
   useEffect(() => {
-    if (appointments.length == 0) {
-      setIsLoading(true);
-      dispatch(getAppointments()).then(() => setIsLoading(false));
-    }
+    setIsLoading(true); // loading spinner only on first render
+  }, []);
+
+  useEffect(() => {
+    dispatch(getAppointments()).then(() => setIsLoading(false));
   }, [triggerEffect]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -68,7 +69,13 @@ function Appointments() {
   };
 
   const modals = {
-    add: <AddAppointment isOpen={isModalOpen} onClose={closeModal} />,
+    add: (
+      <AddAppointment
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        triggerEffect={fetchDataAgain}
+      />
+    ),
     show: (
       <ShowAppointment
         isOpen={isModalOpen}

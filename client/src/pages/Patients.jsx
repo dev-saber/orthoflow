@@ -89,7 +89,7 @@ function Patients() {
       <td className="px-6 py-4 whitespace-nowrap">{patient.last_name}</td>
       <td className="px-6 py-4 whitespace-nowrap">{patient.date_of_birth}</td>
       <td className="px-6 py-4 whitespace-nowrap">{patient.phone}</td>
-      <td className="px-4 py-4 whitespace-nowrap flex gap-2">
+      <td className="px-6 py-4 whitespace-nowrap flex gap-2">
         <span
           className="text-blue cursor-pointer"
           onClick={() => {
@@ -97,7 +97,7 @@ function Patients() {
             editModal();
           }}
         >
-          <Edit2 size={20} />
+          <Edit2 size={17} />
         </span>
         <span
           className="text-red-700 cursor-pointer"
@@ -106,7 +106,7 @@ function Patients() {
             deleteModal();
           }}
         >
-          <Trash2 size={20} />
+          <Trash2 size={17} />
         </span>
       </td>
     </tr>
