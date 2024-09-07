@@ -31,7 +31,6 @@ function Login() {
 
   const token = useSelector((state) => state.auth.token);
   useEffect(() => {
-    console.log("effect");
     if (token) {
       navigate("/appointments");
     }

@@ -2,6 +2,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import moment from "moment";
 import { updateAppointment } from "../../data/appointments/appointmentsThunk";
 import ModalContainer from "./ModalContainer";
 import InputWithErrorMessage from "../molecules/InputWithErrorMessage";
@@ -9,7 +10,7 @@ import Button from "../atoms/Button";
 import Title from "../atoms/Title";
 
 function EditAppointment({ isOpen, onClose, data, triggerEffect }) {
-  const now = new Date();
+  const now = moment();
   const dispatch = useDispatch();
 
   const editInfo = useFormik({
@@ -21,38 +22,29 @@ function EditAppointment({ isOpen, onClose, data, triggerEffect }) {
     },
 
     // add later more time validation (range of working hours + free time)
-
     validationSchema: Yup.object({
       date: Yup.date()
         .required("Required")
-        .test("upcoming-date", "Date must be in the future", function (value) {
-          let selectedDate = new Date(value);
-          return selectedDate >= now;
+        .test("upcoming-date", "invalid date", function (value) {
+          const selectedDate = moment(value).startOf("day");
+          return selectedDate.isSameOrAfter(now.startOf("day"));
         }),
       start_time: Yup.string()
         .required("Required")
-        .test(
-          "upcoming-time-start",
-          "Start time must be in the future",
-          function (value) {
-            let selectedDate = new Date(this.parent.date);
-            const [hours, minutes] = value.split(":");
-            selectedDate.setHours(hours, minutes);
-            return selectedDate >= now;
-          }
-        ),
+        .test("upcoming-time-start", "invalid time", function (value) {
+          const selectedDate = moment(this.parent.date);
+          const [hours, minutes] = value.split(":");
+          selectedDate.set({ hour: hours, minute: minutes });
+          return selectedDate.isAfter(now);
+        }),
       end_time: Yup.string()
         .required("Required")
-        .test(
-          "upcoming-time-end",
-          "End time must be in the future",
-          function (value) {
-            let selectedDate = new Date(this.parent.date);
-            const [hours, minutes] = value.split(":");
-            selectedDate.setHours(hours, minutes);
-            return selectedDate >= now;
-          }
-        )
+        .test("upcoming-time-end", "invalid time", function (value) {
+          const selectedDate = moment(this.parent.date);
+          const [hours, minutes] = value.split(":");
+          selectedDate.set({ hour: hours, minute: minutes });
+          return selectedDate.isAfter(now);
+        })
         .test("is-greater", "Invalid time", function (value) {
           const { start_time } = this.parent;
           return start_time && value ? start_time < value : true;

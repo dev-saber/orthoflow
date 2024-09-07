@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RegisterRequest;
+use App\Models\Stock;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -12,7 +13,7 @@ class UserController extends Controller
     public function register(RegisterRequest $request)
     {
         $validated = $request->validated();
-        User::create([
+        $dentist = User::create([
             'first_name' => $validated['first_name'],
             'last_name' => $validated['last_name'],
             'email' => $validated['email'],
@@ -20,6 +21,29 @@ class UserController extends Controller
             'start_time' => $validated['start_time'],
             'end_time' => $validated['end_time'],
         ]);
+
+        $dentalItems = [
+            'Dental Mirror',
+            'Dental Explorer',
+            'Cotton Roll',
+            'Syringe',
+            'Dental Scaler',
+            'Forceps',
+            'Surgical Mask',
+            'Gloves',
+            'Dental Cement',
+            'Dental Floss'
+        ];
+
+        foreach ($dentalItems as $item) {
+            Stock::create([
+                'name' => $item,
+                'price' => 0,
+                'quantity' => 0,
+                'reorder_level' => 0,
+                'dentist_id' => $dentist->id
+            ]);
+        }
 
         return response()->json([
             'message' => 'User created successfully'

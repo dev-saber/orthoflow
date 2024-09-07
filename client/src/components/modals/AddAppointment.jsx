@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import moment from "moment";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { getPatients } from "../../data/patients/patientsThunk";
@@ -48,8 +49,27 @@ function AddAppointment({ isOpen, onClose, triggerEffect }) {
       status: "pending",
     },
     validationSchema: Yup.object({
-      date: Yup.date().required("Required").min(new Date(), "Invalid date"),
-      start_time: Yup.string().required("Required"),
+      date: Yup.date()
+        .required("Required")
+        .test("is-valid-date", "Invalid date", function (value) {
+          const currentDate = moment().startOf("day");
+          const selectedDate = moment(value).startOf("day");
+          return selectedDate.isSameOrAfter(currentDate);
+        }),
+      start_time: Yup.string()
+        .required("Required")
+        .test("is-valid-time", "Invalid time", function (value) {
+          const { date } = this.parent;
+          const currentDate = moment().format("YYYY-MM-DD");
+          const currentTime = moment().format("HH:mm");
+          if (
+            moment(date).format("YYYY-MM-DD") == currentDate &&
+            value <= currentTime
+          ) {
+            return false;
+          }
+          return true;
+        }),
       end_time: Yup.string()
         .required("Required")
         .test("is-greater", "Invalid time", function (value) {

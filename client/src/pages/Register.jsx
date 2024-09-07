@@ -27,9 +27,19 @@ function Register() {
       last_name: Yup.string().required("Required"),
       email: Yup.string().email("Invalid email address").required("Required"),
       password: Yup.string().required("Required"),
-      confirm_password: Yup.string().required("Required"),
+      confirm_password: Yup.string()
+        .required("Required")
+        .oneOf([Yup.ref("password")], "Passwords must match"),
       start_time: Yup.string().required("Required"),
-      end_time: Yup.string().required("Required"),
+      end_time: Yup.string()
+        .required("Required")
+        .test("end-time", "Invalid time", function (value) {
+          const { start_time } = this.parent;
+          if (!start_time || !value) {
+            return true;
+          }
+          return value > start_time;
+        }),
     }),
     onSubmit: async (values) => {
       let response = await dispatch(register(values));

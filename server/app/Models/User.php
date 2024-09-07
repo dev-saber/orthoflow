@@ -66,7 +66,7 @@ class User extends Authenticatable
 
     protected function stock()
     {
-        return $this->hasOne(Stock::class);
+        return $this->hasMany(Stock::class);
     }
 
     protected function purchaseHistories()

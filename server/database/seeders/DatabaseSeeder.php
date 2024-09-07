@@ -29,12 +29,12 @@ class DatabaseSeeder extends Seeder
             'end_time' => '17:00:00',
         ]);
 
-        User::factory(5)->create();
+        User::factory(3)->create();
         Patient::factory(20)->create();
         Appointment::factory(300)->create();
         MedicalHistory::factory(100)->create();
         Bill::factory(300)->create();
-        Stock::factory(5)->create();
+        // Stock::factory(5)->create();
         PurchaseHistory::factory(100)->create();
     }
 }
