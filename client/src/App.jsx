@@ -1,4 +1,8 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import {
+  Navigate,
+  RouterProvider,
+  createBrowserRouter,
+} from "react-router-dom";
 import { Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
@@ -40,6 +44,10 @@ const AppLayout = () => {
 
 export default function App() {
   const routing = createBrowserRouter([
+    {
+      path: "/",
+      element: <Navigate to="/login" replace />,
+    },
     {
       path: "/login",
       element: <Login />,
