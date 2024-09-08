@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import * as operations from "./stockThunk";
 
 const initialState = {
-  stock: [],
+  data: [],
 };
 
 const stockSlice = createSlice({
@@ -10,7 +10,7 @@ const stockSlice = createSlice({
   initialState,
   extraReducers: (builder) => {
     builder.addCase(operations.getStock.fulfilled, (state, action) => {
-      state.stock = action.payload.data;
+      state.data = action.payload.data;
     });
 
     builder.addCase(operations.getStock.rejected, (state, action) => {

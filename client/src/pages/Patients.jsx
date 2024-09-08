@@ -144,7 +144,7 @@ function Patients() {
     <>
       <div className="flex flex-col items-start justify-around w-full gap-12">
         <div className="flex items-center justify-between w-full">
-          <SearchBox placeholder="name" action={search} value={searchValue} />
+          <SearchBox placeholder="patient name" action={search} value={searchValue} />
           <Button label="Add a Patient" onClick={() => openModal("add")} />
         </div>
         <div className="w-11/12 mx-auto">
