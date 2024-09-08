@@ -1,7 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Bar } from "react-chartjs-2";
-import Title from "../atoms/Title";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -22,7 +21,9 @@ function StockInventory({ isLoading }) {
         label: "Quantity",
         data: stock.map((item) => item.quantity),
         backgroundColor: stock.map((item) =>
-          item.quantity > item.reorder_level ? "#4a72ff" : "#d32f2f"
+          item.quantity > item.reorder_level
+            ? "rgba(74, 114, 255, 0.5)"
+            : "rgba(211, 47, 47, 0.5)"
         ),
         borderColor: stock.map((item) =>
           item.quantity > item.reorder_level ? "#4a72ff" : "#d32f2f"
@@ -37,12 +38,12 @@ function StockInventory({ isLoading }) {
         display: false,
       },
     },
+    maintainAspectRatio: false,
   };
   return (
     <>
       {!isLoading && (
-        <div className="flex flex-col items-center gap-16">
-          <Title text="Stock Inventory" />
+        <div style={{ width: "100%", height: "80%" }}>
           <Bar data={data} options={options} />
         </div>
       )}
