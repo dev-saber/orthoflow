@@ -13,16 +13,8 @@ class StockController extends Controller
     public function index(Request $request)
     {
         return response()->json([
-            'data' => Stock::where('dentist_id', request()->user()->id)->get()
+            'data' => Stock::where('dentist_id', $request->user()->id)->get()
         ], 200);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
     }
 
     /**
@@ -30,14 +22,11 @@ class StockController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
-    }
+        $item = Stock::findOrFail($id);
+        $item->update($request->all());
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return response()->json([
+            'message' => 'Stock updated successfully',
+        ], 200);
     }
 }

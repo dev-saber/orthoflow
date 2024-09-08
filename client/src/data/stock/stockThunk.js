@@ -6,4 +6,9 @@ const getStock = createAsyncThunk("/stock", async () => {
   return response.data;
 });
 
-export { getStock };
+const updateStock = createAsyncThunk("/stock/update", async (data) => {
+  const response = await api.patch(`/stock/${data.id}`, data);
+  return response.data;
+});
+
+export { getStock, updateStock };

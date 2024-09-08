@@ -16,6 +16,14 @@ const stockSlice = createSlice({
     builder.addCase(operations.getStock.rejected, (state, action) => {
       console.log(action.error.message);
     });
+
+    builder.addCase(operations.updateStock.fulfilled, (state, action) => {
+      console.log(action.payload.message);
+    });
+
+    builder.addCase(operations.updateStock.rejected, (state, action) => {
+      console.log(action.error.message);
+    });
   },
 });
 

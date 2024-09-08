@@ -1,9 +1,10 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { Edit2 } from "lucide-react";
 import Table from "../atoms/Table";
-import { Edit2, Trash2 } from "lucide-react";
+import EditStockModal from "../modals/EditStockModal";
 
-function StockTable() {
+function StockTable({ modal, isOpen, onClose, itemRecord, triggerEffect }) {
   const stock = useSelector((state) => state.stock.data);
 
   const tableHeader = (
@@ -45,18 +46,30 @@ function StockTable() {
         {item.quantity}
       </td>
       <td className="px-6 py-4 whitespace-nowrap">{item.reorder_level}</td>
-      <td className="p-6 whitespace-nowrap flex gap-2">
-        <span className="text-blue cursor-pointer" onClick={() => {}}>
+      <td className="py-5 whitespace-nowrap flex justify-center">
+        <span
+          className="text-blue cursor-pointer"
+          onClick={() => {
+            modal(item);
+          }}
+        >
           <Edit2 size={17} />
-        </span>
-        <span className="text-red-700 cursor-pointer" onClick={() => {}}>
-          <Trash2 size={17} />
         </span>
       </td>
     </tr>
   ));
 
-  return <Table header={tableHeader} body={tableBody} />;
+  return (
+    <>
+      <Table header={tableHeader} body={tableBody} />
+      <EditStockModal
+        isOpen={isOpen}
+        onClose={onClose}
+        data={itemRecord}
+        triggerEffect={triggerEffect}
+      />
+    </>
+  );
 }
 
 export default StockTable;

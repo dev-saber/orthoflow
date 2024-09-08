@@ -1,6 +1,6 @@
 import React from "react";
 
-function Input({ label, type, name, value, onChange, placeholder }) {
+function Input({ label, type, name, value, onChange, placeholder, step }) {
   return (
     <>
       <label className="text-blue text-lg pl-2 font-semibold">{label}</label>
@@ -12,6 +12,7 @@ function Input({ label, type, name, value, onChange, placeholder }) {
           value={value}
           onChange={onChange}
           placeholder={placeholder}
+          step={step}
         />
       </div>
     </>
