@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { Edit2 } from "lucide-react";
+import { Edit2, TriangleAlert } from "lucide-react";
 import Table from "../atoms/Table";
 import EditStockModal from "../modals/EditStockModal";
 
@@ -34,17 +34,18 @@ function StockTable({ modal, isOpen, onClose, itemRecord, triggerEffect }) {
       key={index}
       className="bg-white text-black border-b-[1px] hover:bg-gray-50 text-center"
     >
-      <td className="px-6 py-4 whitespace-nowrap text-start">{item.name}</td>
-      <td className="px-6 py-4 whitespace-nowrap">{item.price}</td>
-      <td
-        className={`px-6 py-4 whitespace-nowrap ${
-          item.reorder_level >= item.quantity
-            ? "text-red-600 font-semibold"
-            : "text-black"
-        }`}
-      >
-        {item.quantity}
+      <td className="px-6 py-4 whitespace-nowrap text-start flex gap-2 items-center">
+        {item.reorder_level >= item.quantity && (
+          <span className="text-red-700">
+            <TriangleAlert size={15} />
+          </span>
+        )}
+        <span className={`${!(item.reorder_level >= item.quantity) && "ml-6"}`}>
+          {item.name}
+        </span>
       </td>
+      <td className="px-6 py-4 whitespace-nowrap">{item.price}</td>
+      <td className="px-6 py-4 whitespace-nowrap">{item.quantity}</td>
       <td className="px-6 py-4 whitespace-nowrap">{item.reorder_level}</td>
       <td className="py-5 whitespace-nowrap flex justify-center">
         <span
