@@ -11,4 +11,9 @@ const login = createAsyncThunk("/login", async (data) => {
   return response.data;
 });
 
-export { login, register };
+const userInfo = createAsyncThunk("/info", async () => {
+  const response = await api.get("/info");
+  return response.data;
+});
+
+export { login, register, userInfo };

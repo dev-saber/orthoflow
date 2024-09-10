@@ -77,7 +77,9 @@ class UserController extends Controller
 
     public function userInfo(Request $request)
     {
-        //
+        return response()->json([
+            'user' => $request->user()
+        ], 200);
     }
 
     public function updateUserInfo(Request $request)

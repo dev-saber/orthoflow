@@ -14,7 +14,9 @@ function StockTable({ modal, isOpen, onClose, itemRecord, triggerEffect }) {
           <th
             key={index}
             scope="col"
-            className="px-6 py-3 text-start text-sm medium text-blue font-bold"
+            className={`px-5 py-3 text-start text-sm medium text-blue font-bold ${
+              header == "item name" && "pl-12"
+            }`}
           >
             {header}
           </th>
