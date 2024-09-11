@@ -6,7 +6,7 @@ import InputWithErrorMessage from "../molecules/InputWithErrorMessage";
 import Title from "../atoms/Title";
 import Button from "../atoms/Button";
 import { useDispatch } from "react-redux";
-import { addPatient, getPatients } from "../../data/patients/patientsThunk";
+import { addPatient } from "../../data/patients/patientsThunk";
 
 function AddPatient({ isOpen, onClose, triggerEffect }) {
   const dispatch = useDispatch();

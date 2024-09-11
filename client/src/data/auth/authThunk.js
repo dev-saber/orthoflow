@@ -16,4 +16,9 @@ const userInfo = createAsyncThunk("/info", async () => {
   return response.data;
 });
 
-export { login, register, userInfo };
+const updateUserInfo = createAsyncThunk("/update", async (data) => {
+  const response = await api.patch("/update", data);
+  return response.data;
+});
+
+export { login, register, userInfo, updateUserInfo };

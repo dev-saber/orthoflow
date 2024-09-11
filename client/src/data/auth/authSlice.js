@@ -35,6 +35,14 @@ const authSlice = createSlice({
     builder.addCase(operations.userInfo.rejected, (state, action) => {
       console.log(action.error.message);
     });
+
+    builder.addCase(operations.updateUserInfo.fulfilled, (state, action) => {
+      state.user = action.payload.user;
+    });
+
+    builder.addCase(operations.updateUserInfo.rejected, (state, action) => {
+      console.log(action.error.message);
+    });
   },
 });
 
