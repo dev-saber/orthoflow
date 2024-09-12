@@ -52,17 +52,21 @@ function Patients() {
 
   const tableHeader = (
     <tr>
-      {["First name", "Last Name", "Date of Birth", "Phone Number", "Action"].map(
-        (header, index) => (
-          <th
-            key={index}
-            scope="col"
-            className="px-6 py-3 text-start text-sm medium text-blue font-bold"
-          >
-            {header}
-          </th>
-        )
-      )}
+      {[
+        "First name",
+        "Last Name",
+        "Date of Birth",
+        "Phone Number",
+        "Actions",
+      ].map((header, index) => (
+        <th
+          key={index}
+          scope="col"
+          className="px-6 py-3 text-start text-sm medium text-blue font-bold"
+        >
+          {header}
+        </th>
+      ))}
     </tr>
   );
 
@@ -138,7 +142,11 @@ function Patients() {
     <>
       <div className="flex flex-col items-start justify-around w-full gap-12">
         <div className="flex items-center justify-between w-full">
-          <SearchBox placeholder="patient name" action={search} value={searchValue} />
+          <SearchBox
+            placeholder="patient name"
+            action={search}
+            value={searchValue}
+          />
           <Button label="Add a Patient" onClick={() => openModal("add")} />
         </div>
         <div className="w-11/12 mx-auto">

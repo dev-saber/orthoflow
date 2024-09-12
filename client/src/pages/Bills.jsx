@@ -1,21 +1,36 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import { getBills } from "../data/bills/billsThunk";
+import { search } from "../data/patients/patientsSlice";
+import { Edit2, Trash2, Vault, VaultIcon } from "lucide-react";
 import LoadingSpinner from "../components/atoms/LoadingSpinner";
-import { Edit2, Trash2 } from "lucide-react";
 import Table from "../components/atoms/Table";
 import SearchBox from "../components/atoms/SearchBox";
 import Button from "../components/atoms/Button";
+import EditBill from "../components/modals/EditBill";
 
 function Bills() {
   const dispatch = useDispatch();
   const bills = useSelector((state) => state.bills.bills);
   const [isLoading, setIsLoading] = useState(false);
+  const [triggerEffect, setTriggerEffect] = useState(false);
+
   useEffect(() => {
     !bills.length && setIsLoading(true);
     dispatch(getBills()).then(() => setIsLoading(false));
   }, []);
+
+  useEffect(() => {
+    dispatch(getBills()).then(() => setIsLoading(false));
+  }, [triggerEffect]);
+
+  const navigate = useNavigate();
+  const patientNavigation = (name) => {
+    dispatch(search(name));
+    navigate("/patients");
+  };
 
   const tableHeader = (
     <tr>
@@ -33,13 +48,19 @@ function Bills() {
     </tr>
   );
 
-
   const tableBody = bills.map((bill) => (
     <tr
       key={bill.id}
       className="bg-white text-black border-b-[1px] hover:bg-gray-50"
     >
-      <td className="px-6 py-4 whitespace-nowrap">
+      <td
+        className="px-6 py-4 whitespace-nowrap cursor-pointer"
+        onClick={() =>
+          patientNavigation(
+            `${bill.patient.first_name} ${bill.patient.last_name}`
+          )
+        }
+      >
         {bill.patient.first_name} {bill.patient.last_name}
       </td>
       <td className="px-6 py-4 whitespace-nowrap">{bill.amount}</td>
@@ -48,15 +69,64 @@ function Bills() {
       </td>
       <td className="px-6 py-4 whitespace-nowrap">{bill.status}</td>
       <td className="p-6 whitespace-nowrap flex gap-2">
-        <span className="text-blue cursor-pointer">
+        <span
+          className="text-blue cursor-pointer"
+          onClick={() => {
+            setBillToShow(bill);
+            editModal();
+          }}
+        >
           <Edit2 size={17} />
         </span>
-        <span className="text-red-700 cursor-pointer">
+        <span
+          className="text-red-700 cursor-pointer"
+          onClick={() => {
+            setBillToShow(bill);
+            deleteModal();
+          }}
+        >
           <Trash2 size={17} />
         </span>
       </td>
     </tr>
   ));
+
+  const fetchDataAgain = () => {
+    setTriggerEffect(!triggerEffect);
+  };
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentModal, setCurrentModal] = useState(null);
+  const [billToShow, setBillToShow] = useState({});
+
+  const openModal = (modal) => {
+    setIsModalOpen(true);
+    setCurrentModal(modal);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setCurrentModal(null);
+  };
+
+  const editModal = () => {
+    openModal("edit");
+  };
+
+  const deleteModal = () => {
+    openModal("delete");
+  };
+
+  const modals = {
+    edit: (
+      <EditBill
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        data={billToShow}
+        triggerEffect={fetchDataAgain}
+      />
+    ),
+  };
 
   return (
     <>
@@ -75,6 +145,7 @@ function Bills() {
           </div>
         </div>
       )}
+      {modals[currentModal]}
     </>
   );
 }

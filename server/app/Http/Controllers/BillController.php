@@ -32,7 +32,13 @@ class BillController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $bill = Bill::findOrFail($id);
+
+        $bill->update($request->only(['status', 'amount']));
+
+        return response()->json([
+            'message' => 'Bill updated successfully',
+        ], 200);
     }
 
     /**
