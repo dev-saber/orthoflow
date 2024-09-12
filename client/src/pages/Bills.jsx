@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import { deleteBill, getBills } from "../data/bills/billsThunk";
 import { search } from "../data/patients/patientsSlice";
+import { searchPatient } from "../data/bills/billsSlice";
 import { Edit2, Trash2 } from "lucide-react";
 import LoadingSpinner from "../components/atoms/LoadingSpinner";
 import Table from "../components/atoms/Table";
@@ -148,11 +149,17 @@ function Bills() {
       ) : (
         <div className="flex flex-col items-start justify-around w-full gap-12">
           <div className="flex items-center justify-between w-full">
-            <SearchBox placeholder="patient name" />
+            <SearchBox placeholder="patient name" action={searchPatient} />
             <Button label="New Invoice" />
           </div>
           <div className="w-11/12 mx-auto">
-            <Table header={tableHeader} body={tableBody} />
+            {bills.length ? (
+              <Table header={tableHeader} body={tableBody} />
+            ) : (
+              <div className="flex justify-center items-center h-64">
+                <p>No results found</p>
+              </div>
+            )}
           </div>
         </div>
       )}

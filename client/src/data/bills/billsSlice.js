@@ -3,6 +3,8 @@ import * as operations from "./billsThunk";
 
 const initialState = {
   bills: [],
+  patientSearch: "",
+  fullData: [],
 };
 
 const billsSlice = createSlice({
@@ -33,6 +35,34 @@ const billsSlice = createSlice({
       console.log(action.error.message);
     });
   },
+  reducers: {
+    searchPatient: (state, action) => {
+      state.patientSearch = action.payload.toLowerCase();
+
+      const fullData = state.fullData.length ? state.fullData : state.bills;
+
+      if (state.patientSearch) {
+        state.bills = fullData.filter((bill) => {
+          return (
+            bill.patient &&
+            (bill.patient.first_name
+              .toLowerCase()
+              .startsWith(state.patientSearch) ||
+              bill.patient.last_name
+                .toLowerCase()
+                .startsWith(state.patientSearch))
+          );
+        });
+      } else {
+        state.bills = fullData;
+      }
+
+      if (!state.fullData.length) {
+        state.fullData = fullData;
+      }
+    },
+  },
 });
 
+export const { searchPatient } = billsSlice.actions;
 export default billsSlice.reducer;
