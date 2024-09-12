@@ -33,7 +33,6 @@ class BillController extends Controller
     public function update(Request $request, string $id)
     {
         $bill = Bill::findOrFail($id);
-
         $bill->update($request->only(['status', 'amount']));
 
         return response()->json([
@@ -46,6 +45,11 @@ class BillController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $bill = Bill::findOrFail($id);
+        $bill->delete();
+
+        return response()->json([
+            'message' => 'Bill deleted successfully',
+        ], 200);
     }
 }

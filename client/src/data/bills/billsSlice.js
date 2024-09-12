@@ -24,6 +24,14 @@ const billsSlice = createSlice({
     builder.addCase(operations.updateBill.rejected, (state, action) => {
       console.log(action.error.message);
     });
+
+    builder.addCase(operations.deleteBill.fulfilled, (state, action) => {
+      console.log(action.payload);
+    });
+
+    builder.addCase(operations.deleteBill.rejected, (state, action) => {
+      console.log(action.error.message);
+    });
   },
 });
 

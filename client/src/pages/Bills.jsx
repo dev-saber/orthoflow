@@ -2,14 +2,15 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
-import { getBills } from "../data/bills/billsThunk";
+import { deleteBill, getBills } from "../data/bills/billsThunk";
 import { search } from "../data/patients/patientsSlice";
-import { Edit2, Trash2, Vault, VaultIcon } from "lucide-react";
+import { Edit2, Trash2 } from "lucide-react";
 import LoadingSpinner from "../components/atoms/LoadingSpinner";
 import Table from "../components/atoms/Table";
 import SearchBox from "../components/atoms/SearchBox";
 import Button from "../components/atoms/Button";
 import EditBill from "../components/modals/EditBill";
+import DeleteModal from "../components/modals/DeleteModal";
 
 function Bills() {
   const dispatch = useDispatch();
@@ -123,6 +124,16 @@ function Bills() {
         isOpen={isModalOpen}
         onClose={closeModal}
         data={billToShow}
+        triggerEffect={fetchDataAgain}
+      />
+    ),
+    delete: (
+      <DeleteModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        type="bill"
+        action={() => dispatch(deleteBill(billToShow.id))}
+        id={billToShow.id}
         triggerEffect={fetchDataAgain}
       />
     ),
