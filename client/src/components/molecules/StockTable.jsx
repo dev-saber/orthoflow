@@ -9,7 +9,7 @@ function StockTable({ modal, isOpen, onClose, itemRecord, triggerEffect }) {
 
   const tableHeader = (
     <tr>
-      {["item name", "price", "quantity", "reorder level"].map(
+      {["item name", "price", "quantity", "reorder level", "action"].map(
         (header, index) => (
           <th
             key={index}
@@ -22,12 +22,6 @@ function StockTable({ modal, isOpen, onClose, itemRecord, triggerEffect }) {
           </th>
         )
       )}
-      <th
-        scope="col"
-        className="px-6 py-3 text-start text-sm medium text-blue font-bold"
-      >
-        Action
-      </th>
     </tr>
   );
 

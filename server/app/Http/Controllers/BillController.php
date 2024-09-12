@@ -15,7 +15,7 @@ class BillController extends Controller
         return response()->json([
             'bills' => Bill::with('patient')->whereHas('patient', function ($query) use ($request) {
                 $query->where('dentist_id', $request->user()->id);
-            })->get()
+            })->orderBy('created_at', 'desc')->get(),
         ], 200);
     }
 

@@ -52,7 +52,7 @@ function Patients() {
 
   const tableHeader = (
     <tr>
-      {["First name", "Last Name", "Date of Birth", "Phone Number"].map(
+      {["First name", "Last Name", "Date of Birth", "Phone Number", "Action"].map(
         (header, index) => (
           <th
             key={index}
@@ -63,12 +63,6 @@ function Patients() {
           </th>
         )
       )}
-      <th
-        scope="col"
-        className="px-6 py-3 text-start text-sm medium text-blue font-bold"
-      >
-        Action
-      </th>
     </tr>
   );
 
