@@ -14,4 +14,9 @@ class Bill extends Model
         'amount',
         'status',
     ];
+
+    public function patient()
+    {
+        return $this->belongsTo(Patient::class);
+    }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\BillController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\UserController;
@@ -21,4 +22,5 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::resource('appointments', AppointmentController::class);
     Route::resource('patients', PatientController::class);
     Route::resource('stock', StockController::class);
+    Route::resource('bills', BillController::class);
 });
