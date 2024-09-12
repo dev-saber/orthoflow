@@ -10,15 +10,12 @@ function Settings() {
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [triggerEffect, setTriggerEffect] = useState(false);
 
   useEffect(() => {
-    if (!user) {
-      dispatch(userInfo()).then(() => setIsLoading(false));
-    } else {
-      setIsLoading(false);
-    }
+    !user && setIsLoading(true);
+    dispatch(userInfo()).then(() => setIsLoading(false));
   }, [triggerEffect]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -34,6 +31,7 @@ function Settings() {
   const fetchDataAgain = () => {
     setTriggerEffect(!triggerEffect);
   };
+
   return (
     <>
       {isLoading ? (
@@ -42,7 +40,7 @@ function Settings() {
         </div>
       ) : (
         <div className="flex flex-col items-center gap-16">
-          <Title text="Personnal Information" />
+          <Title text="Personal Information" />
           <div className="flex flex-col w-1/2 m-auto gap-8">
             <div className="flex justify-between items-center border-b-2 pb-4">
               <div className="text-blue font-semibold text-lg">first name</div>
@@ -71,12 +69,14 @@ function Settings() {
             <Button label="Edit" onClick={openModal} className="w-28" />
             <Button label="Log Out" className="bg-red-700 w-28" />
           </div>
-          <EditUserInfo
-            data={user}
-            isOpen={isModalOpen}
-            onClose={closeModal}
-            triggerEffect={fetchDataAgain}
-          />
+          {user && (
+            <EditUserInfo
+              data={user}
+              isOpen={isModalOpen}
+              onClose={closeModal}
+              triggerEffect={fetchDataAgain}
+            />
+          )}
         </div>
       )}
     </>
