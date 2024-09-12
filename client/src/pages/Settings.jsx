@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { userInfo } from "../data/auth/authThunk";
+import { logout, userInfo } from "../data/auth/authThunk";
 import Title from "../components/atoms/Title";
 import Button from "../components/atoms/Button";
 import LoadingSpinner from "../components/atoms/LoadingSpinner";
@@ -30,6 +30,10 @@ function Settings() {
 
   const fetchDataAgain = () => {
     setTriggerEffect(!triggerEffect);
+  };
+
+  const handleLogout = () => {
+    dispatch(logout());
   };
 
   return (
@@ -67,7 +71,11 @@ function Settings() {
           </div>
           <div className="w-2/5 mx-auto flex items-center justify-around">
             <Button label="Edit" onClick={openModal} className="w-28" />
-            <Button label="Log Out" className="bg-red-700 w-28" />
+            <Button
+              label="Log Out"
+              className="bg-red-700 w-28"
+              onClick={handleLogout}
+            />
           </div>
           {user && (
             <EditUserInfo

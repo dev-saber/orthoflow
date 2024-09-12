@@ -43,6 +43,16 @@ const authSlice = createSlice({
     builder.addCase(operations.updateUserInfo.rejected, (state, action) => {
       console.log(action.error.message);
     });
+
+    builder.addCase(operations.logout.fulfilled, (state) => {
+      state.user = null;
+      state.token = null;
+      localStorage.clear();
+    });
+
+    builder.addCase(operations.logout.rejected, (state, action) => {
+      console.log(action.error.message);
+    });
   },
 });
 

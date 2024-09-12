@@ -21,4 +21,8 @@ const updateUserInfo = createAsyncThunk("/update", async (data) => {
   return response.data;
 });
 
-export { login, register, userInfo, updateUserInfo };
+const logout = createAsyncThunk("/logout", async () => {
+  await api.post("/logout");
+});
+
+export { login, register, userInfo, updateUserInfo, logout };
