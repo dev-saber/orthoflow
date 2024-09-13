@@ -12,6 +12,7 @@ import SearchBox from "../components/atoms/SearchBox";
 import Button from "../components/atoms/Button";
 import EditBill from "../components/modals/EditBill";
 import DeleteModal from "../components/modals/DeleteModal";
+import CreateBill from "../components/modals/CreateBill";
 
 function Bills() {
   const dispatch = useDispatch();
@@ -111,13 +112,9 @@ function Bills() {
     setCurrentModal(null);
   };
 
-  const editModal = () => {
-    openModal("edit");
-  };
-
-  const deleteModal = () => {
-    openModal("delete");
-  };
+  const editModal = () => openModal("edit");
+  const deleteModal = () => openModal("delete");
+  const createModal = () => openModal("create");
 
   const modals = {
     edit: (
@@ -138,6 +135,13 @@ function Bills() {
         triggerEffect={fetchDataAgain}
       />
     ),
+    create: (
+      <CreateBill
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        triggerEffect={fetchDataAgain}
+      />
+    ),
   };
 
   return (
@@ -150,7 +154,7 @@ function Bills() {
         <div className="flex flex-col items-start justify-around w-full gap-12">
           <div className="flex items-center justify-between w-full">
             <SearchBox placeholder="patient name" action={searchPatient} />
-            <Button label="New Invoice" />
+            <Button label="New Invoice" onClick={createModal} />
           </div>
           <div className="w-11/12 mx-auto">
             {bills.length ? (

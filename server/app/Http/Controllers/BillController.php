@@ -24,7 +24,11 @@ class BillController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Bill::create($request->all());
+
+        return response()->json([
+            'message' => 'Bill created successfully',
+        ], 201);
     }
 
     /**

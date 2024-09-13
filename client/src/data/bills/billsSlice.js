@@ -34,7 +34,16 @@ const billsSlice = createSlice({
     builder.addCase(operations.deleteBill.rejected, (state, action) => {
       console.log(action.error.message);
     });
+
+    builder.addCase(operations.createBill.fulfilled, (state, action) => {
+      console.log(action.payload);
+    });
+
+    builder.addCase(operations.createBill.rejected, (state, action) => {
+      console.log(action.error.message);
+    });
   },
+
   reducers: {
     searchPatient: (state, action) => {
       state.patientSearch = action.payload.toLowerCase();
