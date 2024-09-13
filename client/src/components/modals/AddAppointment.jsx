@@ -41,6 +41,8 @@ function AddAppointment({ isOpen, onClose, triggerEffect }) {
     }
   }, [searchValue, isSelected]);
 
+  const { start_time, end_time } = useSelector((state) => state.auth.user);
+
   const appointmentInfo = useFormik({
     initialValues: {
       date: "",
@@ -69,13 +71,16 @@ function AddAppointment({ isOpen, onClose, triggerEffect }) {
           ) {
             return false;
           }
-          return true;
+          return value >= start_time; // start time should be within the working hours
         }),
       end_time: Yup.string()
         .required("Required")
         .test("is-greater", "Invalid time", function (value) {
-          const { start_time } = this.parent;
-          return start_time && value ? start_time < value : true;
+          const { start_time: formStartTime } = this.parent;
+          return formStartTime && value ? formStartTime < value : true;
+        })
+        .test("is-valid-end-time", "Invalid time", function (value) {
+          return value <= end_time; // end time should be within the working hours
         }),
       patient_id: Yup.string().required("Required"),
     }),

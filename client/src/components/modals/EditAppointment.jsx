@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import moment from "moment";
@@ -13,6 +13,7 @@ import SelectInputWithErrorMessage from "../molecules/SelectInputWithErrorMessag
 function EditAppointment({ isOpen, onClose, data, triggerEffect }) {
   const now = moment();
   const dispatch = useDispatch();
+  const { start_time, end_time } = useSelector((state) => state.auth.user);
 
   const editInfo = useFormik({
     initialValues: {
@@ -21,8 +22,6 @@ function EditAppointment({ isOpen, onClose, data, triggerEffect }) {
       end_time: data.end_time,
       status: data.status,
     },
-
-    // add later more time validation (range of working hours + free time)
     validationSchema: Yup.object({
       date: Yup.date()
         .required("Required")
@@ -37,6 +36,9 @@ function EditAppointment({ isOpen, onClose, data, triggerEffect }) {
           const [hours, minutes] = value.split(":");
           selectedDate.set({ hour: hours, minute: minutes });
           return selectedDate.isAfter(now);
+        })
+        .test("start-time-boundary", "invalid time", function (value) {
+          return value >= start_time;
         }),
       end_time: Yup.string()
         .required("Required")
@@ -49,6 +51,9 @@ function EditAppointment({ isOpen, onClose, data, triggerEffect }) {
         .test("is-greater", "Invalid time", function (value) {
           const { start_time } = this.parent;
           return start_time && value ? start_time < value : true;
+        })
+        .test("end-time-boundary", "invalid time", function (value) {
+          return value <= end_time;
         }),
       status: Yup.string().required("Required"),
     }),
