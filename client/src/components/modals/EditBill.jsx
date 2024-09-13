@@ -7,6 +7,7 @@ import ModalContainer from "./ModalContainer";
 import Title from "../atoms/Title";
 import InputWithErrorMessage from "../molecules/InputWithErrorMessage";
 import Button from "../atoms/Button";
+import SelectInputWithErrorMessage from "../molecules/SelectInputWithErrorMessage";
 
 function EditBill({ isOpen, onClose, data, triggerEffect }) {
   const dispatch = useDispatch();
@@ -53,25 +54,19 @@ function EditBill({ isOpen, onClose, data, triggerEffect }) {
           message={editInfo.errors.amount}
         />
 
-        <div className="flex flex-col items-start">
-          <label className="text-blue text-lg pl-2 font-semibold">Status</label>
-          <div className="shadow-sm border border-solid rounded-lg border-gray-300">
-            <select
-              name="status"
-              value={editInfo.values.status}
-              onChange={editInfo.handleChange}
-              onBlur={editInfo.handleBlur}
-              className="pl-4 pr-6 h-9 block border-gray-200 rounded-lg text-sm focus:border-blue disabled:opacity-50 disabled:pointer-events-none shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue w-[200px]"
-            >
-              <option value=""></option>
-              <option value="unpaid">Unpaid</option>
-              <option value="paid">Paid</option>
-            </select>
-          </div>
-          {editInfo.errors.status && editInfo.touched.status && (
-            <div className="text-red-500 pl-4">{editInfo.errors.status}</div>
-          )}
-        </div>
+        <SelectInputWithErrorMessage
+          label="status"
+          name="status"
+          value={editInfo.values.status}
+          onChange={editInfo.handleChange}
+          onBlur={editInfo.handleBlur}
+          options={[
+            { value: "unpaid", label: "Unpaid" },
+            { value: "paid", label: "Paid" },
+          ]}
+          errorCondition={editInfo.errors.status}
+          message={editInfo.errors.status}
+        />
 
         <Button label="Edit" type="submit" />
       </form>

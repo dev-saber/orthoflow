@@ -42,6 +42,7 @@ function EditStockModal({ isOpen, onClose, data, triggerEffect }) {
       >
         <Title text="Edit Stock" />
         <InputWithErrorMessage
+          label="item name"
           type="text"
           name="name"
           value={editInfo.values.name}

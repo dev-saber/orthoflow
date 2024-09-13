@@ -8,6 +8,7 @@ import Title from "../atoms/Title";
 import InputWithErrorMessage from "../molecules/InputWithErrorMessage";
 import Button from "../atoms/Button";
 import { createBill } from "../../data/bills/billsThunk";
+import PatientSearchList from "../atoms/PatientSearchList";
 
 function CreateBill({ isOpen, onClose, triggerEffect }) {
   const dispatch = useDispatch();
@@ -91,27 +92,14 @@ function CreateBill({ isOpen, onClose, triggerEffect }) {
             onFocus={() => setShowFilteredPatients(true)}
           />
 
-          {/* search patients list (filtered by searchValue) */}
-          {showFilteredPatients && filteredPatients.length > 0 && (
-            <ul className="absolute z-50 w-full bg-white rounded-xl shadow-lg mt-1 max-h-60 overflow-auto">
-              {filteredPatients.map((patient) => (
-                <li
-                  key={patient.id}
-                  onClick={() => {
-                    setSearchValue(
-                      `${patient.first_name} ${patient.last_name}`
-                    );
-                    billInfo.setFieldValue("patient_id", patient.id);
-                    setShowFilteredPatients(false);
-                    setIsSelected(true);
-                  }}
-                  className="cursor-pointer px-3 py-2 hover:bg-gray-200"
-                >
-                  {patient.first_name} {patient.last_name}
-                </li>
-              ))}
-            </ul>
-          )}
+          <PatientSearchList
+            isShowing={showFilteredPatients}
+            filteredData={filteredPatients}
+            formData={billInfo}
+            hide={() => setShowFilteredPatients(false)}
+            search={setSearchValue}
+            selected={setIsSelected}
+          />
         </div>
 
         <div className="flex flex-col items-start">

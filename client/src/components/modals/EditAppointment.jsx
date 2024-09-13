@@ -8,6 +8,7 @@ import ModalContainer from "./ModalContainer";
 import InputWithErrorMessage from "../molecules/InputWithErrorMessage";
 import Button from "../atoms/Button";
 import Title from "../atoms/Title";
+import SelectInputWithErrorMessage from "../molecules/SelectInputWithErrorMessage";
 
 function EditAppointment({ isOpen, onClose, data, triggerEffect }) {
   const now = moment();
@@ -100,32 +101,22 @@ function EditAppointment({ isOpen, onClose, data, triggerEffect }) {
             message={editInfo.errors.end_time}
           />
 
-          <div className="flex flex-col items-start w-full">
-            <label
-              className="text-blue text-lg pl-2 font-semibold"
-              htmlFor="status"
-            >
-              Status
-            </label>
-            <div className="shadow-sm border border-solid rounded-lg border-gray-300">
-              <select
-                name="status"
-                value={editInfo.values.status}
-                onChange={editInfo.handleChange}
-                onBlur={editInfo.handleBlur}
-                className="pl-4 pr-6 h-9 block border-gray-200 rounded-lg text-sm focus:border-blue disabled:opacity-50 disabled:pointer-events-none shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue"
-              >
-                <option value=""></option>
-                <option value="pending">Pending</option>
-                <option value="confirmed">Confirmed</option>
-                <option value="canceled">Canceled</option>
-              </select>
-            </div>
-            {editInfo.errors.status && editInfo.touched.status && (
-              <div className="text-red-500">{editInfo.errors.status}</div>
-            )}
-          </div>
+          <SelectInputWithErrorMessage
+            label="status"
+            name="status"
+            value={editInfo.values.status}
+            onChange={editInfo.handleChange}
+            onBlur={editInfo.handleBlur}
+            options={[
+              { value: "pending", label: "Pending" },
+              { value: "confirmed", label: "Confirmed" },
+              { value: "canceled", label: "Canceled" },
+            ]}
+            errorCondition={editInfo.errors.status}
+            message={editInfo.errors.status}
+          />
         </div>
+
         <Button label="Submit" />
       </form>
     </ModalContainer>
