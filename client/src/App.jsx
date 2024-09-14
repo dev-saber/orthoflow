@@ -1,11 +1,13 @@
+import { useEffect } from "react";
 import {
   Navigate,
   RouterProvider,
   createBrowserRouter,
 } from "react-router-dom";
 import { Outlet } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { motion } from "framer-motion";
+import { userInfo } from "./data/auth/authThunk";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 import Register from "./pages/Register";
@@ -21,6 +23,10 @@ import Settings from "./pages/Settings";
 
 const AppLayout = () => {
   const isOpen = useSelector((state) => state.sidebar.isOpen);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(userInfo());
+  }, []);
 
   return (
     <div className="flex">
