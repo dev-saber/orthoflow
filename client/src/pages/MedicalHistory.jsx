@@ -12,8 +12,11 @@ import Table from "../components/atoms/Table";
 
 function MedicalHistory() {
   const dispatch = useDispatch();
+
   const medicals = useSelector((state) => state.medicals.medicalHistories);
   const patients = useSelector((state) => state.patients.patients);
+  const searchValue = useSelector((state) => state.patients.search);
+
   const [isLoading, setIsLoading] = useState(false);
   const [showMedicals, setShowMedicals] = useState([]);
 
@@ -54,7 +57,13 @@ function MedicalHistory() {
     </tr>
   );
 
-  const tableBody = patients.map((patient) => (
+  const filteredPatients = patients.filter((patient) =>
+    `${patient.first_name} ${patient.last_name}`
+      .toLowerCase()
+      .includes(searchValue.toLowerCase())
+  );
+
+  const tableBody = filteredPatients.map((patient) => (
     <tr
       key={patient.id}
       className="bg-white text-black border-b-[1px] hover:bg-gray-50"
@@ -89,14 +98,15 @@ function MedicalHistory() {
           <div className="flex items-center justify-between w-full">
             <SearchBox
               placeholder="patient name"
-              // action={searchPatient}
+              action={search}
+              value={searchValue}
             />
             <Button
               label="New Sheet"
               // onClick={createModal}
             />
           </div>
-          <div className="w-1/2 mx-auto">
+          <div className="w-2/5 mx-auto">
             {patients.length ? (
               <Table header={tableHeader} body={tableBody} />
             ) : (
