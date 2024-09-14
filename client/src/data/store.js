@@ -5,6 +5,7 @@ import appointmentsReducers from "./appointments/appointmentsSlice";
 import patientsReducers from "./patients/patientsSlice";
 import stockReducers from "./stock/stockSlice";
 import billsReducers from "./bills/billsSlice";
+import medicalsReducers from "./medicalHistories/medicalsSlice";
 
 export const store = configureStore({
   reducer: {
@@ -14,5 +15,6 @@ export const store = configureStore({
     patients: patientsReducers,
     stock: stockReducers,
     bills: billsReducers,
+    medicals: medicalsReducers,
   },
 });
