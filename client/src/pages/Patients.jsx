@@ -70,13 +70,11 @@ function Patients() {
     </tr>
   );
 
-  const filteredPatients = patients
-    .filter((patient) => patient != undefined) // used to remove undefined values (unknown bug source tbh)
-    .filter((patient) =>
-      `${patient.first_name} ${patient.last_name}`
-        .toLowerCase()
-        .includes(searchValue.toLowerCase())
-    );
+  const filteredPatients = patients.filter((patient) =>
+    `${patient.first_name} ${patient.last_name}`
+      .toLowerCase()
+      .includes(searchValue.toLowerCase())
+  );
 
   const tableBody = filteredPatients.map((patient, index) => (
     <tr
