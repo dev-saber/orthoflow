@@ -13,6 +13,7 @@ import Button from "../components/atoms/Button";
 import EditBill from "../components/modals/EditBill";
 import DeleteModal from "../components/modals/DeleteModal";
 import CreateBill from "../components/modals/CreateBill";
+import Toast from "../components/atoms/Toast";
 
 function Bills() {
   const dispatch = useDispatch();
@@ -28,6 +29,18 @@ function Bills() {
   useEffect(() => {
     dispatch(getBills()).then(() => setIsLoading(false));
   }, [triggerEffect]);
+
+  const [toastMessage, setToastMessage] = useState("");
+
+  useEffect(() => {
+    if (toastMessage) {
+      const timer = setTimeout(() => {
+        setToastMessage("");
+      }, 2500);
+
+      return () => clearTimeout(timer);
+    }
+  }, [toastMessage]);
 
   const navigate = useNavigate();
   const patientNavigation = (name) => {
@@ -123,6 +136,7 @@ function Bills() {
         onClose={closeModal}
         data={billToShow}
         triggerEffect={fetchDataAgain}
+        toast={setToastMessage}
       />
     ),
     delete: (
@@ -133,6 +147,7 @@ function Bills() {
         action={() => dispatch(deleteBill(billToShow.id))}
         id={billToShow.id}
         triggerEffect={fetchDataAgain}
+        toast={setToastMessage}
       />
     ),
     create: (
@@ -140,6 +155,7 @@ function Bills() {
         isOpen={isModalOpen}
         onClose={closeModal}
         triggerEffect={fetchDataAgain}
+        toast={setToastMessage}
       />
     ),
   };
@@ -152,6 +168,7 @@ function Bills() {
         </div>
       ) : (
         <div className="flex flex-col items-start justify-around w-full gap-12">
+          {toastMessage && <Toast message={toastMessage} />}
           <div className="flex items-center justify-between w-full">
             <SearchBox placeholder="patient name" action={searchPatient} />
             <Button label="New Invoice" onClick={createModal} />

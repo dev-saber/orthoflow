@@ -9,7 +9,7 @@ import InputWithErrorMessage from "../molecules/InputWithErrorMessage";
 import Button from "../atoms/Button";
 import SelectInputWithErrorMessage from "../molecules/SelectInputWithErrorMessage";
 
-function EditBill({ isOpen, onClose, data, triggerEffect }) {
+function EditBill({ isOpen, onClose, data, triggerEffect, toast }) {
   const dispatch = useDispatch();
 
   const editInfo = useFormik({
@@ -24,8 +24,13 @@ function EditBill({ isOpen, onClose, data, triggerEffect }) {
       status: Yup.string().required("Required"),
     }),
     onSubmit: async (values) => {
-      await dispatch(updateBill(values));
-      await triggerEffect();
+      try {
+        await dispatch(updateBill(values));
+        await triggerEffect();
+        toast("Bill updated successfully");
+      } catch (error) {
+        toast("An error occurred. Please try again.");
+      }
       onClose();
     },
   });

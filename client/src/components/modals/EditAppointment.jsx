@@ -10,7 +10,7 @@ import Button from "../atoms/Button";
 import Title from "../atoms/Title";
 import SelectInputWithErrorMessage from "../molecules/SelectInputWithErrorMessage";
 
-function EditAppointment({ isOpen, onClose, data, triggerEffect }) {
+function EditAppointment({ isOpen, onClose, data, triggerEffect, toast }) {
   const now = moment();
   const dispatch = useDispatch();
   const { start_time, end_time } = useSelector((state) => state.auth.user);
@@ -58,8 +58,14 @@ function EditAppointment({ isOpen, onClose, data, triggerEffect }) {
       status: Yup.string().required("Required"),
     }),
     onSubmit: async (values) => {
-      await dispatch(updateAppointment({ id: data.id, ...values }));
-      await triggerEffect();
+      try {
+        await dispatch(updateAppointment({ id: data.id, ...values }));
+        await triggerEffect();
+        toast("Appointment updated successfully!");
+      } catch (error) {
+        console.error("error", error);
+        toast("An error occurred. Please try again.");
+      }
       onClose();
     },
   });

@@ -3,10 +3,24 @@ import ModalContainer from "./ModalContainer";
 import { Info } from "lucide-react";
 import Button from "../atoms/Button";
 
-function DeleteModal({ isOpen, onClose, type, id, action, triggerEffect }) {
+function DeleteModal({
+  isOpen,
+  onClose,
+  type,
+  id,
+  action,
+  triggerEffect,
+  toast,
+}) {
   const handleDelete = async () => {
-    await action(id);
-    await triggerEffect();
+    try {
+      await action(id);
+      await triggerEffect();
+      toast(`${type} deleted successfully`);
+    } catch (error) {
+      console.error("error", error);
+      toast("An error occurred. Please try again.");
+    }
     onClose();
   };
 

@@ -10,7 +10,7 @@ import Button from "../atoms/Button";
 import { createBill } from "../../data/bills/billsThunk";
 import PatientSearchList from "../atoms/PatientSearchList";
 
-function CreateBill({ isOpen, onClose, triggerEffect }) {
+function CreateBill({ isOpen, onClose, triggerEffect, toast }) {
   const dispatch = useDispatch();
   const patients = useSelector((state) => state.patients.patients);
   const [searchValue, setSearchValue] = useState("");
@@ -52,8 +52,13 @@ function CreateBill({ isOpen, onClose, triggerEffect }) {
       status: Yup.string().required("Required"),
     }),
     onSubmit: async (values) => {
-      await dispatch(createBill(values));
-      await triggerEffect();
+      try {
+        await dispatch(createBill(values));
+        await triggerEffect();
+        toast("Bill created successfully");
+      } catch (error) {
+        toast("An error occurred. Please try again.");
+      }
       onClose();
     },
   });

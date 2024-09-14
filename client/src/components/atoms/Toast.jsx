@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 
-function Toast({ message, className }) {
+function Toast({ message }) {
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
@@ -25,7 +25,7 @@ function Toast({ message, className }) {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -50 }}
           transition={{ duration: 0.3 }}
-          className={`fixed top-4 left-1/2 transform -translate-x-1/2 max-w-xs w-full bg-white border border-gray-200 rounded-xl shadow-lg z-50 text-700 ${className}`}
+          className="fixed top-4 left-1/2 transform -translate-x-1/2 max-w-xs w-full bg-white border border-gray-200 rounded-xl shadow-lg z-50 text-700"
         >
           <div className="flex p-4">
             <p className="text-sm">{message}</p>

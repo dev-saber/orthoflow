@@ -8,7 +8,7 @@ import Button from "../atoms/Button";
 import { useDispatch } from "react-redux";
 import { addPatient } from "../../data/patients/patientsThunk";
 
-function AddPatient({ isOpen, onClose, triggerEffect }) {
+function AddPatient({ isOpen, onClose, triggerEffect, toast }) {
   const dispatch = useDispatch();
 
   const patientInfo = useFormik({
@@ -29,8 +29,13 @@ function AddPatient({ isOpen, onClose, triggerEffect }) {
         .required("required"),
     }),
     onSubmit: async (values) => {
-      await dispatch(addPatient({ ...values }));
-      await triggerEffect();
+      try {
+        await dispatch(addPatient(values));
+        await triggerEffect();
+        toast("Patient added successfully");
+      } catch (error) {
+        toast("An error occurred. Please try again.");
+      }
       onClose();
     },
   });

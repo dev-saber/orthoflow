@@ -10,6 +10,7 @@ import AddPatient from "../components/modals/AddPatient";
 import EditPatient from "../components/modals/EditPatient";
 import DeleteModal from "../components/modals/DeleteModal";
 import LoadingSpinner from "../components/atoms/LoadingSpinner";
+import Toast from "../components/atoms/Toast";
 
 function Patients() {
   const [triggerEffect, setTriggerEffect] = useState(false);
@@ -31,6 +32,18 @@ function Patients() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentModal, setCurrentModal] = useState(null);
   const [targetedPatient, setTargetedPatient] = useState(null);
+
+  const [toastMessage, setToastMessage] = useState("");
+
+  useEffect(() => {
+    if (toastMessage) {
+      const timer = setTimeout(() => {
+        setToastMessage("");
+      }, 2500);
+
+      return () => clearTimeout(timer);
+    }
+  }, [toastMessage]);
 
   const openModal = (modalName) => {
     setIsModalOpen(true);
@@ -70,11 +83,13 @@ function Patients() {
     </tr>
   );
 
-  const filteredPatients = patients.filter((patient) =>
-    `${patient.first_name} ${patient.last_name}`
-      .toLowerCase()
-      .includes(searchValue.toLowerCase())
-  );
+  const filteredPatients = patients
+    .filter((patient) => patient != undefined) // used to remove undefined values (unknown bug source tbh)
+    .filter((patient) =>
+      `${patient.first_name} ${patient.last_name}`
+        .toLowerCase()
+        .includes(searchValue.toLowerCase())
+    );
 
   const tableBody = filteredPatients.map((patient, index) => (
     <tr
@@ -114,6 +129,7 @@ function Patients() {
         isOpen={isModalOpen}
         onClose={closeModal}
         triggerEffect={fetchDataAgain}
+        toast={setToastMessage}
       />
     ),
     edit: (
@@ -122,6 +138,7 @@ function Patients() {
         onClose={closeModal}
         data={targetedPatient}
         triggerEffect={fetchDataAgain}
+        toast={setToastMessage}
       />
     ),
     delete: (
@@ -132,6 +149,7 @@ function Patients() {
         action={() => dispatch(deletePatient(targetedPatient.id))}
         id={targetedPatient?.id}
         triggerEffect={fetchDataAgain}
+        toast={setToastMessage}
       />
     ),
   };
@@ -139,6 +157,8 @@ function Patients() {
   return (
     <>
       <div className="flex flex-col items-start justify-around w-full gap-12">
+        {toastMessage && <Toast message={toastMessage} />}
+
         <div className="flex items-center justify-between w-full">
           <SearchBox
             placeholder="patient name"

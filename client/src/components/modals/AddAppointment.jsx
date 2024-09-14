@@ -11,7 +11,7 @@ import Title from "../atoms/Title";
 import { createAppointment } from "../../data/appointments/appointmentsThunk";
 import PatientSearchList from "../atoms/PatientSearchList";
 
-function AddAppointment({ isOpen, onClose, triggerEffect }) {
+function AddAppointment({ isOpen, onClose, triggerEffect, toast }) {
   const dispatch = useDispatch();
   const patients = useSelector((state) => state.patients.patients);
   const [searchValue, setSearchValue] = useState("");
@@ -85,8 +85,14 @@ function AddAppointment({ isOpen, onClose, triggerEffect }) {
       patient_id: Yup.string().required("Required"),
     }),
     onSubmit: async (values) => {
-      await dispatch(createAppointment(values));
-      await triggerEffect();
+      try {
+        const result = await dispatch(createAppointment(values)).unwrap();
+        await triggerEffect();
+        toast("Appointment created successfully!");
+      } catch (error) {
+        console.error("error", result);
+        toast("An error occurred. Please try again.");
+      }
       onClose();
     },
   });

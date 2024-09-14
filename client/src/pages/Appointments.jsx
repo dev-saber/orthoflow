@@ -14,6 +14,7 @@ import AddAppointment from "../components/modals/AddAppointment";
 import ShowAppointment from "../components/modals/ShowAppointment";
 import EditAppointment from "../components/modals/EditAppointment";
 import DeleteModal from "../components/modals/DeleteModal";
+import Toast from "../components/atoms/Toast";
 
 function Appointments() {
   const [triggerEffect, setTriggerEffect] = useState(false); // trigger useEffect to fetch appointments after changes
@@ -29,6 +30,18 @@ function Appointments() {
   useEffect(() => {
     dispatch(getAppointments()).then(() => setIsLoading(false));
   }, [triggerEffect]);
+
+  const [toastMessage, setToastMessage] = useState("");
+
+  useEffect(() => {
+    if (toastMessage) {
+      const timer = setTimeout(() => {
+        setToastMessage("");
+      }, 2500);
+
+      return () => clearTimeout(timer);
+    }
+  }, [toastMessage]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentModal, setCurrentModal] = useState(null);
@@ -74,6 +87,7 @@ function Appointments() {
         isOpen={isModalOpen}
         onClose={closeModal}
         triggerEffect={fetchDataAgain}
+        toast={setToastMessage}
       />
     ),
     show: (
@@ -92,6 +106,7 @@ function Appointments() {
         onClose={closeModal}
         data={appointmentToShow}
         triggerEffect={fetchDataAgain}
+        toast={setToastMessage}
       />
     ),
     delete: (
@@ -102,6 +117,7 @@ function Appointments() {
         action={() => dispatch(deleteAppointment(appointmentToShow.id))}
         id={appointmentToShow.id}
         triggerEffect={fetchDataAgain}
+        toast={setToastMessage}
       />
     ),
   };
@@ -109,6 +125,7 @@ function Appointments() {
   return (
     <>
       <div className="flex flex-col items-start justify-around w-full gap-4">
+        {toastMessage && <Toast message={toastMessage} />}
         <div className="flex items-center justify-between w-full">
           <SearchBox placeholder="patient name" action={setPatientSearch} />
           <Button label="New Appointment" onClick={() => openModal("add")} />

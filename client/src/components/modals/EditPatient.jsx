@@ -8,7 +8,7 @@ import Title from "../atoms/Title";
 import InputWithErrorMessage from "../molecules/InputWithErrorMessage";
 import Button from "../atoms/Button";
 
-function EditPatient({ isOpen, onClose, data, triggerEffect }) {
+function EditPatient({ isOpen, onClose, data, triggerEffect, toast }) {
   const dispatch = useDispatch();
   const editInfo = useFormik({
     initialValues: {
@@ -24,8 +24,13 @@ function EditPatient({ isOpen, onClose, data, triggerEffect }) {
       phone: Yup.string().required("Required"),
     }),
     onSubmit: async (values) => {
-      await dispatch(updatePatient({ id: data.id, ...values }));
-      await triggerEffect();
+      try {
+        await dispatch(updatePatient({ ...values, id: data.id }));
+        await triggerEffect();
+        toast("Patient updated successfully");
+      } catch (error) {
+        toast("An error occurred. Please try again.");
+      }
       onClose();
     },
   });
