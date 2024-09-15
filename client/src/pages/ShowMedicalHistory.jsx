@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
+import { motion } from "framer-motion";
 import { filterMedics } from "../data/medicalHistories/medicalsSlice";
 import { getPatient } from "../data/patients/patientsSlice";
 import { search } from "../data/patients/patientsSlice";
 import Table from "../components/atoms/Table";
-import { Edit2, Trash2 } from "lucide-react";
+import { ArrowLeft, Edit2, Trash2 } from "lucide-react";
 
 function ShowMedicalHistory() {
   const { id } = useParams();
@@ -97,18 +98,32 @@ function ShowMedicalHistory() {
     </tr>
   ));
 
+  const handlePrev = () => {
+    navigate(-1);
+  };
+
   return (
     <div className="flex flex-col gap-8">
-      <div className="text-gray-800 text-lg">
-        Patient:{" "}
-        <span
-          className="cursor-pointer font-semibold"
-          onClick={() =>
-            patientNavigation(`${patient.first_name} ${patient.last_name}`)
-          }
+      <div className="flex gap-4 items-center">
+        <motion.div
+          className="text-blue cursor-pointer"
+          whileTap={{ x: -10 }}
+          transition={{ type: "spring", stiffness: 300, damping: 10 }}
+          onAnimationComplete={handlePrev}
         >
-          {patient.first_name} {patient.last_name}
-        </span>
+          <ArrowLeft />
+        </motion.div>
+        <div className="text-gray-800 text-lg">
+          Patient:{" "}
+          <span
+            className="cursor-pointer font-semibold"
+            onClick={() =>
+              patientNavigation(`${patient.first_name} ${patient.last_name}`)
+            }
+          >
+            {patient.first_name} {patient.last_name}
+          </span>
+        </div>
       </div>
       <div className="w-11/12 mx-auto">
         {medicals.length ? (
