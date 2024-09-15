@@ -40,7 +40,7 @@ function MedicalHistory() {
         return medical.patient.id == patient.id;
       })
     );
-    // navigate(`${patient.id}`);
+    navigate(`${patient.id}`);
   };
 
   const tableHeader = (

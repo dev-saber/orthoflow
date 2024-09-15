@@ -5,6 +5,7 @@ const initialState = {
   patients: [],
   search: "",
   fullData: [], // used for filtering purposes
+  patientIDSearch: {}
 };
 
 const patientsSlice = createSlice({
@@ -66,8 +67,13 @@ const patientsSlice = createSlice({
         state.fullData = fullData;
       }
     },
+    getPatient: (state, action) => {
+      state.patientIDSearch = state.patients.find((user) => {
+        return user.id == action.payload;
+      });
+    },
   },
 });
 
-export const { search } = patientsSlice.actions;
+export const { search, getPatient } = patientsSlice.actions;
 export default patientsSlice.reducer;

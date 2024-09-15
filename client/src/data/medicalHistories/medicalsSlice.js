@@ -3,11 +3,19 @@ import * as operations from "./medicalsThunk";
 
 const initialState = {
   medicalHistories: [],
+  filteredMedics: [],
 };
 
 const medicalsSlice = createSlice({
   name: "medicalHistories",
   initialState,
+  reducers: {
+    filterMedics: (state, action) => {
+      state.filteredMedics = state.medicalHistories.filter((medic) => {
+        return medic.patient_id == action.payload;
+      });
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(
       operations.getMedicalHistories.fulfilled,
@@ -25,4 +33,5 @@ const medicalsSlice = createSlice({
   },
 });
 
+export const { filterMedics } = medicalsSlice.actions;
 export default medicalsSlice.reducer;

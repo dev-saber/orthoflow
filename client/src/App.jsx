@@ -20,6 +20,7 @@ import Bills from "./pages/Bills";
 import MedicalHistory from "./pages/MedicalHistory";
 import PurchaseHistory from "./pages/PurchaseHistory";
 import Settings from "./pages/Settings";
+import ShowMedicalHistory from "./pages/ShowMedicalHistory";
 
 const AppLayout = () => {
   const isOpen = useSelector((state) => state.sidebar.isOpen);
@@ -88,7 +89,16 @@ export default function App() {
         },
         {
           path: "medical-history",
-          element: <MedicalHistory />,
+          children: [
+            {
+              path: "",
+              element: <MedicalHistory />,
+            },
+            {
+              path: ":id",
+              element: <ShowMedicalHistory />,
+            },
+          ],
         },
         {
           path: "purchase-history",
