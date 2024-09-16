@@ -18,9 +18,9 @@ import Patients from "./pages/Patients";
 import Stock from "./pages/Stock";
 import Bills from "./pages/Bills";
 import MedicalHistory from "./pages/MedicalHistory";
-import PurchaseHistory from "./pages/PurchaseHistory";
 import Settings from "./pages/Settings";
 import ShowMedicalHistory from "./pages/ShowMedicalHistory";
+import Dashboard from "./pages/Dashboard";
 
 const AppLayout = () => {
   const isOpen = useSelector((state) => state.sidebar.isOpen);
@@ -101,8 +101,8 @@ export default function App() {
           ],
         },
         {
-          path: "purchase-history",
-          element: <PurchaseHistory />,
+          path: "dashboard",
+          element: <Dashboard />,
         },
         {
           path: "settings",

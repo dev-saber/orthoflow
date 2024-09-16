@@ -68,9 +68,4 @@ class User extends Authenticatable
     {
         return $this->hasMany(Stock::class);
     }
-
-    protected function purchaseHistories()
-    {
-        return $this->hasMany(PurchaseHistory::class);
-    }
 }

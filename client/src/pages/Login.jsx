@@ -32,7 +32,7 @@ function Login() {
   const token = useSelector((state) => state.auth.token);
   useEffect(() => {
     if (token) {
-      navigate("/appointments");
+      navigate("/dashboard");
     }
   }, [token, navigate]);
 

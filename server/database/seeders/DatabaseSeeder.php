@@ -6,7 +6,6 @@ use App\Models\Appointment;
 use App\Models\Bill;
 use App\Models\MedicalHistory;
 use App\Models\Patient;
-use App\Models\PurchaseHistory;
 use App\Models\Stock;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -34,7 +33,6 @@ class DatabaseSeeder extends Seeder
         Appointment::factory(300)->create();
         MedicalHistory::factory(100)->create();
         Bill::factory(300)->create();
-        // Stock::factory(5)->create();
-        PurchaseHistory::factory(100)->create();
+        // Stock::factory(5)->create();    
     }
 }

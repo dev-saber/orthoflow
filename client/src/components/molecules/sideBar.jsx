@@ -8,7 +8,7 @@ import {
   Calendar,
   Boxes,
   Settings,
-  ShoppingCart,
+  LayoutDashboard,
   CreditCard,
   NotepadText,
 } from "lucide-react";
@@ -32,12 +32,12 @@ const Sidebar = () => {
   };
 
   const navLinks = [
+    { path: "dashboard", label: "Dashboard", icon: LayoutDashboard },
     { path: "appointments", label: "Appointments", icon: Calendar },
     { path: "patients", label: "Patients", icon: Users },
     { path: "stock", label: "Stock", icon: Boxes },
     { path: "bills", label: "Bills", icon: CreditCard },
     { path: "medical-history", label: "Medical History", icon: NotepadText },
-    { path: "purchase-history", label: "Purchase History", icon: ShoppingCart },
     { path: "settings", label: "Settings", icon: Settings },
   ];
 
