@@ -32,7 +32,13 @@ class MedicalHistoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $medicalHistory = MedicalHistory::findOrFail($id);
+        $medicalHistory->update($request->all());
+
+        return response()->json([
+            'message' => 'Medical history updated successfully',
+            'data' => $medicalHistory,
+        ], 200);
     }
 
     /**
@@ -40,6 +46,12 @@ class MedicalHistoryController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $medicalHistory = MedicalHistory::findOrFail($id);
+        $medicalHistory->delete();
+
+        return response()->json([
+            'message' => 'Medical history deleted successfully',
+            'id' => $id,
+        ], 200);
     }
 }

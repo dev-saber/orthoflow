@@ -30,6 +30,43 @@ const medicalsSlice = createSlice({
         console.log(action.error.message);
       }
     );
+
+    builder.addCase(
+      operations.updateMedicalHistory.fulfilled,
+      (state, action) => {
+        const updatedMedicalHistory = action.payload;
+        const index = state.filteredMedics.findIndex(
+          (medic) => medic.id == updatedMedicalHistory.id
+        );
+        if (index !== -1) {
+          state.filteredMedics[index] = updatedMedicalHistory;
+        }
+      }
+    );
+
+    builder.addCase(
+      operations.updateMedicalHistory.rejected,
+      (state, action) => {
+        console.log(action.error.message);
+      }
+    );
+
+    builder.addCase(
+      operations.deleteMedicalHistory.fulfilled,
+      (state, action) => {
+        const deletedMedicalHistory = action.payload;
+        state.filteredMedics = state.filteredMedics.filter(
+          (medic) => medic.id != deletedMedicalHistory.id
+        );
+      }
+    );
+
+    builder.addCase(
+      operations.deleteMedicalHistory.rejected,
+      (state, action) => {
+        console.log(action.error.message);
+      }
+    );
   },
 });
 

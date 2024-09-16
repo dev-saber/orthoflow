@@ -6,4 +6,20 @@ const getMedicalHistories = createAsyncThunk("/medicalHistories", async () => {
   return response.data;
 });
 
-export { getMedicalHistories };
+const updateMedicalHistory = createAsyncThunk(
+  "/medicalHistories/update",
+  async (data) => {
+    const response = await api.patch(`/medical-history/${data.id}`, data);
+    return response.data.data;
+  }
+);
+
+const deleteMedicalHistory = createAsyncThunk(
+  "/medicalHistories/delete",
+  async (id) => {
+    const response = await api.delete(`/medical-history/${id}`);
+    return response.data.id;
+  }
+);
+
+export { getMedicalHistories, updateMedicalHistory, deleteMedicalHistory };
