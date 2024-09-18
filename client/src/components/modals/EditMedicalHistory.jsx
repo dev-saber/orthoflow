@@ -21,7 +21,7 @@ function EditMedicalHistory({ isOpen, onClose, data, triggerEffect, toast }) {
     validationSchema: Yup.object({
       diagnosis: Yup.string().required("Required"),
       treatment: Yup.string().required("Required"),
-      notes: Yup.string().required("Required"),
+      notes: Yup.string(),
     }),
     onSubmit: async (values) => {
       try {
