@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\BillController;
+use App\Http\Controllers\Dashboard;
 use App\Http\Controllers\MedicalHistoryController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\StockController;
@@ -25,4 +26,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::resource('stock', StockController::class);
     Route::resource('bills', BillController::class);
     Route::resource('medical-history', MedicalHistoryController::class);
+    Route::get('/dashboard/appointments', [Dashboard::class, 'appointmentsToday']);
+    Route::get('/dashboard/stock', [Dashboard::class, 'stockStats']);
+    Route::get('/dashboard/bills', [Dashboard::class, 'billsStats']);
 });
