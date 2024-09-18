@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getStock } from "../data/stock/stockThunk";
 import StockInventory from "../components/molecules/StockInventory";
@@ -7,10 +7,10 @@ import StockTable from "../components/molecules/StockTable";
 
 function Stock() {
   const dispatch = useDispatch();
-  const [loading, setLoading] = React.useState(true);
+  const [loading, setLoading] = useState(true);
   const stock = useSelector((state) => state.stock.data);
 
-  const [triggerEffect, setTriggerEffect] = React.useState(false);
+  const [triggerEffect, setTriggerEffect] = useState(false);
 
   useEffect(() => {
     dispatch(getStock());
@@ -20,8 +20,8 @@ function Stock() {
     stock.length && setLoading(false);
   }, [stock]);
 
-  const [isModalOpen, setIsModalOpen] = React.useState(false);
-  const [item, setItem] = React.useState({});
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [item, setItem] = useState({});
 
   const openModal = (item) => {
     setItem(item);
@@ -42,21 +42,14 @@ function Stock() {
           <LoadingSpinner />
         </div>
       ) : (
-        <div className="flex flex-col gap-4 h-full">
-          <div className="flex gap-8 items-center h-full">
-            <div className="w-1/2 flex items-center h-full">
-              <StockInventory isLoading={loading} />
-            </div>
-            <div className="w-1/2 self-start">
-              <StockTable
-                modal={openModal}
-                isOpen={isModalOpen}
-                onClose={closeModal}
-                itemRecord={item}
-                triggerEffect={fetchDataAgain}
-              />
-            </div>
-          </div>
+        <div className="mx-auto w-4/5 -mt-8">
+          <StockTable
+            modal={openModal}
+            isOpen={isModalOpen}
+            onClose={closeModal}
+            itemRecord={item}
+            triggerEffect={fetchDataAgain}
+          />
         </div>
       )}
     </>

@@ -28,7 +28,7 @@ function StockTable({ modal, isOpen, onClose, itemRecord, triggerEffect }) {
   const tableBody = stock.map((item, index) => (
     <tr
       key={index}
-      className="bg-white text-black border-b-[1px] hover:bg-gray-50 text-center"
+      className="bg-white text-black border-b-[1px] hover:bg-gray-50 text-start"
     >
       <td className="px-6 py-4 whitespace-nowrap text-start flex gap-2 items-center">
         {item.reorder_level >= item.quantity && (

@@ -27,6 +27,5 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::resource('bills', BillController::class);
     Route::resource('medical-history', MedicalHistoryController::class);
     Route::get('/dashboard/appointments', [Dashboard::class, 'appointmentsToday']);
-    Route::get('/dashboard/stock', [Dashboard::class, 'stockStats']);
     Route::get('/dashboard/bills', [Dashboard::class, 'billsStats']);
 });

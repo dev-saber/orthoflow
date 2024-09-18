@@ -11,11 +11,6 @@ class Dashboard extends Controller
         // 
     }
 
-    public function stockStats(Request $request)
-    {
-        // 
-    }
-
     public function billsStats(Request $request)
     {
         // 
