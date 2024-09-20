@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\MedicalHistory;
+use App\Models\Patient;
 use Illuminate\Http\Request;
 
 class MedicalHistoryController extends Controller
@@ -13,9 +14,16 @@ class MedicalHistoryController extends Controller
     public function index(Request $request)
     {
         return response()->json([
-            'data' => MedicalHistory::with('patient')->whereHas('patient', function ($query) use ($request) {
-                $query->where('dentist_id', $request->user()->id);
-            })->orderBy('visit_date', 'desc')->get(),
+            'data' => Patient::where('dentist_id', $request->user()->id)
+                ->with(['medicalHistories' => function ($query) {
+                    $query->orderBy('visit_date', 'desc');
+                }])
+                ->withCount('medicalHistories')
+                ->get(['id', 'first_name', 'last_name'])
+                ->map(function ($patient) {
+                    $patient->last_visit_date = $patient->medicalHistories->first()->visit_date ?? null; // get last visit date
+                    return $patient;
+                }),
         ], 200);
     }
 

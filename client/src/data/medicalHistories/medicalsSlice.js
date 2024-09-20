@@ -11,9 +11,11 @@ const medicalsSlice = createSlice({
   initialState,
   reducers: {
     filterMedics: (state, action) => {
-      state.filteredMedics = state.medicalHistories.filter((medic) => {
-        return medic.patient_id == action.payload;
-      });
+      state.filteredMedics = state.medicalHistories
+        .filter((medic) => {
+          return medic.id == action.payload;
+        })
+        .flatMap((medic) => medic.medical_histories); // flatMap is used to prevent nested arrays
     },
   },
   extraReducers: (builder) => {

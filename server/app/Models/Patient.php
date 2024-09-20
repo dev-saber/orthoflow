@@ -17,22 +17,22 @@ class Patient extends Model
         'dentist_id',
     ];
 
-    protected function dentist()
+    public function dentist()
     {
         return $this->belongsTo(User::class);
     }
 
-    protected function appointments()
+    public function appointments()
     {
         return $this->hasMany(Appointment::class);
     }
 
-    protected function medicalHistory()
+    public function medicalHistories()
     {
-        return $this->hasOne(MedicalHistory::class);
+        return $this->hasMany(MedicalHistory::class);
     }
 
-    protected function bills()
+    public function bills()
     {
         return $this->hasMany(Bill::class);
     }

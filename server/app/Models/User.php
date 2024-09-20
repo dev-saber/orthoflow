@@ -49,22 +49,22 @@ class User extends Authenticatable
         ];
     }
 
-    protected function patients()
+    public function patients()
     {
         return $this->hasMany(Patient::class);
     }
 
-    protected function appointments()
+    public function appointments()
     {
         return $this->hasMany(Appointment::class);
     }
 
-    protected function medicalHistories()
+    public function medicalHistories()
     {
         return $this->hasMany(MedicalHistory::class);
     }
 
-    protected function stock()
+    public function stock()
     {
         return $this->hasMany(Stock::class);
     }

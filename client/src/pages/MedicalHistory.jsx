@@ -18,7 +18,6 @@ function MedicalHistory() {
   const searchValue = useSelector((state) => state.patients.search);
 
   const [isLoading, setIsLoading] = useState(false);
-  const [showMedicals, setShowMedicals] = useState([]);
 
   useEffect(() => {
     if (!medicals.length) {
@@ -34,30 +33,25 @@ function MedicalHistory() {
     navigate("/patients");
   };
 
-  const showPatientMedicals = (patient) => {
-    setShowMedicals(
-      medicals.filter((medical) => {
-        return medical.patient.id == patient.id;
-      })
-    );
-    navigate(`${patient.id}`);
-  };
+  const showPatientMedicals = (patient) => navigate(`${patient.id}`);
 
   const tableHeader = (
     <tr>
-      {["Patient", ""].map((header, index) => (
-        <th
-          key={index}
-          scope="col"
-          className="px-6 py-3 text-start text-sm medium text-blue font-bold"
-        >
-          {header}
-        </th>
-      ))}
+      {["Patient", "number of visits", "last visit", "more details"].map(
+        (header, index) => (
+          <th
+            key={index}
+            scope="col"
+            className="px-6 py-3 text-start text-sm medium text-blue font-bold"
+          >
+            {header}
+          </th>
+        )
+      )}
     </tr>
   );
 
-  const filteredPatients = patients.filter((patient) =>
+  const filteredPatients = medicals.filter((patient) =>
     `${patient.first_name} ${patient.last_name}`
       .toLowerCase()
       .includes(searchValue.toLowerCase())
@@ -76,6 +70,13 @@ function MedicalHistory() {
       >
         {patient.first_name} {patient.last_name}
       </td>
+      <td className="px-6 py-4 whitespace-nowrap cursor-pointer">
+        {patient.medical_histories_count}
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap cursor-pointer">
+        {patient.last_visit_date ?? "N/A"}
+      </td>
+
       <td
         className="px-6 py-4 whitespace-nowrap text-blue"
         onClick={() => showPatientMedicals(patient)}
@@ -106,8 +107,8 @@ function MedicalHistory() {
               // onClick={createModal}
             />
           </div>
-          <div className="w-2/5 mx-auto">
-            {patients.length ? (
+          <div className="w-4/5 mx-auto">
+            {medicals.length ? (
               <Table header={tableHeader} body={tableBody} />
             ) : (
               <div className="flex justify-center items-center h-64">
