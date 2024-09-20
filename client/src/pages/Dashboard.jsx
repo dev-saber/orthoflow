@@ -27,7 +27,7 @@ function Dashboard() {
     fetchStats();
 
     setLoading(false);
-  }, [stock]);
+  }, [stock, stats]);
 
   return (
     <>
@@ -44,9 +44,9 @@ function Dashboard() {
             </div>
             <div className="w-1/2 flex flex-col items-center gap-12">
               <Stats
-                beginText="estimated"
-                data={`MAD ${stats.unpaidSum}`}
-                endText="unpaid bills"
+                beginText="estimated MAD"
+                data={parseFloat(stats.unpaidSum)}
+                endText="from unpaid bills"
               />
               <Stats data={stats.unpaidClients} endText="unpaid clients" />
             </div>
