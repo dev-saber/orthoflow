@@ -43,7 +43,7 @@ function StockInventory({ isLoading }) {
   return (
     <>
       {!isLoading && (
-        <div style={{ width: "100%", height: "80%" }}>
+        <div style={{ width: "80%", height: "80%" }}>
           <Bar data={data} options={options} />
         </div>
       )}

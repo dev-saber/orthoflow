@@ -5,18 +5,20 @@ import LoadingSpinner from "../components/atoms/LoadingSpinner";
 import StockInventory from "../components/molecules/StockInventory";
 import Title from "../components/atoms/Title";
 import { billsStats } from "../data/bills/billsThunk";
+import Stats from "../components/atoms/Stats";
 
 function Dashboard() {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const stock = useSelector((state) => state.stock.data);
-  const bills = useSelector((state) => state.bills.stats);
+  const stats = useSelector((state) => state.bills.stats);
+
   useEffect(() => {
     async function fetchStats() {
       if (!stock.length) {
         await dispatch(getStock());
       }
-      if (!bills.length) {
+      if (!stats.length) {
         await dispatch(billsStats());
       }
       setLoading(false);
@@ -40,7 +42,14 @@ function Dashboard() {
               <Title text="Stock Inventory" />
               <StockInventory isLoading={loading} />
             </div>
-            <div className="w-1/2"></div>
+            <div className="w-1/2 flex flex-col items-center gap-12">
+              <Stats
+                beginText="estimated"
+                data={`MAD ${stats.unpaidSum}`}
+                endText="unpaid bills"
+              />
+              <Stats data={stats.unpaidClients} endText="unpaid clients" />
+            </div>
           </div>
         </div>
       )}
