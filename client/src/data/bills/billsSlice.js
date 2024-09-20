@@ -5,6 +5,7 @@ const initialState = {
   bills: [],
   patientSearch: "",
   fullData: [],
+  stats: {},
 };
 
 const billsSlice = createSlice({
@@ -40,6 +41,14 @@ const billsSlice = createSlice({
     });
 
     builder.addCase(operations.createBill.rejected, (state, action) => {
+      console.log(action.error.message);
+    });
+
+    builder.addCase(operations.billsStats.fulfilled, (state, action) => {
+      state.stats = action.payload;
+    });
+
+    builder.addCase(operations.billsStats.rejected, (state, action) => {
       console.log(action.error.message);
     });
   },

@@ -21,4 +21,9 @@ const createBill = createAsyncThunk("/bills/create", async (data) => {
   return response.data;
 });
 
-export { getBills, updateBill, deleteBill, createBill };
+const billsStats = createAsyncThunk("/bills/stats", async () => {
+  const response = await api.get("/dashboard/bills");
+  return response.data;
+});
+
+export { getBills, updateBill, deleteBill, createBill, billsStats };

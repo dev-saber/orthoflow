@@ -4,13 +4,26 @@ import { getStock } from "../data/stock/stockThunk";
 import LoadingSpinner from "../components/atoms/LoadingSpinner";
 import StockInventory from "../components/molecules/StockInventory";
 import Title from "../components/atoms/Title";
+import { billsStats } from "../data/bills/billsThunk";
 
 function Dashboard() {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const stock = useSelector((state) => state.stock.data);
+  const bills = useSelector((state) => state.bills.stats);
   useEffect(() => {
-    !stock.length && dispatch(getStock()).then(() => setLoading(false));
+    async function fetchStats() {
+      if (!stock.length) {
+        await dispatch(getStock());
+      }
+      if (!bills.length) {
+        await dispatch(billsStats());
+      }
+      setLoading(false);
+    }
+
+    fetchStats();
+
     setLoading(false);
   }, [stock]);
 
