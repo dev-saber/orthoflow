@@ -52,7 +52,11 @@ function ShowMedicalHistory() {
   }, [id, dispatch, medicalsFullData.length, navigate]);
 
   useEffect(() => {
-    dispatch(getMedicalHistories());
+    const refetchData = async () => {
+      await dispatch(getMedicalHistories());
+      await dispatch(filterMedics(id));
+    };
+    refetchData();
   }, [triggerEffect]);
 
   useEffect(() => {
