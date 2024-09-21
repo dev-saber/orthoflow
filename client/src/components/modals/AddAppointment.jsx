@@ -1,45 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import moment from "moment";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { getPatients } from "../../data/patients/patientsThunk";
 import * as Yup from "yup";
+import usePatientSearch from "../../hooks/usePatientSearch";
 import ModalContainer from "./ModalContainer";
 import InputWithErrorMessage from "../molecules/InputWithErrorMessage";
 import Button from "../atoms/Button";
 import Title from "../atoms/Title";
 import { createAppointment } from "../../data/appointments/appointmentsThunk";
-import PatientSearchList from "../atoms/PatientSearchList";
 
 function AddAppointment({ isOpen, onClose, triggerEffect, toast }) {
   const dispatch = useDispatch();
-  const patients = useSelector((state) => state.patients.patients);
-  const [searchValue, setSearchValue] = useState("");
-  const [filteredPatients, setFilteredPatients] = useState([]);
-  const [showFilteredPatients, setShowFilteredPatients] = useState(false);
-  const [isSelected, setIsSelected] = useState(false); // to prevent showing the filtered patients list when a patient is selected
-
-  useEffect(() => {
-    if (patients.length == 0) {
-      dispatch(getPatients());
-    }
-  }, [dispatch, patients.length]);
-
-  useEffect(() => {
-    if (searchValue && !isSelected) {
-      setFilteredPatients(
-        patients.filter((patient) =>
-          `${patient.first_name} ${patient.last_name}`
-            .toLowerCase()
-            .includes(searchValue.toLowerCase())
-        )
-      );
-      setShowFilteredPatients(true);
-    } else {
-      setFilteredPatients([]);
-      setShowFilteredPatients(false);
-    }
-  }, [searchValue, isSelected]);
 
   const { start_time, end_time } = useSelector((state) => state.auth.user);
 
@@ -97,6 +69,8 @@ function AddAppointment({ isOpen, onClose, triggerEffect, toast }) {
     },
   });
 
+  const search = usePatientSearch(appointmentInfo);
+
   return (
     <ModalContainer isOpen={isOpen} onClose={onClose}>
       <form
@@ -143,11 +117,8 @@ function AddAppointment({ isOpen, onClose, triggerEffect, toast }) {
             label="Patient"
             name="patient_id"
             type="text"
-            value={searchValue}
-            onChange={(e) => {
-              setSearchValue(e.target.value);
-              setIsSelected(false);
-            }}
+            value={search.searchValue}
+            onChange={search.handleChange}
             errorCondition={
               appointmentInfo.touched.patient_id &&
               appointmentInfo.errors.patient_id
@@ -156,14 +127,7 @@ function AddAppointment({ isOpen, onClose, triggerEffect, toast }) {
             onFocus={() => setShowFilteredPatients(true)}
           />
 
-          <PatientSearchList
-            isShowing={showFilteredPatients}
-            filteredData={filteredPatients}
-            formData={appointmentInfo}
-            hide={() => setShowFilteredPatients(false)}
-            selected={() => setIsSelected(true)}
-            search={setSearchValue}
-          />
+          {search.searchResult}
         </div>
         <Button label="Add Appointment" type="submit" />
       </form>

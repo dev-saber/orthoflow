@@ -1,37 +1,16 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { useDispatch } from "react-redux";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import usePatientSearch from "../../hooks/usePatientSearch";
 import ModalContainer from "./ModalContainer";
 import Title from "../atoms/Title";
 import InputWithErrorMessage from "../molecules/InputWithErrorMessage";
-import PatientSearchList from "../atoms/PatientSearchList";
 import Button from "../atoms/Button";
 import { createMedicalHistory } from "../../data/medicalHistories/medicalsThunk";
 
 function AddMedicalHistory({ isOpen, onClose, triggerEffect, toast }) {
   const dispatch = useDispatch();
-  const patients = useSelector((state) => state.patients.patients);
-  const [searchValue, setSearchValue] = useState("");
-  const [filteredPatients, setFilteredPatients] = useState([]);
-  const [showFilteredPatients, setShowFilteredPatients] = useState(false);
-  const [isSelected, setIsSelected] = useState(false);
-
-  useEffect(() => {
-    if (searchValue && !isSelected) {
-      setFilteredPatients(
-        patients.filter((patient) =>
-          `${patient.first_name} ${patient.last_name}`
-            .toLowerCase()
-            .includes(searchValue.toLowerCase())
-        )
-      );
-      setShowFilteredPatients(true);
-    } else {
-      setFilteredPatients([]);
-      setShowFilteredPatients(false);
-    }
-  }, [searchValue, isSelected]);
 
   const medicInfo = useFormik({
     initialValues: {
@@ -63,6 +42,8 @@ function AddMedicalHistory({ isOpen, onClose, triggerEffect, toast }) {
     },
   });
 
+  const search = usePatientSearch(medicInfo);
+
   return (
     <ModalContainer isOpen={isOpen} onClose={onClose} className="max-w-2xl">
       <form
@@ -78,11 +59,8 @@ function AddMedicalHistory({ isOpen, onClose, triggerEffect, toast }) {
                 label="Patient"
                 name="patient_id"
                 type="text"
-                value={searchValue}
-                onChange={(e) => {
-                  setSearchValue(e.target.value);
-                  setIsSelected(false);
-                }}
+                value={search.searchValue}
+                onChange={search.handleChange}
                 errorCondition={
                   medicInfo.touched.patient_id && medicInfo.errors.patient_id
                 }
@@ -90,14 +68,7 @@ function AddMedicalHistory({ isOpen, onClose, triggerEffect, toast }) {
                 onFocus={() => setShowFilteredPatients(true)}
               />
 
-              <PatientSearchList
-                isShowing={showFilteredPatients}
-                filteredData={filteredPatients}
-                formData={medicInfo}
-                hide={() => setShowFilteredPatients(false)}
-                selected={() => setIsSelected(true)}
-                search={setSearchValue}
-              />
+              {search.searchResult}
             </div>
             <InputWithErrorMessage
               label="Visit Date"

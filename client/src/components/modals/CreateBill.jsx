@@ -1,44 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useDispatch, useSelector } from "react-redux";
-import { getPatients } from "../../data/patients/patientsThunk";
+import { useDispatch } from "react-redux";
+import { createBill } from "../../data/bills/billsThunk";
+import usePatientSearch from "../../hooks/usePatientSearch";
 import ModalContainer from "./ModalContainer";
 import Title from "../atoms/Title";
 import InputWithErrorMessage from "../molecules/InputWithErrorMessage";
 import Button from "../atoms/Button";
-import { createBill } from "../../data/bills/billsThunk";
-import PatientSearchList from "../atoms/PatientSearchList";
 
 function CreateBill({ isOpen, onClose, triggerEffect, toast }) {
   const dispatch = useDispatch();
-  const patients = useSelector((state) => state.patients.patients);
-  const [searchValue, setSearchValue] = useState("");
-  const [isSelected, setIsSelected] = useState(false);
-  const [filteredPatients, setFilteredPatients] = useState([]);
-  const [showFilteredPatients, setShowFilteredPatients] = useState(false);
-
-  useEffect(() => {
-    if (searchValue && !isSelected) {
-      setFilteredPatients(
-        patients.filter((patient) =>
-          `${patient.first_name} ${patient.last_name}`
-            .toLowerCase()
-            .includes(searchValue.toLowerCase())
-        )
-      );
-      setShowFilteredPatients(true);
-    } else {
-      setFilteredPatients([]);
-      setShowFilteredPatients(false);
-    }
-  }, [searchValue, isSelected]);
-
-  useEffect(() => {
-    if (patients.length == 0) {
-      dispatch(getPatients());
-    }
-  }, [dispatch, patients.length]);
 
   const billInfo = useFormik({
     initialValues: {
@@ -63,6 +35,8 @@ function CreateBill({ isOpen, onClose, triggerEffect, toast }) {
     },
   });
 
+  const search = usePatientSearch(billInfo);
+
   return (
     <ModalContainer isOpen={isOpen} onClose={onClose}>
       <form
@@ -85,11 +59,8 @@ function CreateBill({ isOpen, onClose, triggerEffect, toast }) {
             label="Patient"
             name="patient_id"
             type="text"
-            value={searchValue}
-            onChange={(e) => {
-              setSearchValue(e.target.value);
-              setIsSelected(false);
-            }}
+            value={search.searchValue}
+            onChange={search.handleChange}
             errorCondition={
               billInfo.touched.patient_id && billInfo.errors.patient_id
             }
@@ -97,14 +68,7 @@ function CreateBill({ isOpen, onClose, triggerEffect, toast }) {
             onFocus={() => setShowFilteredPatients(true)}
           />
 
-          <PatientSearchList
-            isShowing={showFilteredPatients}
-            filteredData={filteredPatients}
-            formData={billInfo}
-            hide={() => setShowFilteredPatients(false)}
-            search={setSearchValue}
-            selected={setIsSelected}
-          />
+          {search.searchResult}
         </div>
 
         <div className="flex flex-col items-start">
