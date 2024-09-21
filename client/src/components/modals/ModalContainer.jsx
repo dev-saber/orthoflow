@@ -2,7 +2,7 @@ import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 
-const ModalContainer = ({ isOpen, onClose, children }) => {
+const ModalContainer = ({ isOpen, onClose, children, className }) => {
   return (
     <AnimatePresence>
       {isOpen && (
@@ -21,7 +21,9 @@ const ModalContainer = ({ isOpen, onClose, children }) => {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
             transition={{ type: "spring", damping: 20, stiffness: 300 }}
-            className="relative w-full max-w-md p-6 mx-auto bg-white rounded-lg shadow-xl"
+            className={`relative w-full p-6 mx-auto bg-white rounded-lg shadow-xl ${
+              className ?? "max-w-md"
+            }`}
           >
             <button
               className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"

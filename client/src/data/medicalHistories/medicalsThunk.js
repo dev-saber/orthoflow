@@ -22,4 +22,17 @@ const deleteMedicalHistory = createAsyncThunk(
   }
 );
 
-export { getMedicalHistories, updateMedicalHistory, deleteMedicalHistory };
+const createMedicalHistory = createAsyncThunk(
+  "/medicalHistories/create",
+  async (data) => {
+    const response = await api.post("/medical-history", data);
+    return response.data.data;
+  }
+);
+
+export {
+  getMedicalHistories,
+  updateMedicalHistory,
+  deleteMedicalHistory,
+  createMedicalHistory,
+};

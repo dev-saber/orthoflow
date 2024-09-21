@@ -69,6 +69,20 @@ const medicalsSlice = createSlice({
         console.log(action.error.message);
       }
     );
+
+    builder.addCase(
+      operations.createMedicalHistory.fulfilled,
+      (state, action) => {
+        state.filteredMedics.push(action.payload);
+      }
+    );
+
+    builder.addCase(
+      operations.createMedicalHistory.rejected,
+      (state, action) => {
+        console.log(action.error.message);
+      }
+    );
   },
 });
 

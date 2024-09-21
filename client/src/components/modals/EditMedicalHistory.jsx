@@ -2,12 +2,11 @@ import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
+import { updateMedicalHistory } from "../../data/medicalHistories/medicalsThunk";
 import ModalContainer from "./ModalContainer";
 import Title from "../atoms/Title";
 import InputWithErrorMessage from "../molecules/InputWithErrorMessage";
 import Button from "../atoms/Button";
-import ErrorMessage from "../atoms/ErrorMessage";
-import { updateMedicalHistory } from "../../data/medicalHistories/medicalsThunk";
 
 function EditMedicalHistory({ isOpen, onClose, data, triggerEffect, toast }) {
   const dispatch = useDispatch();
@@ -21,7 +20,6 @@ function EditMedicalHistory({ isOpen, onClose, data, triggerEffect, toast }) {
     validationSchema: Yup.object({
       diagnosis: Yup.string().required("Required"),
       treatment: Yup.string().required("Required"),
-      notes: Yup.string(),
     }),
     onSubmit: async (values) => {
       try {
@@ -74,10 +72,6 @@ function EditMedicalHistory({ isOpen, onClose, data, triggerEffect, toast }) {
             onBlur={editInfo.handleBlur}
             className="w-52 h-32 p-2 shadow-sm border border-solid rounded-lg border-gray-300"
           ></textarea>
-          <ErrorMessage
-            errorCondition={editInfo.errors.notes}
-            message={editInfo.errors.notes}
-          />
         </div>
 
         <Button label="Submit" />

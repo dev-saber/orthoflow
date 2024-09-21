@@ -32,7 +32,13 @@ class MedicalHistoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        MedicalHistory::create(
+            array_merge($request->all(), ['dentist_id' => $request->user()->id])
+        );
+
+        return response()->json([
+            'message' => 'Medical history created successfully',
+        ], 201);
     }
 
     /**
