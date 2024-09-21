@@ -31,7 +31,7 @@ function Dashboard() {
 
   return (
     <>
-      {loading ? (
+      {loading || isNaN(parseFloat(stats.unpaidSum)) ? (
         <div className="flex justify-center items-center h-96">
           <LoadingSpinner />
         </div>
@@ -42,13 +42,16 @@ function Dashboard() {
               <Title text="Stock Inventory" />
               <StockInventory isLoading={loading} />
             </div>
-            <div className="w-1/2 flex flex-col items-center gap-12">
-              <Stats
-                beginText="estimated MAD"
-                data={parseFloat(stats.unpaidSum)}
-                endText="from unpaid bills"
-              />
-              <Stats data={stats.unpaidClients} endText="unpaid clients" />
+            <div className="w-1/2 flex flex-col items-center gap-8 h-screen">
+              <Title text="Bills information" />
+              <div className="flex flex-col items-center justify-center h-2/3 gap-12">
+                <Stats
+                  beginText="estimated MAD"
+                  data={parseFloat(stats.unpaidSum)}
+                  endText="from unpaid bills"
+                />
+                <Stats data={stats.unpaidClients} endText="unpaid clients" />
+              </div>
             </div>
           </div>
         </div>
