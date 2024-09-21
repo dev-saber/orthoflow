@@ -41,11 +41,7 @@ function AddPatient({ isOpen, onClose, triggerEffect, toast }) {
   });
 
   return (
-    <ModalContainer
-      isOpen={isOpen}
-      onClose={onClose}
-      className="w-full max-w-4xl mx-auto"
-    >
+    <ModalContainer isOpen={isOpen} onClose={onClose}>
       <form
         className="flex flex-col items-center gap-6"
         onSubmit={patientInfo.handleSubmit}
