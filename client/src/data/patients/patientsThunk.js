@@ -1,8 +1,8 @@
 import api from "../api";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-const getPatients = createAsyncThunk("/patients", async () => {
-  const response = await api.get("/patients");
+const getPatients = createAsyncThunk("/patients", async (pageNumber) => {
+  const response = await api.get(`/patients?page=${pageNumber}`);
   return response.data;
 });
 

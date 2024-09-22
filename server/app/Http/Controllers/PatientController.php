@@ -13,7 +13,9 @@ class PatientController extends Controller
     public function index(Request $request)
     {
         return response()->json([
-            'patients' => Patient::where('dentist_id', $request->user()->id)->orderBy('created_at', 'desc')->get()
+            'patients' => Patient::where('dentist_id', $request->user()->id)
+                ->orderBy('created_at', 'desc')
+                ->paginate(2),
         ], 200);
     }
 
