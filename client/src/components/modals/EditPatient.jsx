@@ -26,6 +26,7 @@ function EditPatient({ isOpen, onClose, data, triggerEffect, toast }) {
     onSubmit: async (values) => {
       try {
         await dispatch(updatePatient({ ...values, id: data.id }));
+        
         await triggerEffect();
         toast("Patient updated successfully");
       } catch (error) {

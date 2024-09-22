@@ -21,7 +21,7 @@ const patientsSlice = createSlice({
     });
 
     builder.addCase(operations.addPatient.fulfilled, (state, action) => {
-      state.patients.push(action.payload.patient);
+      console.log(action.payload);
     });
 
     builder.addCase(operations.addPatient.rejected, (state, action) => {

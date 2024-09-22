@@ -3,6 +3,10 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 const dataCaching = [];
 
+const clearCache = () => {
+  dataCaching.length = 0;
+};
+
 const getPatients = createAsyncThunk("/patients", async (pageNumber) => {
   if (!pageNumber) pageNumber = 1;
 
@@ -29,4 +33,4 @@ const deletePatient = createAsyncThunk("/patients/delete", async (id) => {
   return response.data;
 });
 
-export { getPatients, addPatient, updatePatient, deletePatient };
+export { getPatients, addPatient, updatePatient, deletePatient, clearCache };

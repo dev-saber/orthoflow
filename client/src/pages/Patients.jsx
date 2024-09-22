@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deletePatient, getPatients } from "../data/patients/patientsThunk";
+import {
+  clearCache,
+  deletePatient,
+  getPatients,
+} from "../data/patients/patientsThunk";
 import { search } from "../data/patients/patientsSlice";
 import usePaginate from "../hooks/usePaginate";
 import { Edit2, Trash2 } from "lucide-react";
@@ -29,6 +33,7 @@ function Patients() {
   }, [triggerEffect]);
 
   const fetchDataAgain = () => {
+    clearCache();
     setTriggerEffect(!triggerEffect);
   };
 
