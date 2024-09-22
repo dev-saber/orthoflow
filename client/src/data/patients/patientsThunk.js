@@ -1,9 +1,17 @@
 import api from "../api";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
+const dataCaching = [];
+
 const getPatients = createAsyncThunk("/patients", async (pageNumber) => {
+  if (!pageNumber) pageNumber = 1;
+
+  if (dataCaching[pageNumber]) {
+    return dataCaching[pageNumber];
+  }
   const response = await api.get(`/patients?page=${pageNumber}`);
-  return response.data;
+  dataCaching[pageNumber] = response.data;
+  return dataCaching[pageNumber];
 });
 
 const addPatient = createAsyncThunk("/patients/create", async (patient) => {

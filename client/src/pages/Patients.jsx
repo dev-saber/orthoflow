@@ -30,7 +30,7 @@ function Patients() {
   const paginate = (data) => {
     const pageNavigation = (page) => {
       setCurrentPage(page);
-      dispatch(getPatients(page));
+      debounce(dispatch(getPatients(page)), 300);
     };
 
     const pages = Array.from({ length: data.last_page }, (_, i) => (
