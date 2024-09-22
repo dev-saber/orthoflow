@@ -13,9 +13,12 @@ class BillController extends Controller
     public function index(Request $request)
     {
         return response()->json([
-            'bills' => Bill::with('patient')->whereHas('patient', function ($query) use ($request) {
-                $query->where('dentist_id', $request->user()->id);
-            })->orderBy('created_at', 'desc')->get(),
+            'bills' => Bill::with('patient')
+                ->whereHas('patient', function ($query) use ($request) {
+                    $query->where('dentist_id', $request->user()->id);
+                })
+                ->orderBy('created_at', 'desc')
+                ->paginate(10),
         ], 200);
     }
 

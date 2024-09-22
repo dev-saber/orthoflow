@@ -5,6 +5,7 @@ import moment from "moment";
 import { deleteBill, getBills } from "../data/bills/billsThunk";
 import { search } from "../data/patients/patientsSlice";
 import { searchPatient } from "../data/bills/billsSlice";
+import usePaginate from "../hooks/usePaginate";
 import { Edit2, Trash2 } from "lucide-react";
 import LoadingSpinner from "../components/atoms/LoadingSpinner";
 import Table from "../components/atoms/Table";
@@ -21,14 +22,18 @@ function Bills() {
   const [isLoading, setIsLoading] = useState(false);
   const [triggerEffect, setTriggerEffect] = useState(false);
 
+  const paginate = usePaginate(bills, getBills);
+
   useEffect(() => {
-    !bills.length && setIsLoading(true);
-    dispatch(getBills()).then(() => setIsLoading(false));
-  }, []);
+    if (!bills.data?.length) {
+      setIsLoading(true);
+      dispatch(getBills()).then(() => setIsLoading(false));
+    }
+  }, [dispatch, bills.data]);
 
   useEffect(() => {
     dispatch(getBills()).then(() => setIsLoading(false));
-  }, [triggerEffect]);
+  }, [dispatch, triggerEffect]);
 
   const [toastMessage, setToastMessage] = useState("");
 
@@ -64,7 +69,7 @@ function Bills() {
     </tr>
   );
 
-  const tableBody = bills.map((bill) => (
+  const tableBody = bills.data?.map((bill) => (
     <tr
       key={bill.id}
       className="bg-white text-black border-b-[1px] hover:bg-gray-50"
@@ -173,14 +178,17 @@ function Bills() {
             <SearchBox placeholder="patient name" action={searchPatient} />
             <Button label="New Invoice" onClick={createModal} />
           </div>
-          <div className="w-11/12 mx-auto">
-            {bills.length ? (
+          <div className="w-11/12 mx-auto pb-16 relative">
+            {bills.data?.length ? (
               <Table header={tableHeader} body={tableBody} />
             ) : (
               <div className="flex justify-center items-center h-64">
                 <p>No results found</p>
               </div>
             )}
+            <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2">
+              {paginate}
+            </div>
           </div>
         </div>
       )}
