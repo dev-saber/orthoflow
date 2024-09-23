@@ -9,7 +9,7 @@ function usePaginate(data, getData) {
     dispatch(getData(page));
   };
 
-  if (data.last_page == 1) return null;
+  if (data.last_page == 1 || !data.last_page) return null;
   const pages = Array.from({ length: data.last_page }, (_, i) => (
     <button
       key={i + 1}

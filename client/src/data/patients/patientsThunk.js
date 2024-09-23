@@ -1,10 +1,14 @@
 import api from "../api";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-const dataCaching = [];
+const dataCaching = {};
 
 const clearCache = () => {
-  dataCaching.length = 0;
+  for (let key in dataCaching) {
+    if (dataCaching.hasOwnProperty(key)) {
+      delete dataCaching[key];
+    }
+  }
 };
 
 const prefetchPatients = createAsyncThunk("/patients/prefetch", async () => {
@@ -15,7 +19,7 @@ const prefetchPatients = createAsyncThunk("/patients/prefetch", async () => {
       continue;
     }
     const response = await api.get(`/patients?page=${pageNumber}`);
-    if (response.data.length == 0) break;
+    if (response.data.patients.data.length == 0) break;
     dataCaching[pageNumber] = response.data;
     pageNumber++;
   }
@@ -54,4 +58,5 @@ export {
   deletePatient,
   clearCache,
   prefetchPatients,
+  dataCaching as patientsCache,
 };

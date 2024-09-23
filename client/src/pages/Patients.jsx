@@ -102,6 +102,12 @@ function Patients() {
         .toLowerCase()
         .includes(searchValue.toLowerCase())
     );
+  } else if (searchValue) {
+    filteredPatients = patients.filter((patient) =>
+      `${patient.first_name} ${patient.last_name}`
+        .toLowerCase()
+        .includes(searchValue.toLowerCase())
+    );
   }
 
   const tableBody =

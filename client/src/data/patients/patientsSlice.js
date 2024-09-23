@@ -5,7 +5,7 @@ const initialState = {
   patients: [],
   search: "",
   fullData: [], // used for filtering purposes
-  patientIDSearch: {}
+  patientIDSearch: {},
 };
 
 const patientsSlice = createSlice({
@@ -49,16 +49,20 @@ const patientsSlice = createSlice({
     search: (state, action) => {
       state.search = action.payload.toLowerCase();
 
-      const fullData = state.fullData.length ? state.fullData : state.patients;
+      const fullData = Object.values(operations.patientsCache)[0].patients;
 
       if (state.search) {
-        state.patients = fullData.filter((patient) => {
-          return (
-            patient &&
-            (patient.first_name.toLowerCase().startsWith(state.search) ||
-              patient.last_name.toLowerCase().startsWith(state.search))
-          );
-        });
+        state.patients = Object.values(operations.patientsCache).flatMap(
+          (page) => {
+            return page.patients.data.filter((patient) => {
+              return (
+                patient &&
+                (patient.first_name.toLowerCase().startsWith(state.search) ||
+                  patient.last_name.toLowerCase().startsWith(state.search))
+              );
+            });
+          }
+        );
       } else {
         state.patients = fullData;
       }
