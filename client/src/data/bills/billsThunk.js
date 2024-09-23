@@ -3,6 +3,20 @@ import api from "../api";
 
 const dataCaching = [];
 
+const prefetchBills = createAsyncThunk("/bills/prefetch", async () => {
+  let pageNumber = 2;
+  while (true) {
+    if (dataCaching[pageNumber]) {
+      pageNumber++;
+      continue;
+    }
+    const response = await api.get(`/bills?page=${pageNumber}`);
+    if (response.data.length == 0) break;
+    dataCaching[pageNumber] = response.data;
+    pageNumber++;
+  }
+});
+
 const getBills = createAsyncThunk("/bills", async (pageNumber) => {
   if (!pageNumber) pageNumber = 1;
 
@@ -34,4 +48,11 @@ const billsStats = createAsyncThunk("/bills/stats", async () => {
   return response.data;
 });
 
-export { getBills, updateBill, deleteBill, createBill, billsStats };
+export {
+  getBills,
+  updateBill,
+  deleteBill,
+  createBill,
+  billsStats,
+  prefetchBills,
+};

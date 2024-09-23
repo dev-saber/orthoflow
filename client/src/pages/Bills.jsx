@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
-import { deleteBill, getBills } from "../data/bills/billsThunk";
+import { deleteBill, getBills, prefetchBills } from "../data/bills/billsThunk";
 import { search } from "../data/patients/patientsSlice";
 import { searchPatient } from "../data/bills/billsSlice";
 import usePaginate from "../hooks/usePaginate";
@@ -27,12 +27,18 @@ function Bills() {
   useEffect(() => {
     if (!bills.data?.length) {
       setIsLoading(true);
-      dispatch(getBills()).then(() => setIsLoading(false));
+      dispatch(getBills()).then(() => {
+        setIsLoading(false);
+        dispatch(prefetchBills());
+      });
     }
   }, [dispatch, bills.data]);
 
   useEffect(() => {
-    dispatch(getBills()).then(() => setIsLoading(false));
+    dispatch(getBills()).then(() => {
+      setIsLoading(false);
+      dispatch(prefetchBills());
+    });
   }, [dispatch, triggerEffect]);
 
   const [toastMessage, setToastMessage] = useState("");

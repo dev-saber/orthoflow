@@ -4,6 +4,7 @@ import {
   clearCache,
   deletePatient,
   getPatients,
+  prefetchPatients,
 } from "../data/patients/patientsThunk";
 import { search } from "../data/patients/patientsSlice";
 import usePaginate from "../hooks/usePaginate";
@@ -29,7 +30,10 @@ function Patients() {
 
   useEffect(() => {
     !patients.length && setIsLoading(true);
-    dispatch(getPatients()).then(() => setIsLoading(false));
+    dispatch(getPatients()).then(() => {
+      setIsLoading(false);
+      dispatch(prefetchPatients());
+    });
   }, [triggerEffect]);
 
   const fetchDataAgain = () => {

@@ -7,6 +7,20 @@ const clearCache = () => {
   dataCaching.length = 0;
 };
 
+const prefetchPatients = createAsyncThunk("/patients/prefetch", async () => {
+  let pageNumber = 2;
+  while (true) {
+    if (dataCaching[pageNumber]) {
+      pageNumber++;
+      continue;
+    }
+    const response = await api.get(`/patients?page=${pageNumber}`);
+    if (response.data.length == 0) break;
+    dataCaching[pageNumber] = response.data;
+    pageNumber++;
+  }
+});
+
 const getPatients = createAsyncThunk("/patients", async (pageNumber) => {
   if (!pageNumber) pageNumber = 1;
 
@@ -33,4 +47,11 @@ const deletePatient = createAsyncThunk("/patients/delete", async (id) => {
   return response.data;
 });
 
-export { getPatients, addPatient, updatePatient, deletePatient, clearCache };
+export {
+  getPatients,
+  addPatient,
+  updatePatient,
+  deletePatient,
+  clearCache,
+  prefetchPatients,
+};
