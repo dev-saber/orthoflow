@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
-import { deleteBill, getBills, prefetchBills } from "../data/bills/billsThunk";
+import { clearCache, deleteBill, getBills, prefetchBills } from "../data/bills/billsThunk";
 import { search } from "../data/patients/patientsSlice";
 import { searchPatient } from "../data/bills/billsSlice";
 import usePaginate from "../hooks/usePaginate";
@@ -119,6 +119,7 @@ function Bills() {
   ));
 
   const fetchDataAgain = () => {
+    clearCache();
     setTriggerEffect(!triggerEffect);
   };
 

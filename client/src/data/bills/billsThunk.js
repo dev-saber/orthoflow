@@ -3,6 +3,10 @@ import api from "../api";
 
 const dataCaching = [];
 
+const clearCache = () => {
+  dataCaching.length = 0;
+};
+
 const prefetchBills = createAsyncThunk("/bills/prefetch", async () => {
   let pageNumber = 2;
   while (true) {
@@ -55,4 +59,5 @@ export {
   createBill,
   billsStats,
   prefetchBills,
+  clearCache,
 };
