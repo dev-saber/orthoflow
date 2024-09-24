@@ -1,22 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getPatients } from "../data/patients/patientsThunk";
+import { useSelector } from "react-redux";
 import PatientSearchList from "../components/atoms/PatientSearchList";
 
 function usePatientSearch(formData) {
-  const dispatch = useDispatch();
-  const patients = useSelector((state) => state.patients.patients);
+  const patients = useSelector((state) => state.patients.patients.data);
 
   const [searchValue, setSearchValue] = useState("");
   const [isSelected, setIsSelected] = useState(false);
   const [filteredPatients, setFilteredPatients] = useState([]);
   const [showFilteredPatients, setShowFilteredPatients] = useState(false);
-
-  useEffect(() => {
-    if (patients.length == 0) {
-      dispatch(getPatients());
-    }
-  }, [patients.length]);
 
   useEffect(() => {
     if (searchValue && !isSelected) {

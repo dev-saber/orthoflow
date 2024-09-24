@@ -10,7 +10,7 @@ import {
 } from "../data/bills/billsThunk";
 import { search } from "../data/patients/patientsSlice";
 import { searchPatient } from "../data/bills/billsSlice";
-import { prefetchPatients } from "../data/patients/patientsThunk";
+import usePatientsData from "../hooks/usePatientData";
 import usePaginate from "../hooks/usePaginate";
 import { Edit2, Trash2 } from "lucide-react";
 import LoadingSpinner from "../components/atoms/LoadingSpinner";
@@ -30,6 +30,7 @@ function Bills() {
   const [isLoading, setIsLoading] = useState(false);
   const [triggerEffect, setTriggerEffect] = useState(false);
 
+  const { patients, loading: patientsLoading } = usePatientsData();
   const paginate = usePaginate(bills, getBills);
 
   useEffect(() => {
@@ -45,7 +46,7 @@ function Bills() {
   useEffect(() => {
     dispatch(getBills()).then(() => {
       setIsLoading(false);
-      Promise.all([dispatch(prefetchBills()), dispatch(prefetchPatients())]);
+      dispatch(prefetchBills());
     });
   }, [dispatch, triggerEffect]);
 
@@ -197,7 +198,7 @@ function Bills() {
 
   return (
     <>
-      {isLoading ? (
+      {isLoading || patientsLoading ? (
         <div className="flex justify-center items-center h-96">
           <LoadingSpinner />
         </div>
