@@ -8,7 +8,7 @@ const clearCache = () => {
 };
 
 const prefetchPatients = createAsyncThunk("/patients/prefetch", async () => {
-  let pageNumber = 2;
+  let pageNumber = Object.keys(dataCaching).length == 0 ? 1 : 2;
   while (true) {
     if (dataCaching[pageNumber]) {
       pageNumber++;

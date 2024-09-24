@@ -81,7 +81,6 @@ const billsSlice = createSlice({
             return matchesSearch;
           });
         });
-        console.log(state.filteredData);
       } else {
         state.bills = fullData;
       }

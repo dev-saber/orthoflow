@@ -10,6 +10,7 @@ import {
 } from "../data/bills/billsThunk";
 import { search } from "../data/patients/patientsSlice";
 import { searchPatient } from "../data/bills/billsSlice";
+import { prefetchPatients } from "../data/patients/patientsThunk";
 import usePaginate from "../hooks/usePaginate";
 import { Edit2, Trash2 } from "lucide-react";
 import LoadingSpinner from "../components/atoms/LoadingSpinner";
@@ -44,7 +45,7 @@ function Bills() {
   useEffect(() => {
     dispatch(getBills()).then(() => {
       setIsLoading(false);
-      dispatch(prefetchBills());
+      Promise.all([dispatch(prefetchBills()), dispatch(prefetchPatients())]);
     });
   }, [dispatch, triggerEffect]);
 

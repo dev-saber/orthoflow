@@ -1,6 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../api";
-import { prefetchPatients } from "../patients/patientsThunk";
 
 const dataCaching = {};
 
@@ -22,20 +21,16 @@ const prefetchBills = createAsyncThunk("/bills/prefetch", async () => {
   }
 });
 
-const getBills = createAsyncThunk(
-  "/bills",
-  async (pageNumber, { dispatch }) => {
-    if (!pageNumber) pageNumber = 1;
+const getBills = createAsyncThunk("/bills", async (pageNumber) => {
+  if (!pageNumber) pageNumber = 1;
 
-    if (dataCaching[pageNumber]) {
-      return dataCaching[pageNumber];
-    }
-    const response = await api.get(`/bills?page=${pageNumber}`);
-    await dispatch(prefetchPatients()); // prefetch patients data to have it ready for navigation
-    dataCaching[pageNumber] = response.data;
-    return response.data;
+  if (dataCaching[pageNumber]) {
+    return dataCaching[pageNumber];
   }
-);
+  const response = await api.get(`/bills?page=${pageNumber}`);
+  dataCaching[pageNumber] = response.data;
+  return response.data;
+});
 
 const updateBill = createAsyncThunk("/bills/update", async (data) => {
   const response = await api.patch(`/bills/${data.id}`, data);
