@@ -1,14 +1,31 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getPatients, patientsCache } from "../data/patients/patientsThunk";
 import PatientSearchList from "../components/atoms/PatientSearchList";
 
 function usePatientSearch(formData) {
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
   const patients = useSelector((state) => state.patients.patients.data);
 
   const [searchValue, setSearchValue] = useState("");
   const [isSelected, setIsSelected] = useState(false);
   const [filteredPatients, setFilteredPatients] = useState([]);
   const [showFilteredPatients, setShowFilteredPatients] = useState(false);
+
+  useEffect(() => {
+    const fetchPatients = async () => {
+      setLoading(true);
+      const cacheKeys = Object.keys(patientsCache);
+      if (cacheKeys.length == 0) {
+        await dispatch(getPatients());
+      }
+
+      setLoading(false);
+    };
+
+    fetchPatients();
+  }, [dispatch]);
 
   useEffect(() => {
     if (searchValue && !isSelected) {
@@ -24,7 +41,7 @@ function usePatientSearch(formData) {
       setFilteredPatients([]);
       setShowFilteredPatients(false);
     }
-  }, [searchValue, isSelected]);
+  }, [searchValue, isSelected, loading, patients]);
 
   const handleChange = (e) => {
     setSearchValue(e.target.value);
@@ -41,6 +58,7 @@ function usePatientSearch(formData) {
       selected={setIsSelected}
     />
   );
+
   return {
     searchValue,
     setSearchValue,
@@ -50,6 +68,7 @@ function usePatientSearch(formData) {
     setShowFilteredPatients,
     handleChange,
     searchResult,
+    loading,
   };
 }
 

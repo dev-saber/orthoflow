@@ -10,7 +10,7 @@ import {
 } from "../data/bills/billsThunk";
 import { search } from "../data/patients/patientsSlice";
 import { searchPatient } from "../data/bills/billsSlice";
-import usePatientsData from "../hooks/usePatientData";
+import usePatientSearch from "../hooks/usePatientSearch";
 import usePaginate from "../hooks/usePaginate";
 import { Edit2, Trash2 } from "lucide-react";
 import LoadingSpinner from "../components/atoms/LoadingSpinner";
@@ -30,8 +30,9 @@ function Bills() {
   const [isLoading, setIsLoading] = useState(false);
   const [triggerEffect, setTriggerEffect] = useState(false);
 
-  const { patients, loading: patientsLoading } = usePatientsData();
+  const { loading: patientsLoading } = usePatientSearch();
   const paginate = usePaginate(bills, getBills);
+
 
   useEffect(() => {
     if (!bills.data?.length) {
