@@ -1,10 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../api";
+import { prefetchPatients } from "../patients/patientsThunk";
 
-const dataCaching = [];
+const dataCaching = {};
 
 const clearCache = () => {
-  dataCaching.length = 0;
+  Object.keys(dataCaching).forEach((key) => delete dataCaching[key]);
 };
 
 const prefetchBills = createAsyncThunk("/bills/prefetch", async () => {
@@ -15,22 +16,26 @@ const prefetchBills = createAsyncThunk("/bills/prefetch", async () => {
       continue;
     }
     const response = await api.get(`/bills?page=${pageNumber}`);
-    if (response.data.length == 0) break;
+    if (response.data.bills.data.length == 0) break;
     dataCaching[pageNumber] = response.data;
     pageNumber++;
   }
 });
 
-const getBills = createAsyncThunk("/bills", async (pageNumber) => {
-  if (!pageNumber) pageNumber = 1;
+const getBills = createAsyncThunk(
+  "/bills",
+  async (pageNumber, { dispatch }) => {
+    if (!pageNumber) pageNumber = 1;
 
-  if (dataCaching[pageNumber]) {
-    return dataCaching[pageNumber];
+    if (dataCaching[pageNumber]) {
+      return dataCaching[pageNumber];
+    }
+    const response = await api.get(`/bills?page=${pageNumber}`);
+    await dispatch(prefetchPatients()); // prefetch patients data to have it ready for navigation
+    dataCaching[pageNumber] = response.data;
+    return response.data;
   }
-  const response = await api.get(`/bills?page=${pageNumber}`);
-  dataCaching[pageNumber] = response.data;
-  return dataCaching[pageNumber];
-});
+);
 
 const updateBill = createAsyncThunk("/bills/update", async (data) => {
   const response = await api.patch(`/bills/${data.id}`, data);
@@ -60,4 +65,5 @@ export {
   billsStats,
   prefetchBills,
   clearCache,
+  dataCaching as billsCache,
 };

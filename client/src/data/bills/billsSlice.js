@@ -6,6 +6,7 @@ const initialState = {
   patientSearch: "",
   fullData: [],
   stats: {},
+  filteredData: [],
 };
 
 const billsSlice = createSlice({
@@ -57,20 +58,30 @@ const billsSlice = createSlice({
     searchPatient: (state, action) => {
       state.patientSearch = action.payload.toLowerCase();
 
-      const fullData = state.fullData.length ? state.fullData : state.bills;
+      // const fullData = Object.values(operations.billsCache)[0].bills;
+      const fullData = Object.values(operations.billsCache).flatMap(
+        (page) => page.bills.data
+      );
+      state.filteredData = [];
 
       if (state.patientSearch) {
-        state.bills = fullData.filter((bill) => {
-          return (
-            bill.patient &&
-            (bill.patient.first_name
-              .toLowerCase()
-              .startsWith(state.patientSearch) ||
-              bill.patient.last_name
+        state.bills = Object.values(operations.billsCache).flatMap((page) => {
+          return page.bills.data.filter((bill) => {
+            const matchesSearch =
+              bill &&
+              (bill.patient.first_name
                 .toLowerCase()
-                .startsWith(state.patientSearch))
-          );
+                .startsWith(state.patientSearch) ||
+                bill.patient.last_name
+                  .toLowerCase()
+                  .startsWith(state.patientSearch));
+            if (matchesSearch) {
+              state.filteredData.push(bill);
+            }
+            return matchesSearch;
+          });
         });
+        console.log(state.filteredData);
       } else {
         state.bills = fullData;
       }

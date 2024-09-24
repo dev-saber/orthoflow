@@ -4,11 +4,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 const dataCaching = {};
 
 const clearCache = () => {
-  for (let key in dataCaching) {
-    if (dataCaching.hasOwnProperty(key)) {
-      delete dataCaching[key];
-    }
-  }
+  Object.keys(dataCaching).forEach((key) => delete dataCaching[key]);
 };
 
 const prefetchPatients = createAsyncThunk("/patients/prefetch", async () => {

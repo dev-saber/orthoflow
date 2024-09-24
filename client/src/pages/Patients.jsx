@@ -100,13 +100,13 @@ function Patients() {
     filteredPatients = patients.data.filter((patient) =>
       `${patient.first_name} ${patient.last_name}`
         .toLowerCase()
-        .includes(searchValue.toLowerCase())
+        .startsWith(searchValue.toLowerCase())
     );
   } else if (searchValue) {
     filteredPatients = patients.filter((patient) =>
       `${patient.first_name} ${patient.last_name}`
         .toLowerCase()
-        .includes(searchValue.toLowerCase())
+        .startsWith(searchValue.toLowerCase())
     );
   }
 

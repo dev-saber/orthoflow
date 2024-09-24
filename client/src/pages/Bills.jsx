@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
-import { clearCache, deleteBill, getBills, prefetchBills } from "../data/bills/billsThunk";
+import {
+  clearCache,
+  deleteBill,
+  getBills,
+  prefetchBills,
+} from "../data/bills/billsThunk";
 import { search } from "../data/patients/patientsSlice";
 import { searchPatient } from "../data/bills/billsSlice";
 import usePaginate from "../hooks/usePaginate";
@@ -19,6 +24,8 @@ import Toast from "../components/atoms/Toast";
 function Bills() {
   const dispatch = useDispatch();
   const bills = useSelector((state) => state.bills.bills);
+  const patientSearch = useSelector((state) => state.bills.patientSearch);
+  const filteredData = useSelector((state) => state.bills.filteredData);
   const [isLoading, setIsLoading] = useState(false);
   const [triggerEffect, setTriggerEffect] = useState(false);
 
@@ -32,7 +39,7 @@ function Bills() {
         dispatch(prefetchBills());
       });
     }
-  }, [dispatch, bills.data]);
+  }, [dispatch, bills]);
 
   useEffect(() => {
     dispatch(getBills()).then(() => {
@@ -59,6 +66,19 @@ function Bills() {
     navigate("/patients");
   };
 
+  let filteredBills = [];
+  if (bills) {
+    filteredBills = bills.data?.filter((bill) => {
+      const firstNameStartsWith = bill.patient.first_name
+        .toLowerCase()
+        .startsWith(patientSearch.toLowerCase());
+      const lastNameStartsWith = bill.patient.last_name
+        .toLowerCase()
+        .startsWith(patientSearch.toLowerCase());
+      return firstNameStartsWith || lastNameStartsWith;
+    });
+  }
+
   const tableHeader = (
     <tr>
       {["Patient", "Amount", "Date", "Status", "Actions"].map(
@@ -75,48 +95,50 @@ function Bills() {
     </tr>
   );
 
-  const tableBody = bills.data?.map((bill) => (
-    <tr
-      key={bill.id}
-      className="bg-white text-black border-b-[1px] hover:bg-gray-50"
-    >
-      <td
-        className="px-6 py-4 whitespace-nowrap cursor-pointer"
-        onClick={() =>
-          patientNavigation(
-            `${bill.patient.first_name} ${bill.patient.last_name}`
-          )
-        }
+  const tableBody = (filteredData?.length ? filteredData : filteredBills)?.map(
+    (bill) => (
+      <tr
+        key={bill.id}
+        className="bg-white text-black border-b-[1px] hover:bg-gray-50"
       >
-        {bill.patient.first_name} {bill.patient.last_name}
-      </td>
-      <td className="px-6 py-4 whitespace-nowrap">{bill.amount}</td>
-      <td className="px-6 py-4 whitespace-nowrap">
-        {moment(bill.created_at).format("YYYY-MM-DD")}
-      </td>
-      <td className="px-6 py-4 whitespace-nowrap">{bill.status}</td>
-      <td className="p-6 whitespace-nowrap flex gap-2">
-        <span
-          className="text-blue cursor-pointer"
-          onClick={() => {
-            setBillToShow(bill);
-            editModal();
-          }}
+        <td
+          className="px-6 py-4 whitespace-nowrap cursor-pointer"
+          onClick={() =>
+            patientNavigation(
+              `${bill.patient.first_name} ${bill.patient.last_name}`
+            )
+          }
         >
-          <Edit2 size={17} />
-        </span>
-        <span
-          className="text-red-700 cursor-pointer"
-          onClick={() => {
-            setBillToShow(bill);
-            deleteModal();
-          }}
-        >
-          <Trash2 size={17} />
-        </span>
-      </td>
-    </tr>
-  ));
+          {bill.patient.first_name} {bill.patient.last_name}
+        </td>
+        <td className="px-6 py-4 whitespace-nowrap">{bill.amount}</td>
+        <td className="px-6 py-4 whitespace-nowrap">
+          {moment(bill.created_at).format("YYYY-MM-DD")}
+        </td>
+        <td className="px-6 py-4 whitespace-nowrap">{bill.status}</td>
+        <td className="p-6 whitespace-nowrap flex gap-2">
+          <span
+            className="text-blue cursor-pointer"
+            onClick={() => {
+              setBillToShow(bill);
+              editModal();
+            }}
+          >
+            <Edit2 size={17} />
+          </span>
+          <span
+            className="text-red-700 cursor-pointer"
+            onClick={() => {
+              setBillToShow(bill);
+              deleteModal();
+            }}
+          >
+            <Trash2 size={17} />
+          </span>
+        </td>
+      </tr>
+    )
+  );
 
   const fetchDataAgain = () => {
     clearCache();
@@ -186,16 +208,18 @@ function Bills() {
             <Button label="New Invoice" onClick={createModal} />
           </div>
           <div className="w-11/12 mx-auto pb-16 relative">
-            {bills.data?.length ? (
+            {filteredBills?.length ? (
               <Table header={tableHeader} body={tableBody} />
             ) : (
               <div className="flex justify-center items-center h-64">
                 <p>No results found</p>
               </div>
             )}
-            <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2">
-              {paginate}
-            </div>
+            {!filteredData?.length && !patientSearch && (
+              <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2">
+                {paginate}
+              </div>
+            )}
           </div>
         </div>
       )}
