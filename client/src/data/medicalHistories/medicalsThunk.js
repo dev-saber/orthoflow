@@ -1,10 +1,42 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../api";
 
-const getMedicalHistories = createAsyncThunk("/medicalHistories", async () => {
-  const response = await api.get("/medical-history");
-  return response.data;
-});
+const dataCaching = {};
+
+const clearCache = () => {
+  Object.keys(dataCaching).forEach((key) => delete dataCaching[key]);
+};
+
+const prefetchMedicalHistories = createAsyncThunk(
+  "/medicalHistories/prefetch",
+  async () => {
+    let pageNumber = 2;
+    while (true) {
+      if (dataCaching[pageNumber]) {
+        pageNumber++;
+        continue;
+      }
+      const response = await api.get(`/medical-history?page=${pageNumber}`);
+      if (response.data.medicalHistories.data.length == 0) break;
+      dataCaching[pageNumber] = response.data;
+      pageNumber++;
+    }
+  }
+);
+
+const getMedicalHistories = createAsyncThunk(
+  "/medicalHistories",
+  async (pageNumber) => {
+    if (!pageNumber) pageNumber = 1;
+
+    if (dataCaching[pageNumber]) {
+      return dataCaching[pageNumber];
+    }
+    const response = await api.get(`/medical-history?page=${pageNumber}`);
+    dataCaching[pageNumber] = response.data;
+    return response.data;
+  }
+);
 
 const updateMedicalHistory = createAsyncThunk(
   "/medicalHistories/update",
@@ -35,4 +67,6 @@ export {
   updateMedicalHistory,
   deleteMedicalHistory,
   createMedicalHistory,
+  clearCache,
+  dataCaching as medicalHistoriesCache,
 };

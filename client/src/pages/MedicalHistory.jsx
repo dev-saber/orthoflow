@@ -4,29 +4,31 @@ import { getMedicalHistories } from "../data/medicalHistories/medicalsThunk";
 import { useNavigate } from "react-router-dom";
 import { search } from "../data/patients/patientsSlice";
 import { NotepadText } from "lucide-react";
-import { getPatients } from "../data/patients/patientsThunk";
+import usePatientSearch from "../hooks/usePatientSearch";
 import LoadingSpinner from "../components/atoms/LoadingSpinner";
 import SearchBox from "../components/atoms/SearchBox";
 import Button from "../components/atoms/Button";
 import Table from "../components/atoms/Table";
 import AddMedicalHistory from "../components/modals/AddMedicalHistory";
 import Toast from "../components/atoms/Toast";
+import usePaginate from "../hooks/usePaginate";
 
 function MedicalHistory() {
   const dispatch = useDispatch();
 
   const medicals = useSelector((state) => state.medicals.medicalHistories);
-  const patients = useSelector((state) => state.patients.patients);
   const searchValue = useSelector((state) => state.patients.search);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [triggerEffect, setTriggerEffect] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  const { loading: patientsLoading } = usePatientSearch();
+  const paginate = usePaginate(medicals, getMedicalHistories);
+
   useEffect(() => {
-    if (!medicals.length) {
+    if (!medicals.data?.length) {
       setIsLoading(true);
-      dispatch(getPatients());
       dispatch(getMedicalHistories()).then(() => setIsLoading(false));
     }
   }, []);
@@ -69,13 +71,13 @@ function MedicalHistory() {
     </tr>
   );
 
-  const filteredPatients = medicals.filter((patient) =>
+  const filteredPatients = medicals.data?.filter((patient) =>
     `${patient.first_name} ${patient.last_name}`
       .toLowerCase()
-      .includes(searchValue.toLowerCase())
+      .startsWith(searchValue.toLowerCase())
   );
 
-  const tableBody = filteredPatients.map((patient) => (
+  const tableBody = filteredPatients?.map((patient) => (
     <tr
       key={patient.id}
       className="bg-white text-black border-b-[1px] hover:bg-gray-50"
@@ -115,7 +117,7 @@ function MedicalHistory() {
 
   return (
     <>
-      {isLoading ? (
+      {isLoading || patientsLoading ? (
         <div className="flex justify-center items-center h-96">
           <LoadingSpinner />
         </div>
@@ -130,14 +132,15 @@ function MedicalHistory() {
             />
             <Button label="New Sheet" onClick={openModal} />
           </div>
-          <div className="w-4/5 mx-auto">
-            {medicals.length ? (
+          <div className="w-4/5 mx-auto relative">
+            {medicals.data?.length ? (
               <Table header={tableHeader} body={tableBody} />
             ) : (
               <div className="flex justify-center items-center h-64">
                 <p>No results found</p>
               </div>
             )}
+            <div className="flex justify-center mt-4">{paginate}</div>
           </div>
         </div>
       )}

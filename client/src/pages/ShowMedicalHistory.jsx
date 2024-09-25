@@ -24,7 +24,7 @@ function ShowMedicalHistory() {
   const patient = useSelector((state) => state.patients.patientIDSearch);
   const medicals = useSelector((state) => state.medicals.filteredMedics);
   const medicalsFullData = useSelector(
-    (state) => state.medicals.medicalHistories
+    (state) => state.medicals.medicalHistories.data
   );
 
   const [isLoading, setIsLoading] = useState(true);

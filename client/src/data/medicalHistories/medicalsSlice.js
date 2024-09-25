@@ -11,7 +11,7 @@ const medicalsSlice = createSlice({
   initialState,
   reducers: {
     filterMedics: (state, action) => {
-      state.filteredMedics = state.medicalHistories
+      state.filteredMedics = state.medicalHistories.data
         .filter((medic) => {
           return medic.id == action.payload;
         })
@@ -73,7 +73,7 @@ const medicalsSlice = createSlice({
     builder.addCase(
       operations.createMedicalHistory.fulfilled,
       (state, action) => {
-        state.filteredMedics.push(action.payload);
+        console.log(action.payload);
       }
     );
 

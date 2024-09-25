@@ -13,17 +13,20 @@ class MedicalHistoryController extends Controller
      */
     public function index(Request $request)
     {
+        $patients = Patient::where('dentist_id', $request->user()->id)
+            ->with(['medicalHistories' => function ($query) {
+                $query->orderBy('visit_date', 'desc');
+            }])
+            ->withCount('medicalHistories')
+            ->paginate(10, ['id', 'first_name', 'last_name']);
+
+        $patients->getCollection()->transform(function ($patient) {
+            $patient->last_visit_date = $patient->medicalHistories->first()->visit_date ?? null; // get last visit date
+            return $patient;
+        });
+
         return response()->json([
-            'data' => Patient::where('dentist_id', $request->user()->id)
-                ->with(['medicalHistories' => function ($query) {
-                    $query->orderBy('visit_date', 'desc');
-                }])
-                ->withCount('medicalHistories')
-                ->get(['id', 'first_name', 'last_name'])
-                ->map(function ($patient) {
-                    $patient->last_visit_date = $patient->medicalHistories->first()->visit_date ?? null; // get last visit date
-                    return $patient;
-                }),
+            'data' => $patients,
         ], 200);
     }
 

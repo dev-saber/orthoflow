@@ -72,7 +72,7 @@ const patientsSlice = createSlice({
       }
     },
     getPatient: (state, action) => {
-      state.patientIDSearch = state.patients.find((user) => {
+      state.patientIDSearch = state.patients.data.find((user) => {
         return user.id == action.payload;
       });
     },
