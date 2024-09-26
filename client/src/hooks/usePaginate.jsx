@@ -1,6 +1,37 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 
+const handlePageNumberLength = (currentPage, totalPages) => {
+  const pages = [];
+  const maxPagesToShow = 5;
+  for (let i = 1; i <= Math.min(maxPagesToShow, totalPages); i++) {
+    pages.push(i);
+  }
+  if (currentPage > maxPagesToShow + 1) {
+    pages.push("...");
+  }
+
+  const startPage = Math.max(currentPage - 1, maxPagesToShow + 1);
+  const endPage = Math.min(currentPage + 1, totalPages - maxPagesToShow);
+
+  for (let i = startPage; i <= endPage; i++) {
+    pages.push(i);
+  }
+  if (currentPage < totalPages - maxPagesToShow) {
+    pages.push("...");
+  }
+
+  for (
+    let i = Math.max(totalPages - maxPagesToShow + 1, endPage + 1);
+    i <= totalPages;
+    i++
+  ) {
+    pages.push(i);
+  }
+
+  return pages;
+};
+
 function usePaginate(data, getData) {
   const [currentPage, setCurrentPage] = useState(1);
   const dispatch = useDispatch();
@@ -10,17 +41,21 @@ function usePaginate(data, getData) {
   };
 
   if (data.last_page == 1 || !data.last_page) return null;
-  const pages = Array.from({ length: data.last_page }, (_, i) => (
-    <button
-      key={i + 1}
-      className={`min-h-[38px] min-w-[38px] flex justify-center items-center text-gray-800 hover:bg-gray-100 py-2 px-3 text-sm rounded-lg focus:outline-none focus:bg-blue ${
-        i + 1 == currentPage ? "bg-blue text-white hover:bg-blue" : ""
-      }`}
-      onClick={() => pageNavigation(i + 1)}
-    >
-      {i + 1}
-    </button>
-  ));
+
+  const pages = handlePageNumberLength(currentPage, data.last_page).map(
+    (page, index) => (
+      <button
+        key={index}
+        className={`min-h-[38px] min-w-[38px] flex justify-center items-center text-gray-800 hover:bg-gray-100 py-2 px-3 text-sm rounded-lg focus:outline-none focus:bg-blue ${
+          page == currentPage ? "bg-blue text-white hover:bg-blue" : ""
+        }`}
+        onClick={() => typeof page == "number" && pageNavigation(page)}
+        disabled={typeof page != "number"}
+      >
+        {page}
+      </button>
+    )
+  );
 
   return (
     <nav className="flex items-center gap-x-1">
