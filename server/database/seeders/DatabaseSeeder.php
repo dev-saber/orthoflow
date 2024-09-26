@@ -8,7 +8,6 @@ use App\Models\MedicalHistory;
 use App\Models\Patient;
 use App\Models\Stock;
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -25,14 +24,58 @@ class DatabaseSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => bcrypt('0000'),
             'start_time' => '09:00:00',
-            'end_time' => '17:00:00',
+            'end_time' => '15:00:00',
         ]);
 
-        User::factory(3)->create();
-        Patient::factory(20)->create();
-        Appointment::factory(300)->create();
-        MedicalHistory::factory(100)->create();
+        Patient::factory(25)->create();
+        Appointment::factory(1500)->create();
+        MedicalHistory::factory(80)->create();
         Bill::factory(300)->create();
-        // Stock::factory(5)->create();    
+
+        // stock categories to be used for each user
+        $stockCategories = [
+            'pieces' => [
+                'Dental Mirror',
+                'Dental Explorer',
+                'Dental Burs',
+            ],
+            'boxes' => [
+                'Disposable Gloves (Box of 100)',
+                'Surgical Masks (Box of 50)',
+                'Dental Anesthetic',
+                'Dental X-ray Films',
+                'Sterilization Pouches',
+            ],
+            'syringes' => [
+                'Composite Resin',
+            ],
+            'packs' => [
+                'Dental Floss',
+                'Cotton Rolls',
+                'Saliva Ejectors',
+                'Dental Bibs',
+            ],
+            'jars' => [
+                'Temporary Filling Material',
+            ],
+            'sets' => [
+                'Impression Material',
+            ],
+        ];
+
+        User::all()->each(function ($user) use ($stockCategories) {
+            foreach ($stockCategories as $unit => $items) {
+                foreach ($items as $item) {
+                    Stock::create([
+                        'name' => $item,
+                        'price' => fake()->randomFloat(2, 5, 100),
+                        'quantity' => fake()->numberBetween(1, 100),
+                        'reorder_level' => fake()->numberBetween(1, 20),
+                        'unit' => $unit,
+                        'dentist_id' => $user->id,
+                    ]);
+                }
+            }
+        });
     }
 }

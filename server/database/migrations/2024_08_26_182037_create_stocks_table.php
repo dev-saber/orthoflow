@@ -17,6 +17,7 @@ return new class extends Migration
             $table->decimal('price', 10, 2);
             $table->integer('quantity');
             $table->integer('reorder_level');
+            $table->string('unit');
             $table->foreignId('dentist_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });

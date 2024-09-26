@@ -21,12 +21,18 @@ class AppointmentFactory extends Factory
         $dentists = User::pluck('id');
         $patients = Patient::pluck('id');
 
+        $dentistId = fake()->randomElement($dentists);
+        $dentist = User::find($dentistId);
+
+        $startTime = fake()->dateTimeBetween($dentist->start_time, $dentist->end_time);
+        $endTime = fake()->dateTimeBetween($startTime, $dentist->end_time);
+
         return [
             'patient_id' => fake()->randomElement($patients),
-            'dentist_id' => fake()->randomElement($dentists),
-            'date' => fake()->dateTimeBetween('2024-09-01', '2024-10-31')->format('Y-m-d'),
-            'start_time' => fake()->time(),
-            'end_time' => fake()->time(),
+            'dentist_id' => $dentistId,
+            'date' => fake()->dateTimeBetween('2024-06-01', '2024-12-31')->format('Y-m-d'),
+            'start_time' => $startTime->format('H:i:s'),
+            'end_time' => $endTime->format('H:i:s'),
             'status' => fake()->randomElement(['pending', 'confirmed', 'canceled']),
         ];
     }

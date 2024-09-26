@@ -14,6 +14,7 @@ class Stock extends Model
         'price',
         'quantity',
         'reorder_level',
+        'unit',
         'dentist_id',
     ];
 

@@ -22,27 +22,48 @@ class UserController extends Controller
             'end_time' => $validated['end_time'],
         ]);
 
-        $dentalItems = [
-            'Dental Mirror',
-            'Dental Explorer',
-            'Cotton Roll',
-            'Syringe',
-            'Dental Scaler',
-            'Forceps',
-            'Surgical Mask',
-            'Gloves',
-            'Dental Cement',
-            'Dental Floss'
+        $stockCategories = [
+            'pieces' => [
+                'Dental Mirror',
+                'Dental Explorer',
+                'Dental Burs',
+            ],
+            'boxes' => [
+                'Disposable Gloves (Box of 100)',
+                'Surgical Masks (Box of 50)',
+                'Dental Anesthetic',
+                'Dental X-ray Films',
+                'Sterilization Pouches',
+            ],
+            'syringes' => [
+                'Composite Resin',
+            ],
+            'packs' => [
+                'Dental Floss',
+                'Cotton Rolls',
+                'Saliva Ejectors',
+                'Dental Bibs',
+            ],
+            'jars' => [
+                'Temporary Filling Material',
+            ],
+            'sets' => [
+                'Impression Material',
+            ],
         ];
 
-        foreach ($dentalItems as $item) {
-            Stock::create([
-                'name' => $item,
-                'price' => 0,
-                'quantity' => 0,
-                'reorder_level' => 0,
-                'dentist_id' => $dentist->id
-            ]);
+
+        foreach ($stockCategories as $unit => $items) {
+            foreach ($items as $item) {
+                Stock::create([
+                    'name' => $item,
+                    'price' => 0,
+                    'quantity' => 0,
+                    'reorder_level' => 0,
+                    'unit' => $unit,
+                    'dentist_id' => $dentist->id,
+                ]);
+            }
         }
 
         return response()->json([

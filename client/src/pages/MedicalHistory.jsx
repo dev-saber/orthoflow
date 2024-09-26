@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getMedicalHistories } from "../data/medicalHistories/medicalsThunk";
+import {
+  clearCache,
+  getMedicalHistories,
+  prefetchMedicalHistories,
+} from "../data/medicalHistories/medicalsThunk";
 import { useNavigate } from "react-router-dom";
 import { search } from "../data/patients/patientsSlice";
 import { NotepadText } from "lucide-react";
@@ -29,11 +33,15 @@ function MedicalHistory() {
   useEffect(() => {
     if (!medicals.data?.length) {
       setIsLoading(true);
-      dispatch(getMedicalHistories()).then(() => setIsLoading(false));
+      dispatch(getMedicalHistories()).then(() => {
+        setIsLoading(false);
+        dispatch(prefetchMedicalHistories());
+      });
     }
   }, []);
 
   useEffect(() => {
+    clearCache();
     dispatch(getMedicalHistories());
   }, [triggerEffect]);
 

@@ -69,4 +69,5 @@ export {
   createMedicalHistory,
   clearCache,
   dataCaching as medicalHistoriesCache,
+  prefetchMedicalHistories,
 };
