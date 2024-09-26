@@ -15,6 +15,7 @@ import ShowAppointment from "../components/modals/ShowAppointment";
 import EditAppointment from "../components/modals/EditAppointment";
 import DeleteModal from "../components/modals/DeleteModal";
 import Toast from "../components/atoms/Toast";
+import LoadingSpinner from "../components/atoms/LoadingSpinner";
 
 function Appointments() {
   const [triggerEffect, setTriggerEffect] = useState(false); // trigger useEffect to fetch appointments after changes
@@ -124,13 +125,24 @@ function Appointments() {
 
   return (
     <>
-      <div className="flex flex-col items-start justify-around w-full gap-4">
+      <div className="flex flex-col items-center justify-center min-h-screen w-full gap-4">
         {toastMessage && <Toast message={toastMessage} />}
-        <div className="flex items-center justify-between w-full">
-          <SearchBox placeholder="patient name" action={setPatientSearch} />
-          <Button label="New Appointment" onClick={() => openModal("add")} />
-        </div>
-        <CalendarView show={showAppointment} isLoading={isLoading} />
+        {isLoading ? (
+          <div className="self-center">
+            <LoadingSpinner />
+          </div>
+        ) : (
+          <>
+            <div className="flex items-center justify-between w-full">
+              <SearchBox placeholder="patient name" action={setPatientSearch} />
+              <Button
+                label="New Appointment"
+                onClick={() => openModal("add")}
+              />
+            </div>
+            <CalendarView show={showAppointment} isLoading={isLoading} />
+          </>
+        )}
       </div>
       {modals[currentModal]}
     </>
