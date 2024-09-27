@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getStock } from "../data/stock/stockThunk";
+import { billsStats } from "../data/bills/billsThunk";
 import LoadingSpinner from "../components/atoms/LoadingSpinner";
 import StockInventory from "../components/molecules/StockInventory";
 import Title from "../components/atoms/Title";
-import { billsStats } from "../data/bills/billsThunk";
 import Stats from "../components/atoms/Stats";
 
 function Dashboard() {

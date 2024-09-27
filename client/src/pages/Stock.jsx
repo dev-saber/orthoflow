@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getStock } from "../data/stock/stockThunk";
-import StockInventory from "../components/molecules/StockInventory";
 import LoadingSpinner from "../components/atoms/LoadingSpinner";
 import StockTable from "../components/molecules/StockTable";
 
