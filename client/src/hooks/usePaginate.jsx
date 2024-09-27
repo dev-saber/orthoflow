@@ -4,6 +4,14 @@ import { useDispatch } from "react-redux";
 const handlePageNumberLength = (currentPage, totalPages) => {
   const pages = [];
   const maxPagesToShow = 5;
+
+  if (totalPages <= maxPagesToShow) {
+    for (let i = 1; i <= totalPages; i++) {
+      pages.push(i);
+    }
+    return pages;
+  }
+
   for (let i = 1; i <= Math.min(maxPagesToShow, totalPages); i++) {
     pages.push(i);
   }
