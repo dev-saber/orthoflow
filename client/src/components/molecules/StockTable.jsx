@@ -9,7 +9,7 @@ function StockTable({ modal, isOpen, onClose, itemRecord, triggerEffect }) {
 
   const tableHeader = (
     <tr>
-      {["item name", "price", "quantity", "reorder level", "action"].map(
+      {["item name", "price", "quantity","unit", "reorder level", "action"].map(
         (header, index) => (
           <th
             key={index}
@@ -42,6 +42,7 @@ function StockTable({ modal, isOpen, onClose, itemRecord, triggerEffect }) {
       </td>
       <td className="px-6 py-4 whitespace-nowrap">{item.price}</td>
       <td className="px-6 py-4 whitespace-nowrap">{item.quantity}</td>
+      <td className="px-6 py-4 whitespace-nowrap">{item.unit}</td>
       <td className="px-6 py-4 whitespace-nowrap">{item.reorder_level}</td>
       <td className="py-5 whitespace-nowrap flex justify-center">
         <span
